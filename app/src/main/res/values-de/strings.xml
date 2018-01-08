@@ -1,0 +1,484 @@
+<resources>
+    <!-- TODO: TutorialActivity -->
+    <string name="was_ist_aplan">Was ist A-Plan?</string>
+    <string name="datenbank">Datenbank, Sicherheit, Zugriffsrechte</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="gantt_chart">Gantt-Diagramm</string>
+    <string name="demo_beta_version">Demo-/Beta-Version</string>
+    <string name="konsten">Kosten</string>
+    <string name="ausblick">Ausblick</string>
+
+    <string name="dont_show_it_again">nicht mehr anzeigen</string>
+    <string name="first_screen">A-Plan ist eine Projektmanagement-Software zur Verwaltung von Projekten und Ressourcen. Mit der App können die aktuellen Planungen auf einem Tablett bzw. Smartphone dargestellt werden. Die Planungen werden mit der Desktop-Version von A-Plan erstellt(siehe www.braintool.com) und auf einem SQL-Server innerhalb Ihres Firmennetzwerkes gespeichert.</string>
+    <string name="second_screen">Ihre Daten werden mit den höchsten aktuellen Sicherheitsstandards direkt von Ihrer firmeneigenen SQL-Datenbank zur App übertragen und werden zu keiner Zeit auf einem externen Server gespeichert oder gehostet. Hierdurch ist zudem gewährleistet, dass in der App immer der aktuelle Planungsstand angezeigt wird.
+     \n\nDie User der App melden sich mit ihrem Namen und Kennwort bei der App an und haben dann Zugriff auf die für sie freigegebenen Daten. Diese umfassen lediglich die Projekte, für die sie innerhalb der Desktop-Version von A-Plan freigeschaltet wurden.
+    </string>
+    <string name="third_screen">Die A-Plan-App zeigt auf einem Dashboard die aktuell zur Bearbeitung anstehenden Projekte / Vorgänge an, wobei diese durch das Setzen von Filtern beliebig eingeschränkt werden können. </string>
+    <string name="fourth_screen">In einem Ganttdiagramm wird der zeitliche Ablauf der betroffenen Projekte angezeigt. Auch hier werden nur die für den angemeldeten User freigegebenen Umfänge angezeigt und diese können ebenfalls durch umfangreiche Filter- und Einstellmöglichkeiten angepasst werden. </string>
+    <string name="fifth_screen">Bitte beachten Sie, dass diese Beta-Version nur eine begrenzte Laufzeit hat. Sie werden aber vor der Beendigung der Beta-Phase bzw. bei Vorliegen neuer Releases etc. automatisch benachrichtigt.\n\nHinweise auf Fehler bzw. Verbesserungsvorschläge können Sie uns über das Menü „Einstellungen“ / „Support“ zukommen lassen.
+    </string>
+    <string name="Sixth_screen">Für die offizielle App, die voraussichtlich Anfang 2017 zur Verfügung stehen wird, fallen pro User monatliche bzw. jährliche Kosten an, deren Höhe noch nicht exakt festgelegt wurde. Die User werden innerhalb der Desktop-Version von A-Plan verwaltet.</string>
+    <string name="seven_screen">In Kürze wird auch eine Android-Version der A-Plan App zur Verfügung stehen.
+    Als Erweiterung der aktuellen Version ist die Darstellung von Vorgängen pro Ressource und die Auslastung von Ressourcen vorgesehen (analog der Ressourcendarstellung der Desktop-Version).\n\n
+    Die nächste Version der App wird dann auch die Möglichkeit der Dateneingabe beinhalten. Hierbei wird es sich in erster Linie um Ablauf- bzw. Statusänderungen oder das Hinzufügen von Notizen etc. handeln. Das Ändern von Projektstrukturen oder das Anlegen neuer Projekte wird zunächst noch der Desktop-Version vorbehalten bleiben.
+</string>
+    <string name="my_smsc_link"><a href="http://www.smacsoftwares.de/">Powered by: SMAC Software &amp; Services</a></string>
+    <!-- TODO: End TutorialActivity -->
+
+    <!-- TODO : LoginMobileActivity-->
+    <string name="login_header">A-Plan</string>
+    <string name="sign_in_button">Anmeldung</string>
+    <string name="user_name">Benutzername:</string>
+    <string name="password">Kennwort:</string>
+    <string name="forgott_password">Passwort vergessen?</string>
+    <string name="Login">Login</string>
+    <!-- TODO : LoginMobileActivity-->
+
+    <!-- TODO: AdminSplashActivity -->
+    <string name="admin_header">Benutzer Informationen</string>
+    <string name="name_label">Name:</string>
+    <string name="email">E-Mail:</string>
+    <string name="companyname">Firmenname:</string>
+    <string name="organizationId">Organisation-Id:</string>
+    <string name="newsletter">Newsletter:</string>
+    <string name="hasLicense">Haben Sie eine Lizenz?</string>
+    <string name="demo_user">Demo-User:</string>
+    <string name="err_msg_name">Name ungültig</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="hint_name">Name</string>
+    <string name="btn_sign_up">Anmeldung</string>
+    <!-- TODO: End AdminSplashActivity -->
+
+    <!-- TODO : FragmentChangePassword -->
+    <string name="changepassword">Kennwort-Änderung</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <!-- TODO : End FragmentChangePassword -->
+
+    <!-- TODO: FragmentDashBoard -->
+    <string name="dashboard_header">Dashboard</string>
+    <string name="dashboard_footer">Dashboard</string>
+    <string name="project_footer">Projekt</string>
+    <string name="filter_footer">Allgemeiner Filter</string>
+    <string name="setting_footer">Einstellungen</string>
+    <string name="search">Suche</string>
+    <string name="load">Laden</string>
+    <string name="sunday">Sun</string>
+    <string name="Monday">Mon</string>
+    <string name="tusday">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="finish_date">Erledigungsdatum</string>
+    <string name="selected_date">Datum wählen</string>
+    <!-- agreegate listview strings -->
+    <string name="task_assign_tree">Angefangene Vorgänge</string>
+    <string name="task_completed_next_five_day">Innerhalb 1 Woche zu beenden</string>
+    <string name="task_completed_today_tree">Heute zu beenden</string>
+    <string name="task_completed_tree">Beendete Vorgänge</string>
+    <string name="task_pending_tree">Anstehenden Vorgänge</string>
+
+    <string name="no_more_data_to_load">Keine weiteren Daten</string>
+    <string name="no_more_data_to_load_0_0">0/0 Keine weiteren Daten verfügbar</string>
+    <string name="load_more_data">Weitere Daten laden</string>
+    <!-- end agreegate listview strings -->
+    <!-- TODO: End FragmentDashBoard  -->
+
+    <!-- TODO: FragmentProject  -->
+    <string name="project_header">Projekt</string>
+    <string name="Status">Status</string>
+    <string name="TrafficLights">Ampel</string>
+    <string name="Default_profile">Default Profile</string>
+    <string name="date">Datum</string>
+    <string name="status">Status</string>
+    <!-- Resolution dilaog strings-->
+    <string name="weekm">Woche M</string>
+    <string name="set_resolution">Auflösung einstellen</string>
+    <string name="year">Jahr</string>
+    <string name="quarter">Quartal</string>
+    <string name="week_s">Woche S</string>
+    <string name="week_m">Woche M</string>
+    <string name="week_l">Woche L</string>
+    <string name="hours">Stunden</string>
+    <string name="minutes">Minuten</string>
+    <string name="seconds">Sekunden</string>
+    <string name="daynightshift">Tag-Nacht-Umschaltung</string>
+    <!-- end Resolution dilaog strings-->
+    <string name="delete_profile">Profil löschen</string>
+    <string name="are_you_sure_to_delete_profile">Sind Sie sicher, dass Sie das Profil löschen wollen?</string>
+    <string name="add_new_profile">Neues Profil hinzufügen</string>
+    <string name="profile_name">Profilname</string>
+    <string name="filter_setted">Filter setzen</string>
+    <string name="filter_setted_message">Möchten Sie fortfahren</string>
+    <string name="Delete_profile">Profil löschen</string>
+    <string name="today">Heute</string>
+    <string name="text">Text</string>
+    <string name="Number">Zahl</string>
+
+    <!-- TODO: Project Fragment popup strings  -->
+
+    <!-- TODO: date dialog screen -->
+    <string name="completion_overrun">Endtermin überschritten</string>
+    <string name="started_project_task">Gestartete Vorgänge</string>
+    <string name="complete_project_task">Projekte/Vorgänge</string>
+    <string name="complete_today">Heute zu beenden</string>
+    <string name="pending_project_task">Wartende Vorgänge</string>
+    <string name="passive_project_task">Passive Vorgänge</string>
+    <string name="completed_in1week">In 1 Woche zu beenden</string>
+    <string name="task_without_date">Vorgang ohne Datum</string>
+    <string name="canceled_project_task">Abgebrochene Vorgänge</string>
+
+    <!-- TODO: Status dialog screen -->
+    <string name="notice_arrow">Hinweis-Pfeil</string>
+    <string name="reshow">Vorlage überschritten</string>
+    <string name="limit_overrun">Limit überschritten</string>
+    <string name="critical">Kritisch</string>
+    <string name="requiring_clarification">Unklar</string>
+
+
+    <string name="not_clear">Nicht klar</string>
+    <string name="reminder">Erinnerung</string>
+    <string name="completed_task">Erledigte Vorgänge</string>
+    <string name="limit">Limit</string>
+    <string name="capacity_too_high">Kapazität zu hoch</string>
+    <string name="capacity_too_low">Kapazität zu niedrig</string>
+
+
+    <!-- TODO: Traffic light dialog screen -->
+    <string name="traffic_yellow">Gelb</string>
+    <string name="traffic_red">Rot</string>
+    <string name="traffic_green">Grün</string>
+
+    <!-- TODO: End FragmentProject  -->
+
+    <!-- TODO: Resource Fragment popup strings  -->
+    <string name="resource_header">Ressource</string>
+    <!-- TODO: End Resource Fragment popup strings  -->
+
+    <!-- TODO: FragmentSelectFilter -->
+    <string name="filter_header">Allgemeiner Filter</string>
+    <string name="general_filter_folder_text">Allgemeiner Filter - Ordner </string>
+    <string name="general_filter_text_text">Allgemeiner Filter - Text</string>
+    <string name="general_filter_date_text">Allgemeiner Filter - Datum</string>
+    <string name="general_filter_user_defined_text">Allgemeiner Filter - Benutzerdefinierte Felder</string>
+    <!-- TODO: End FragmentSelectFilter -->
+
+    <!-- TODO: FragmentSetting -->
+    <string name="default_string">Default</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="send">Senden</string>
+    <string name="support">Support</string>
+    <string name="profile">Profil</string>
+    <string name="set_profile">Profil einstellen</string>
+    <string name="table">Tabelle</string>
+    <string name="submit_error_log">Fehlerbericht übermitteln</string>
+    <string name="sign_out">Abmelden</string>
+    <string name="sign_out_organization">Sign Out From Organization</string>
+    <string name="profile_default">Profil:Default</string>
+    <string name="sign_out_message">Sind Sie sicher?</string>
+    <string name="Table">Tabelle</string>
+    <string name="title_profile">Profil</string>
+    <string name="title_option">Options</string>
+    <string name="title_ganttchart">Gantt Chart</string>
+
+    <!--<string name="user_inactive">User Inactive.</string>
+    <string name="user_inactive_message">User Inactive.</string>-->
+    <!-- TODO: End FragmentSetting -->
+
+    <!-- TODO: FragmentFilterFolder -->
+    <string name="show_all_subtask">Show All Subtasks</string>
+    <string name="do_not_show_all_project">Do not show completed projects</string>
+    <string name="text_filter_title">Text-Filter</string>
+    <string name="filterfolder_title">Ordner-Filter</string>
+    <!-- TODO: End FragmentFilterFolder -->
+
+    <!-- TODO: FragmentFilterText -->
+    <string name="filterText_header">Text Filter</string>
+    <string name="anytextfiled">Beliebiges Textfeld</string>
+    <string name="prio">Prio</string>
+    <string name="to">Bis</string>
+    <string name="leaveto">Ebene</string>
+    <string name="identno">Ident-Nr.</string>
+    <string name="task">Vorgang</string>
+    <string name="client">Auftraggeber</string>
+    <string name="responsible">Verantwortlicher</string>
+    <string name="group">Gruppe</string>
+    <string name="resources">Ressource</string>
+    <!-- TODO: End FragmentFilterText -->
+
+    <!-- TODO: FragmentFilterDate -->
+    <string name="date_filter_title">Datumsfilter</string>
+    <string name="criteria1">Kriterium 1</string>
+    <string name="criteria2">Kriterium 2</string>
+    <string name="and">Und</string>
+    <!-- general date filter arraylist strings -->
+    <string name="empty">Leer</string>
+    <string name="planned_time_to_be_spent_on_task">Bearbeitungszeit geplant</string>
+    <string name="begin_pid">Beginn geplant</string>
+    <string name="end_pid">Ende geplant</string>
+    <string name="actual_time_to_be_spent_on_task">Ist-Bearbeitungszeit</string>
+    <string name="begin_act">Ist-Beginn</string>
+    <string name="end_act">Ist-Ende</string>
+    <string name="end_progn">Progn. Ende</string>
+    <string name="entry_date">Eingangs-Datum</string>
+    <string name="reshow_date">Vorlage-Datum</string>
+    <string name="complete_on">Erledigt am</string>
+    <string name="last_change">Letzte Änderung</string>
+
+    <string name="before">Vor</string>
+    <string name="on">Am</string>
+    <string name="after">Nach</string>
+    <string name="between">Zwischen</string>
+    <string name="time_range">Zeitbereich</string>
+
+    <string name="days">Tage</string>
+    <string name="weeks">Wochen</string>
+    <string name="months">Monate</string>
+    <string name="years">Jahr</string>
+
+    <string name="key_criterion1">Kriterium 1</string>
+    <string name="key_criterion1Type">Criterion1Type</string>
+    <string name="key_criterion1FromDate">Criterion1FromDate</string>
+    <string name="key_criterion1ToDate">Criterion1ToDate</string>
+    <string name="key_criterion1TimeFrom">Criterion1TimeFrom</string>
+    <string name="key_criterion1TimeTo">Criterion1TimeTo</string>Criterion1TimeUnit
+    <string name="key_criterion1TimeUnit">Criterion1TimeUnit</string>
+
+    <string name="key_criterion2">Kriterium 2</string>
+    <string name="key_criterion2FromDate">Criterion2FromDate</string>
+    <string name="key_criterion2ToDate">Criterion2ToDate</string>
+    <string name="key_criterion2Type">Criterion2Type</string>
+    <string name="key_criterion2TimeFrom">Criterion2TimeFrom</string>
+    <string name="key_criterion2TimeTo">Criterion2TimeTo</string>
+    <string name="key_criterion2TimeUnit">Criterion2TimeUnit</string>
+    <!-- end for date filter string-->
+    <!-- TODO: End FragmentFilterDate -->
+
+    <!-- TODO: FragmentFilterUserDefined -->
+    <string name="user_defined_filter_title">Benutzerdefinierte Felder</string>
+    <string name="general_filte_title">Allgemeiner Filter</string>
+    <string name="key_text1">Text1</string>
+    <string name="key_text2">Text2</string>
+    <string name="key_text3">Text3</string>
+    <string name="key_text4">Text4</string>
+    <string name="key_text5">Text5</string>
+    <string name="key_text6">Text6</string>
+    <string name="key_text7">Text7</string>
+    <string name="key_text8">Text8</string>
+    <string name="key_text9">Text9</string>
+    <string name="key_text10">Text10</string>
+    <string name="text_user_defined">Text</string>
+
+    <string name="number">Zahl</string>
+    <string name="key_number1">Zahl 1</string>
+    <string name="key_number2">Zahl 2</string>
+    <string name="key_number3">Zahl 3</string>
+    <string name="key_number4">Zahl 4</string>
+    <string name="key_number5">Zahl 5</string>
+    <string name="key_number6">Zahl 6</string>
+    <string name="key_number7">Zahl 7</string>
+    <string name="key_number8">Zahl 8</string>
+    <string name="key_number9">Zahl 9</string>
+    <string name="key_number10">Zahl 10</string>
+    <!-- TODO: End FragmentFilterUserDefined -->
+
+    <!-- TODO: FragmentTable -->
+    <string name="name">Name</string>
+    <string name="show">Anzeigen</string>
+    <string name="width">Breite</string>
+    <!-- TODO: End FragmentTable -->
+
+    <!-- TODO: FragmentSupport  -->
+    <string name="aboutus">About</string>
+    <string name="help">Hilfe</string>
+    <string name="faqs">FAQs</string>
+    <string name="contect">Contact</string>
+    <string name="support_email">Setting</string>
+    <string name="send_us_your_feedback">Senden Sie uns Ihr Feedback bzw. eine Beschreibung des Problems</string>
+    <!-- TODO: End FragmentSupport  -->
+
+    <!-- TODO: FragmentSupportAbout -->
+    <string name="releseNo">Release Nr:</string>
+    <string name="sqlversion">SQL-Version:</string>
+    <string name="licence">Lizenz:</string>
+    <string name="webviewer">Web viewer:</string>
+    <string name="licensedto">Lizenziert für:</string>
+    <string name="aplan">A-Plan 2017</string>
+    <string name="version">Version 1.1.6</string>
+    <string name="na">N/A</string>
+    <string name="demouser">Demo-User</string>
+    <string name="copyright">CopyRight @ 1996 - 2017 barintool Software gmbh </string>
+    <!-- TODO: End FragmentSupportAbout -->
+
+    <string name="DateLightFilter">DateLightFilter</string>
+    <string name="StatusLightFilter">StatusLightFilter</string>
+    <string name="TrafficLightFilter">TrafficLightFilter</string>
+
+    <string name="UserDefinedFilter">Benutzerdefinierte Felder</string>
+    <string name="DateFilter">Datumsfilter</string>
+    <string name="FolderFilter">Ordner-Filter</string>
+    <string name="TextFilter">Text-Filter</string>
+
+    <!-- TODO: Srings use Multiple time commonly -->
+    <string name="please_wait">Bitte warten...</string>
+    <string name="fetching_data">Ihre Daten werden abgerufen...</string>
+    <string name="fetching_profile">profil laden</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="submit">submit</string>
+    <string name="ok">OK</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="Cancel">Abbrechen</string>
+    <string name="control">Control</string>
+    <!-- TODO: End Srings use Multiple time commonly -->
+
+    <!--TODO: all toast string -->
+
+            <!-- not using currently -->
+            <string name="password_change_successfully">Password Change successfully</string>
+            <string name="password_does_not_change">Password doesn\'t not change</string>
+            <string name="please_fill_all_required_field">Please fill all the required fields</string>
+            <string name="password_change_successfully_check_email">Password Change successfully! Please check your mail</string>
+            <string name="try_again_please">Try again please!</string>
+            <!-- end not using currently-->
+
+
+    <string name="profile_deleted">Das Profil wurde gelöscht</string>
+    <string name="you_can_not_delete_default_profile">Das "Standard-Profil" kann nicht gelöscht werden!</string>
+    <string name="profile_created_successfully">Das Profil wurde erfolgreich erstellt</string>
+    <string name="please_enter_profile_name">Please enter profile name</string>
+    <string name="please_select_atleast_one_date">Bitte wählen Sie mindestens einen Datumsbereich</string>
+    <string name="no_error_log_available">Kein Fehler am App zur Verfügung.</string>
+
+    <string name="profile_delete_disable">Profil löschen ist im Demo-Modus deaktiviert</string>
+    <string name="profile_create_disable">Profil erstellen ist im Demo-Modus deaktiviert</string>
+    <string name="profile_update_disable">Profil aktualisieren ist im Demo-Modus deaktiviert</string>
+
+                    <!-- for field validation -->
+    <string name="enter_valid_email">Falsche E-Mail-Adresse</string>
+    <string name="please_enter_valid_email_address">Die E-Mail-Adresse hat eine falsches Format. Bitte überprüfen Sie die E-Mail-Adresse und versuchen Sie es nochmals.</string>
+    <string name="invalid_email_title">E-Mail ungültig</string>
+    <string name="enter_valid_name">Falscher Name</string>
+    <string name="enter_valid_compony_name">Falscher Firmenname</string>
+
+    <string name="enter_user_name_title">Falscher Benutzername</string>
+    <string name="enter_valid_username">Bitte geben Sie gültige Benutzernamen.</string>
+
+    <string name="enter_password_title">Falsches Passwort</string>
+    <string name="enter_valid_password">Bitte geben Sie gültige Kennwort.</string>
+
+    <string name="enter_organization_url_title">Falsche UR</string>
+    <string name="enter_valid_url">Bitte geben Sie die korrekte URL ein.</string>
+
+    <string name="no_internet_title">Keine Internetverbindung</string>
+    <string name="please_check_internet_connection">Netzwerk nicht verfügbar</string>
+
+    <string name="select_date_title">Wählen Sie ein Datum</string>
+    <string name="please_select_date_first">Please select dates first</string>
+
+    <string name="error_title">Fehler</string>
+    <string name="no_response_from_server">No Response from server</string>
+    <string name="something_is_wrong">Server nicht gefunden</string>
+
+    <string name="terms_condition_title">Terms and Conditions</string>
+    <string name="terms_condition_message">Please accept Terms and Conditions, Click agree to the A-Plan Terms and Conditions.</string>
+    <string name="agree">Agree</string>
+
+    <string name="access_denied_title">Zugriff verweigert</string>
+    <string name="problem_while_deleting_profile">Problem while deleting profile</string>
+
+    <string name="sending_details">Senden von Informationen</string>
+                    <!-- end for field validation -->
+
+    <!-- to handle service response -->
+    <string name="contact_adminstrator">Bitte nehmen Sie Kontakt zu Ihrem Administrator wegen einer fehlerhaften Lizenz auf und versuchen es dann nochmals.</string>
+
+    <string name="role_not_found_title">Rolle nicht gefunden</string>
+    <string name="app_right_has_been_revoked">Die Rechte für die App wurden widerrufen, bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+    <string name="server_timeout_exception">Servere timeout exception</string>
+
+    <string name="organization_is_disable_by_sys_admin_title">Organisation deaktiviert</string>
+    <string name="organization_is_disable_by_sys_admin_message">Ihre Organisation wurde deaktiviert. Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+    <string name="organization_user_is_disabled_by_sys_admin_title">Benutzer deaktiviert</string>
+    <string name="organization_user_is_disabled_by_sys_admin_message">Ihr Account wurde deaktiviert. Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+
+    <string name="role_revoked_title">Unzureichende Rechte</string>
+    <string name="role_revoked_message">Sie haben keine aureichende Rechte, um die App zu nutzen. Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+    <string name="licence_file_missing_title">Lizenzdatei fehlt</string>
+    <string name="licence_file_missing_message">Ihre Lizenzdatei fehlt. Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+    <string name="licence_expired_title">Lizenz abgelaufen</string>
+    <string name="licence_expired_message">Ihre Lizenz ist abgelaufen. Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+
+    <string name="user_disabled_by_system_admin_title">Benutzer wurde von Systemadministrator deaktiviert</string>
+    <string name="user_disabled_by_system_admin_message">Organisation Benutzer von System Admin deaktiviert.
+        Bitte wenden Sie sich an Ihren Administrator.</string>
+
+    <string name="organization_disalbed_title">Organization has been disabled</string>
+    <string name="organization_disalbed_message">Organization has been disabled by system admin, Please contact your administrator.</string>
+
+    <string name="invalid_login_title">Benutzername oder Kennwort ungültig.</string>
+    <string name="invalid_login_message">Der Benutzername oder das Kennwort nicht angezeigt, um ein Konto zu gehören. Bitte geben Sie Ihren Benutzernamen oder Ihr Kennwort, und versuchen Sie es erneut.</string>
+
+    <string name="max_user_login_exceed_title">Limit der Geräteanzahl erreicht</string>
+    <string name="max_user_login_exceed">Limit der Geräteanzahl des Benutzers ist erreicht.</string>
+
+    <string name="invalide_organization">Benutzer nicht gefunden.</string>
+
+        <!-- for notification response string -->
+        <string name="organization_inactive_title">Organisation inaktiv.</string>
+        <string name="organization_inactive_message">Ihre Organisation durch System Admin deaktiviert.
+                Bitte wenden Sie sich an Ihren Systemadministrator.</string>
+
+        <string name="user_inactive_title">Benutzer inaktiv.</string>
+        <string name="user_inactive_message">Sie haben durch System Admin deaktiviert. Bitte wenden Sie sich an
+                Ihren Systemadministrator.</string>
+
+        <string name="user_active_title">Benutzer aktiviert</string>
+        <string name="user_active_message">Sie wurden durch den Administrator reaktiviert.</string>
+
+        <string name="invalid_aplan_licence">Lizenzproblem</string>
+        <string name="invalid_aplan_licence_message">Fehlerhafte A-Plan Lizenz. Bitte nehmen Sie Kontakt zu Ihrem Administrator auf.</string>
+
+        <string name="user_deleted">Benutzer gelöscht</string>
+        <string name="user_deleted_message">Ihr Account wurde durch den Administrator gelöscht.</string>
+        <!-- end for notification string -->
+    <!-- end to handle service response -->
+    <!--TODO: end all toast strings-->
+
+    <!-- for mobie give by darshan -->
+    <string name="counter">Schalter</string>
+    <string name="startDate">Starttag</string>
+    <string name="endDate">End-Datum</string>
+    <string name="sorting">Sortieren</string>
+    <string name="please_enter_your_dates">Bitte geben Sie Ihre Reisedaten</string>
+    <string name="you_have_selected">Sie haben gewählt</string>
+    <string name="date_s">Termine ausgewählt</string>
+    <string name="back">Back</string>
+
+    <string name="project_search">Projekt Suche</string>
+    <string name="task_search">Vorgange Suche</string>
+    <string name="save_setting">Einstellung en speichern</string>
+    <string name="login_as_licence_version">Login as licence user</string>
+    <string name="Continue">Fortsetzen</string>
+    <string name="url">Bitte geben Sie gültige Organisation Url.</string>
+
+    <string name="log_in">Login</string>
+    <string name="try_demo">Demo aufrufen</string>
+    <string name="organization">Url der Organisation</string>
+
+    <string name="hint_username">Ihr Benutzernamen</string>
+    <string name="hint_password">Ihr Passwort</string>
+
+    <string name="terms_condition">Terms &amp; Conditions</string>
+    <string name="terms_and_condition">Terms and Conditions</string>
+
+    <string name="terms_condition_json">{\"Terms\":[{\"Title\":\"Allgemeine Geschäftsbedingungen der braintool software GmbH\",\"Detail\":\"Allgemeine Geschäftsbedingungen der braintool software GmbH (Stand 10. Februar 2015)\"},{\"Title\":\"1 Anwendungsbereich / Entgegenstehende Allgemeine Geschäftsbedingungen / Änderungen\",\"Detail\":\"(1) Sämtlichen Lieferungen und Leistungen der braintool software GmbH (im Folgenden mit „braintool software“ bezeichnet) liegen die nachfolgenden Allgemeinen Geschäftsbedingungen (AGB) zugrunde. Diese AGB gelten nur gegenüber Unternehmen i. S. v. § 14 BGB, sofern der Vertrag zum Betrieb des Unternehmens gehört, sowie gegenüber juristischen Personen des öffentlichen Rechts und öffentlich-rechtlichen Sondervermögens i. S. v. § 310 Abs. 1 BGB.\n\n(2) Diese AGB gelten auch für zukünftige Geschäftsbeziehungen, auch wenn sie nicht nochmals ausdrücklich vereinbart werden.\n\n(3) Änderungen oder Ergänzungen sowie entgegenstehende oder von diesen Regelungen abweichende AGB des Kunden gelten nur, wenn braintool software ihnen schriftlich und ausdrücklich zugestimmt hat. Ist der Kunde damit nicht einverstanden, so muss er braintool software sofort schriftlich darauf hinweisen.\n\n(4) Änderungen dieser AGB werden dem Kunden zumindest in Textform mitgeteilt.Widerspricht der Kunde solchen Änderungen nicht innerhalb von 4 Wochen nach Zugang der Mitteilung,gelten die Änderungen als vereinbart.Auf das Widerspruchsrecht und die Rechtsfolgen des Schweigens wird der Kunde im Falle der Änderung der Vertragsbedingungen gesondert hingewiesen.Im Falle eines rechtzeitigen Widerspruchs bleiben die ursprünglichen Regelungen anstatt der Änderung unverändert bestehen.\"},{\"Title\":\"2 Vertragsgegenstand Softwareüberlassung und IT-spezifische Dienstleistungen / Subunternehmer\",\"Detail\":\"(1) braintool software überlässt dem Kunden zur eigenen Nutzung auf Dauer die vertragsgegenständliche Software gegen die vereinbarte Vergütung. Dem Kunden steht neben einer kurzen Anwendungsdokumentation eine Online-Hilfe bei jedem Softwareprodukt zur Verfügung. \n\n(2)braintool software liefert die vertragsgegenständliche Software in ausführbarer Form (Objektcode). Der Quellcode ist nicht Vertragsgegenstand. \n\n(3)Die Erbringung IT-spezifischer Dienstleistungen wie Installation, Customizing, Parametrisierung, Anpassungen, Beratung, Schulung etc. bedürfen jeweils einer separaten Beauftragung. \n\n(4)braintool software kann die geschuldeten Vertragsleistungen auch durch Dritte erbringen lassen.\"},{\"Title\":\"3 Vertragsschluss\",\"Detail\":\"(1)Leistungspräsentationen auf der Website von braintool software sind freibleibend und unverbindlich, sofern nicht ausdrücklich eine verbindliche Zusicherung erfolgt. \n\n(2) Vertragsschluss über Website \n\na) Der Vertrag über die 30-tägige Nutzung einer kostenlosen Testversion der Software kommt zustande, in dem der Kunde vor der Installation der Testversion die AGB als Vertragsbestandteil akzeptiert. \n\nb) Der Vertragsschluss über die kostenpflichtige Version erfolgt durch die verbindliche Bestellung des Kunden durch Absendung einer Bestellung auf dem Postweg, eines Faxes, einer E-Mail oder des ausgefüllten Web-Bestellformulars an braintool software und mit Zugang der Bestätigung der Bestellung (Auftragsbestätigung) von braintool software bei dem Kunden. Die Auftragsbestätigung kann auch erfolgen durch Überlassung der vertragsgegenständlichen Software auf einem Datenträger oder mit Bereitstellung des Lizenzschlüssels zum Download. Mit der jeweiligen Bestellung akzeptiert der Kunde die AGB als Vertragsbestandteil.\n\n(3) Vertragsschluss nicht über Website\n\nUnterbreitet braintool software mit Hinweis auf die ergänzende Geltung der AGB ein als verbindlich bezeichnetes Angebot, so wird der Vertrag mit der Angebotsannahme durch den Kunden geschlossen.Bezeichnet braintool software das Angebot als freibleibend, kommt der Vertrag erst mit der Auftragsbestätigung oder der Softwarelieferung von braintool software gemäß Abs.2 b) Satz 2 zustande.\"},{\"Title\":\"4 Leistungserbringung / Termine / Höhere Gewalt / Teillieferung\",\"Detail\":\"(1) braintool software erbringt in Abstimmung mit dem Kunden die vertragsgegenständlichen Leistungen zu den schriftlich vereinbarten Terminen. Termine zur Leistungserbringung dürfen auf Seiten von braintool software nur durch den Projektleiter oder die Geschäftsführung zugesagt werden. \n\n(2) Solange braintool software (i) auf die Mitwirkung oder Informationen des Kunden wartet oder (ii) durch Streiks oder Aussperrungen in Drittbetrieben oder im Betrieb von braintool software (im letzteren Fall jedoch nur, wenn der Arbeitskampf rechtmäßig ist), behördliches Eingreifen, gesetzliche Verbote oder andere unverschuldete Umstände in ihren Leistungen (z. B. Stromausfall) behindert ist (,,höhere Gewalt“), gelten Liefer- und Leistungsfristen um die Dauer der Behinderung und um eine angemessene Anlaufzeit nach Ende der Behinderung („Ausfallzeit“) als verlängert und es liegt für die Dauer der Ausfallzeit keine Pflichtverletzung vor.\n\n(3) Teillieferungen sind zulässig, es sei denn dies ist dem Kunden nicht zumutbar. Macht braintool software von diesem Recht Gebrauch, werden Verpackungs- und Versandkosten nur einmalig erhoben.\"},{\"Title\":\"5 Annahmeverzug\",\"Detail\":\"Nimmt ein Kunde die verkaufte Ware nicht ab, so ist braintool software berechtigt, wahlweise auf Abnahme zu bestehen oder 10% des Kaufpreises als pauschalisierten Schadens- und Aufwendungsersatz zu verlangen, es sei denn, der Kunde weist nach, dass ein Schaden nicht oder in geringerer Höhe entstanden ist. Im Falle eines außergewöhnlich hohen Schadens behält braintool software sich das Recht vor, diesen geltend zu machen.\"},{\"Title\":\"6 Vertragsänderungen (Change Requests)\",\"Detail\":\"(1) Änderungsbegehren des Kunden der von braintool software zu erbringenden Leistungen sind schriftlich an braintool software zu richten. Änderungsbegehren dürfen von braintool software abgelehnt werden, sofern die Umsetzung im Rahmen der Vertragserfüllung für braintool software unzumutbar ist. Dies ist von braintool software unmittelbar nach der Prüfung des Änderungsbegehrens dem Kunden mitzuteilen. braintool software ist berechtigt, Änderungsbegehren des Kunden, die nach dem Beginn eines Testverfahrens erklärt werden, ohne Angabe von Gründen abzulehnen. \n\n(2) Sofern das Änderungsbegehren aus Sicht von braintool software umsetzbar und zumutbar ist, unterbreitet braintool software dem Kunden ein verbindliches Angebot, welches mit der Auftragsbestätigung des Kunden auch hinsichtlich Leistungsterminen Vertragsinhalt wird. Der Kunde hat zeitnah die Annahme oder Ablehnung des Angebotes mitzuteilen. Etwaige durch die Prüfung des Änderungsbegehrens und bis zur Angebotsannahme oder -abnahme eingetretene Verzögerungen wie Stillstandzeiten im Rahmen der Vertragserfüllung verlängern die vertraglich vereinbarte Ausführungsfrist angemessen.\n\n(3) Die von dem Änderungsverfahren betroffenen Termine werden unter Berücksichtigung der Dauer der Prüfung, der Dauer der Abstimmung über den Änderungsvorschlag und gegebenenfalls der Dauer der auszuführenden Änderungswünsche zuzüglich einer angemessenen Anlauffrist soweit erforderlich verschoben, sofern das von dem Kunden angenommene Angebot von braintool software nicht entsprechende Regelungen zur Verschiebung der Leistungszeit enthält. braintool software wird dem Kunden die neuen Termine mitteilen. Erfolgt keine Auftragserteilung durch den Kunden, so verbleibt es beim ursprünglichen Leistungsumfang.\"},{\"Title\":\"7 Mitwirkungspflichten des Kunden\",\"Detail\":\"(1) Die Mitarbeit des Kunden ist unerlässlich zur Durchführung der von braintool software geschul deten Vertragsleistungen. Erkennt eine Vertragspartei, dass Angaben und Anforderungen, gleich ob eigene oder solche der anderen Vertragspartei, fehlerhaft, unvollständig, nicht eindeutig oder nicht durchführbar sind, hat sie dies und die erkennbaren Folgen der anderen Partei unverzüglich mitzuteilen. Die Parteien werden dann nach einer interessengerechten Lösung suchen und anstreben, diese, gegebenenfalls nach den Bestimmungen über Leistungsänderungen, zu erreichen. \n\n(2) Der Kunde stellt für die Projektlaufzeit die erforderliche Anzahl von Mitarbeitern, wenn nichts anderes vereinbart ist, einen kompetenten und entscheidungsbefugten Ansprechpartner. Für die Projektdurchführung notwendige Entscheidungen trifft der Kunde unverzüglich nach Mitteilung des Entscheidungsbedarfs durch braintool software. \n\n(3) Der Kunde verpflichtet sich, die zur Projektverwirklichung erforderlichen Tätigkeiten von braintool software zu unterstützen. Der Kunde trägt dafür Sorge, dass braintool software alle für die Aus-führung der Tätigkeit notwendigen Unterlagen rechtzeitig vorgelegt werden. braintool software fordert die für die Vertragsdurchführung erforderlichen Unterlagen bei dem Kunden an, sofern die vereinbarten Zeitpunkte hierfür nicht vereinbart sind bzw. der Kunde diese nicht vorlegt. Auf Verlangen von braintool software hat der Kunde die Richtigkeit und Vollständigkeit der von ihm vorgelegten Unterlagen, Auskünfte und mündlichen Erklärungen schriftlich zu erklären. Soweit für die Projektabwicklung erforderlich, wird der Kunde den braintool software -Mitarbeitern Zutritt zu ihren Räumlichkeiten verschaffen und ihnen ausreichende Arbeitsmöglichkeiten (z.B. Arbeitsplatz mit Netzwerk- und Internetzugang) zur Verfügung stellen. \n\n(4) Für den Fall des Remotezugriffs (insbesondere zur Mangelbeseitigung) hat der Kunde einen geeigneten Remotezugang oder ein eigenes Softwareprogramm bereitzustellen. \n\n(5) Der Kunde testet die vertragsgegenständliche Software vor deren Einsatz eingehend auf Mangelfreiheit und auf Verwendbarkeit in der bestehenden Hard- und Softwarekonfiguration. Diese Pflicht zu eingehenden Tests besteht auch für Software, die der Kunde im Rahmen der Mangelbeseitigung und der Pflege erhält. Auftretende Mängel sind von dem Kunden durch kompetente bzw. von braintool software geschulte Mitarbeiter in Textform - bei telefonischer Mitteilung nachträglich - nach besten Kräften in möglichst nachvollziehbarer Weise unter Angabe der näheren Umstände ihres Auftretens, ihrer Auswirkungen und - soweit der Kunde hierzu Aussagen machen kann - der möglichen Ursachen zu dokumentieren und nach ihrer Entdeckung innerhalb angemessenen Zeitraums braintool software mitzuteilen. \n\n(6) Ist unklar, welche Systemkomponente ein Fehlverhalten produziert, wird der Kunde gemeinsam mit braintool software eine Analyse der Softwareumgebung durchführen und nach Absprache mit braintool software Drittfirmen mit dem erforderlichen Know-how hinsichtlich der Software-Umge bung einschalten. Die angemessenen Kosten hierfür trägt braintool software, wenn sich herausstellt, dass das Fehlverhalten der gelieferten Software braintool software zuzurechnen ist. Anderenfalls ist braintool software berechtigt, die entstandenen Kosten dem Kunden in Rechnung zu stellen. \n\n(7) Kommt der Kunde einer Mitwirkungspflicht auch nach angemessener Fristsetzung - gegebenenfalls mit Ablehnungsandrohung - nicht nach, ist braintool software berechtigt, einen nicht nur auf einmaligen Leistungsaustausch ausgerichteten Vertrag mit sofortiger Wirkung zu kündigen bzw. von diesem zurückzutreten. In diesem Falle ist braintool software weiter berechtigt, alle bis dahin angefallenen Arbeiten nach Aufwand gemäß der zwischen den Parteien vereinbarten Vergütung bzw. nach der gültigen Preisliste abzurechnen sowie Schadensersatz geltend zu machen.\"},{\"Title\":\"8 Datensicherung\",\"Detail\":\"Von dem Kunden sind angemessene Vorkehrungen für den Fall zu treffen, dass die Software ganz oder teilweise nicht ordnungsgemäß arbeitet (z. B. durch regelmäßige Datensicherung gemäß Satz 2, Störungsdiagnose, regelmäßige Überprüfung der Datenverarbeitungsergebnisse). Der Kunde wird seine gesamten Daten, Strukturen und Programme regelmäßig - insbesondere vor Aufnahme einer Tätigkeit von braintool software wie bspw. Mangelbeseitigungsarbeiten oder dem Aufspielen von Updates (Patches, Releases) nach dem Stand der Technik entsprechend den betrieblichen Anforderungen sichern. Der Kunde stellt sicher, dass die aktuellen Daten aus in maschinenlesbarer Form bereitgehaltenen Datenbeständen mit vertretbarem Aufwand reproduzierbar sind. Soweit der Kunde nicht ausdrücklich vorab darauf hinweist, darf braintool software davon ausgehen, dass alle Daten des Kunden, mit denen braintool software in Berührung kommen kann, gesichert sind.\"},{\"Title\":\"9 Preise und Zahlungsbedingungen\",\"Detail\":\"(1) Es gelten die Listenpreise im Zeitpunkt der Bestellung, wie sie auf der Website www,braintool.com dargestellt werden. Die Zahlungsfrist beträgt 14 Tage, Skonto wird nicht gewährt. \n\n(2) Für Verpackung und Versand (Versandkosten) werden die Kosten gesondert berechnet. \n\n(3) Bei Zahlungsverzug des Kunden ist braintool software berechtigt, Verzugszinsen in Höhe von 9 Prozentpunkten über dem Basiszinssatz zu verlangen. Der Kunde ist jedoch berechtigt den Nachweis zu führen, dass braintool software überhaupt kein oder ein niedrigerer Schaden entstanden ist. Zusätzlich kann braintool software mit Verzugseintritt eine Pauschalzahlung über € 40.-- geltend machen. Unbeschadet bleibt braintool software die Geltendmachung weiterer Schadensersatzansprüche. Gerät der Kunde in Zahlungsverzug, so werden sämtliche Forderungen von braintool software gegenüber dem Kunden sofort zur Zahlung fällig. \n\n(4) Sämtliche Beträge verstehen sich netto zzgl. der zum Rechnungserstellungszeitpunkt geltenden gesetzlichen Umsatzsteuer.\"},{\"Title\":\"10 Aufrechnungs- und Zurückbehaltungsrechte\",\"Detail\":\"(1) Das Recht zur Aufrechnung steht dem Kunden nur zu, wenn seine Gegenansprüche rechtskräftig festgestellt oder durch braintool software anerkannt wurden. \n\n(2) Der Kunde kann ein Zurückbehaltungsrecht nur ausüben, als die Gegenforderung, auf die er das Zurückbehaltungsrecht stützt, unbestritten, rechtskräftig festgestellt oder entscheidungsreif ist und auf demselben Vertragsverhältnis beruht.\"},{\"Title\":\"11 Eigentumsvorbehalt / Ausübung Herausgabeverlangen\",\"Detail\":\"(1) braintool software behält sich das Eigentum an dauerhaft überlassenen Gegenständen wie Datenträgern und Benutzerhandbüchern bis zur vollständigen Bezahlung des jeweiligen Kaufpreises vor. \n\n(2) Der Kunde darf gelieferte Vorbehaltsware nur im gewöhnlichen Geschäftsverkehr zu seinen normalen Geschäftsbedingungen veräußern, solange er nicht braintool software gegenüber in Zahlungsverzug ist. Gerät der Kunde in Zahlungsverzug, so hat er nach fruchtlosem Ablauf einer von braintool software hierfür gesetzten angemessenen Frist auf entsprechende Aufforderung von braintool software die Forderungen aus der Weiterveräußerung an braintool software abzutreten. Zu anderen Verfügungen über die Vorbehaltsware ist der Kunde vor Erfüllung der Vergütungsansprüche nicht berechtigt. \n\n(3) Bei Pfändungen oder sonstigen Eingriffen Dritter hat der Kunde braintool software unverzüglich schriftlich zu benachrichtigen. \n\n(4) braintool software ist berechtigt vom Vertrag nach angemessener Fristsetzung (es sei denn die Fristsetzung ist entsprechend Abs. 5 entbehrlich) zurückzutreten und die Herausgabe der unter Eigentumsvorbehalt gelieferten Vorbehaltsware zu verlangen, sofern \n\na) der Kunde mit der Bezahlung der geschuldeten Vergütung 40 Tage oder bei vereinbarten Ratenzahlungen mit zumindest zwei Raten in Zahlungsverzug ist, es sei denn, er hat den Zahlungsrückstand nicht zu vertreten, oder \n\nb) der Kunde gegen die Verpflichtungen aus Abs. 2 und/oder 3 verstoßen hat, sei denn er hat den Pflichtenverstoß nicht zu vertreten. \n\n(5) Eine Fristsetzung ist entbehrlich, wenn der Kunde die Leistung ernsthaft und endgültig verweigert oder offenkundig auch innerhalb dieser Frist zur Erbringung dieser Leistung nicht imstande ist. \n\n(6) Die Herausgabe kann noch verlangt werden, wenn die Verjährung der gesicherten Forderung bereits eingetreten ist. \n\n(7) Macht braintool software den Eigentumsvorbehalt geltend, erlischt das Recht zur Weiternutzung.\"},{\"Title\":\"12 Urheber- und Nutzungsrechte\",\"Detail\":\"(1) Urheberrechtsschutz \n\nDie von braintool software vertragsgegenständlich gelieferte Software ist urheberrechtlich geschützt. \n\n(2) Nutzungsrechte bei Testversion bei Testversion / Aufschiebende Rechteeinräumung \n\nFür die Nutzung der Testversion räumt braintool software dem Kunden ein auf 30 Tage befristetes, einfaches und nicht übertragbares Recht zur bestimmungsgemäßen Nutzung ein. Das Nutzungsrecht endet, ohne dass es einer Kündigung bedarf, es sei denn der Kunde erwirbt gemäß den Vertragsbedingungen ein Recht zur dauerhaften Nutzung. Bis zur vollständigen Zahlung der vereinbarten Vergütung räumt braintool software dem Kunden ein einfaches, nicht übertragbares und bei Zahlungsverzug von mehr als 30 Tagen widerrufliches Nutzungsrecht an der Software ein. \n\n(3) Allgemeine Rechteeinräumung bei dauerhafter Überlassung \n\nbraintool software räumt dem Kunden mit vollständiger Zahlung der vereinbarten Vergütung das einfache (nicht ausschließliche) Recht ein, die Vertragssoftware als Named-User-Lizenz oder bei besonderer Vereinbarung alsFirmen-Lizenz - zu der vereinbarten Anzahl der Nutzer für eigene Zwecke zu nutzen. Der Kunde ist berechtigt, bei Ausscheiden von Mitarbeitern im Rahmen der Named-User-Lizenz den Namen in der Datenbank entsprechend zu ändern. \n\n(4)Sicherungskopien und Vervielfältigung \n\nDer Kunde darf die für einen sicheren Betrieb notwendigen Sicherungskopien erstellen. Diese sind als solche zu kennzeichnen und (soweit technisch möglich) mit dem Urheberrechtsvermerk des Originaldatenträgers zu versehen. \n\n(5) Eingriff in Schutzmechanismen / Urhebervermerk \n\nDer Kunde ist nicht berechtigt, die vorhandenen Schutzmechanismen der Software gegen eine unberechtigte Nutzung zu entfernen oder zu umgehen, es sei denn dies ist erforderlich, um die störungsfreie Nutzung zu erreichen. Urhebervermerke, Seriennummern sowie sonstige der Softwareidentifikation dienende Merkmale dürfen ebenfalls nicht entfernt oder verändert werden. Gleiches gilt für eine Unterdrückung der Bildschirmanzeige entsprechender Merkmale. \n\n(6) Programmänderungen / Interoperabilität / Dekompilierung \n\nZu Änderungen, Erweiterungen und sonstigen Umarbeitungen der Software i. S. des § 69c Nr. 2 UrhG ist der Kunde - vorbehaltlich die Regelungen von Softwareherstellern oder Rechteinhabern von integrierten Tools - nur befugt, als das Gesetz solches unabdingbar erlaubt. Bevor der Kunde selbst oder durch Dritte einen Mangel beseitigt, gestattet er braintool software zwei Versuche, den Mangel zu beseitigen. Dem Kunden stehen an solchen Bearbeitungen eigene Nutzungs- und Verwertungsrechte – über die nach diesem Vertrag eingeräumten Nutzungsrechte hinaus – nicht zu. braintool software kann jedoch – gegen angemessene Vergütung – die Einräumung eines ausschließlichen oder nicht ausschließlichen, räumlich und zeitlich unbeschränkten Nutzungsrechts mit dem Recht der Unterlizenzvergabe, verlangen. Sonstige Änderungen der Software sind dem Kunden nur nach vorheriger schriftlicher Zustimmung von braintool software gestattet. \n\n(7) Dem Kunden sind im Übrigen und vorbehaltlich der Regelung in § 13 sämtliche Arten der Verwertung der Software, insbesondere die Übersetzung, Bearbeitung, andere Umarbeitungen (ausgenommen die Ausnahmen nach §§ 69d und 69e UrhG) und die sonstige Verbreitung der Software (offline oder online) nur nach der vorherigen schriftlichen Zustimmung von braintool software gestattet. \n\n(8) Kann oder will der Kunde die nach dem Urhebergesetz gestatteten Ausnahmehandlungen nicht selbst oder durch eigene Mitarbeiter ausführen lassen, so hat er, bevor er ein Drittunternehmen beauftragt, braintool software Gelegenheit zu geben, die gewünschten Arbeiten zur Herstellung der Interoperabilität innerhalb angemessener Frist zu angemessener Vergütung für den Kunden zu bewirken. Bei Beauftragung eines Drittunternehmens gelten die Pflichten gemäß § 16 (Geheimhaltung) entsprechend. Im Falle von Änderungen durch Dritte erlischt die Pflicht zur Mangelbeseitigung auch im Rahmen einer Softwarepflege, es sei denn der Kunde weist nach, dass die Änderungen ohne Auswirkung auf den aufgetretenen Mangel sind.\"},{\"Title\":\"13 Nutzungsbeschränkung der Software\",\"Detail\":\"(1) Weiterveräußerung bei dauerhafter Softwareüberlassung \n\nDer Kunde ist vorbehaltlich der Regelung in Abs. 2 berechtigt, von braintool software erhaltene Software einschließlich Begleitmaterials auf Dauer an Dritte zu veräußern, vorausgesetzt der erwerbende Dritte erklärt sich mit der Weitergeltung der vorliegenden Nutzungsbedingungen einschließlich des Rechts zum Audit auch ihm gegenüber einverstanden. Im Falle der Weitergabe muss der Kunde dem neuen Anwender sämtliche Programmkopien einschließlich gegebenenfalls vorhandener Sicherungskopien übergeben oder die nicht übergebenen Kopien vernichten. Infolge der Weitergabe erlischt das Recht des Kunden zur Programmnutzung. Der Kunde hat braintool software den Namen und die vollständige Anschrift des Käufers schriftlich mitzuteilen.\n\n(2) Ausnahmen vom Recht zur Weiterveräußerung gemäß Abs. 1 \n\nEine dauerhafte Überlassung der Software an einen Dritten, der seine Niederlassung nicht im Gebiet der Europäischen Union oder eines anderen Vertragsstaates des Abkommens über den Europäischen Wirtschaftsraum hat, ist dem Kunden nicht gestattet. \n\nDer Kunde ist auch nicht berechtigt, eine Teilmenge einer bestimmten Anzahl von erhaltenen Programmpaketen (Softwarelizenzen) Dritten dauerhaft zu überlassen. \n\n(3) Weitere Nutzungsbeschränkungen \n\nDer Kunde darf die Software nur zu dem Zweck einsetzen, seine internen Geschäftsvorfälle und die von solchen Unternehmen abzuwickeln, die mit ihm i. S. des § 15 AktG verbunden sind (,,Konzernunternehmen“). Insbesondere (i) ein Rechenzentrumsbetrieb für Dritte oder (ii) das vorübergehende Zur-Verfügung-Stellen der Software (z.B. als Software as a Service) für andere als Konzernunternehmen oder (iii) die Nutzung der Software zur Schulung von Personen, die nicht Mitarbeiter des Kunden oder seiner Konzernunternehmen sind, sind nur nach vorheriger schriftlicher Zustimmung von braintool software erlaubt. Die gewerbliche Weitervermietung ist generell untersagt.\"},{\"Title\":\"14 Sach- und Rechtsmängel\",\"Detail\":\"(1) Mangeldefinition \n\nEs liegt ein Sachmangel vor, wenn die Software nicht die vertraglich vereinbarte Beschaffenheit aufweist oder sich nicht zu der vertraglich vereinbarten Verwendung eignet. Ein Rechtsmangel liegt vor, wenn dem Kunden die für die vertragliche Verwendung der Software erforderlichen Rechte nicht wirksam eingeräumt werden konnten. \n\n(2) Änderungen durch Kunden \n\nSofern durch den Kunden oder von ihm beauftragte Dritte – ohne die schriftliche Einwilligung von braintool software – Eingriffe in die von braintool software gelieferten Software vorgenommen werden, insbesondere Manipulationen oder sonstige Änderungen, leistet braintool software nur dann Mangelbeseitigung, wenn der Kunde nachweist, dass der Eingriff in keinem Zusammenhang mit dem aufgetretenen Mangel steht und Analyse sowie Behebung nicht erschweren. \n\n(3) Ausschluss der Nacherfüllung \n\nDer Anspruch des Kunden auf Nacherfüllung ist ausgeschlossen, wenn der Mangel nicht reproduzierbar ist bzw. anhand von handschriftlich oder maschinell festgehaltenen Ausdrucken nicht aufgezeigt werden kann oder wenn der Kunde die Vorgaben der kaufmännischen Untersuchungs- und Rügeverpflichtung des § 377 HGB nicht eingehalten hat. So hat der Kunde die gelieferte Software unverzüglich nach Ablieferung auf ihre Mängelfreiheit und Vollständigkeit zu überprüfen. offensichtliche Mängel innerhalb von 10 Werktagen (Mo. bis Fr.) ab Eingang der Ware am Bestimmungsort gegenüber braintool software schriftlich anzuzeigen. Unterbleibt eine Rüge innerhalb dieser Frist, gilt die Abnahme als erfolgt und sind Gewährleistungsansprüche ausgeschlossen. Zur Fristwahrung genügt die rechtzeitige Absendung; die Beweislast hierfür trifft den Kunden. Später entdeckte nicht offensichtliche Mängel sind ebenfalls unverzüglich der braintool software anzuzeigen; andernfalls gilt die Ware auch im Hinblick auf diese Mängel als genehmigt. Die Mängelanzeige hat jeweils zumindest in Textform zu erfolgen und den gerügten Mangel genau wie möglich zu beschreiben. \n\n(4) Nacherfüllung bei Sachmängeln \n\nbraintool software erbringt die Mangelbeseitigung bei Sachmängeln durch Nacherfüllung. Die Nacherfüllung erfolgt nach Wahl von braintool software durch Nachbesserung oder Ersatzliefe-rung. Die Nacherfüllung kann insbesondere durch Überlassen eines neuen Programmstandes oder dadurch erbracht werden, dass braintool software Möglichkeiten aufzeigt, die Auswirkungen des Mangels zu vermeiden. Ein neuer Programmstand ist vom Kunden zu übernehmen, es sei denn dies führt bei dem Kunden zu einem nicht hinnehmbaren Anpassungsaufwand. Die Mangelbeseitigung kann auch mittels Datenfernübertragung (Remotezugriff) erfolgen. \n\n(5) Erbringt braintool software Leistungen bei der Mangelsuche oder –beseitigung, ohne hierzu verpflichtet zu sein, so kann sie hierfür Vergütung gemäß ihrer Preisliste verlangen. Das gilt insbesondere, wenn ein Mangel nicht nachweisbar oder ihr nicht zuzurechnen ist. Zu vergüten ist braintool software außerdem ein Mehraufwand, der dadurch entsteht, dass der Kunde seinen Mitwirkungspflichten nicht ordnungsgemäß nachkommt. \n\n(6) Nacherfüllung bei Rechtsmängeln Die \n\nNacherfüllung bei Rechtsmängeln erfolgt, in dem braintool software dem Kunden eine rechtlich einwandfreie Nutzungsmöglichkeit an der Software verschafft. braintool software kann hierbei die betroffene Software gegen eine gleichwertige, den vertraglichen Bestimmungen entsprechende Software austauschen, es sei denn dies ist für den Kunden nicht hinnehmbar. Falls Dritte Schutzrechte gegen den Kunden geltend machen, hat dieser braintool software unverzüglich schriftlich zu unterrichten. braintool software wird nach eigener Wahl und in Absprache mit dem Kunden die Ansprüche abwehren oder befriedigen. Der Kunden darf von sich aus die Ansprüche Dritter nicht anerkennen. braintool software wehrt die Ansprüche gegen den Kunden auf eigene Kosten ab und stellt den Kunden von allen mit der Anspruchsabwehr verbundenen angemessenen Kosten und Schäden frei, soweit diese nicht auf einem pflichtwidrigen Verhalten des Kunden beruhen. Die Mangelbeseitigung kann auch mittels Datenfernübertragung (Remotezugriff) erfolgen. \n\n(7) Minderung oder Rücktritt / Schadensersatz \n\nTritt trotz zweimaliger Nacherfüllung keine Beseitigung des Mangels ein, ist braintool software zur Nachbesserung und Nachlieferung nicht willens oder in der Lage, unterbleibt diese innerhalb einer angemessenen Frist oder schlägt die Nacherfüllung aus sonstigen Gründen fehl, so ist der Kunde nach seiner Wahl berechtigt, vom Vertrag zurückzutreten (im Rahmen der Softwarepflege (Wartung) den Vertrag zu kündigen) oder eine entsprechende Herabsetzung der geleisteten Vergütung (Minderung) zu verlangen und gemäß § 14 Schadenersatz statt der Leistung oder Ersatz vergeblicher Aufwendungen zu verlangen. Die Rücktritts- oder Kündigungserklärung wirkt nicht auch für die weiteren Verträge zwischen braintool software und dem Kunden, sondern ist jeweils einzeln zu erklären. Bei nur geringfügigen Mängeln, steht dem Kunden kein Rücktritts- oder Kündigungsrecht zu. \n\n(8) Arglist / Garantie \n\nIm Falle von Arglist und bei Übernahme einer Garantie durch braintool software bleiben die gesetzlichen Bestimmungen für Sach- und Rechtsmängel unberührt. \n\n(9) Verjährungsfristen \n\nDie Verjährungsfrist für alle Gewährleistungsansprüche beträgt ein Jahr es sei denn, der Mangel wurde arglistig verschwiegen. Die Verjährung beginnt mit der Ablieferung. Bei Vorsatz oder grober Fahrlässigkeit von braintool software, bei arglistigem Verschweigen des Mangels, bei Personen schäden oder Rechtsmängeln sowie bei Garantien gelten die gesetzlichen Verjährungs fristen, ebenso bei Ansprüchen nach dem Produkthaftungsgesetz. \n\n(10) Vor Beginn einer Mangelbeseitigung ist der Kunde zur Datensicherung verpflichtet.\"},{\"Title\":\"15 Haftung auf Schadens- und Aufwendungsersatz\",\"Detail\":\"(1) braintool software haftet gegenüber dem Kunden nach den gesetzlichen Bestimmungen, sofern braintool software Schadens- oder Aufwendungsersatzansprüche geltend macht, die auf Vorsatz oder grober Fahrlässigkeit von braintool software oder der Nichteinhaltung schriftlich abgegebener Garantien beruhen, sowie in den Fällen einer schuldhaften Verletzung des Lebens, des Körpers oder der Gesundheit. \n\n(2) Bei einfacher Fahrlässigkeit haftet braintool software im Übrigen nur, soweit braintool software eine wesentliche Vertragspflicht verletzt hat. Wesentliche Vertragspflichten sind solche, die sich aus der Natur des Vertrags ergeben und die für die Erreichung des Vertragszwecks von besonderer Bedeutung sind. Dabei ist die Haftung von braintool software jeweils auf die zweifache vertraglich geschuldete Lizenzvergütung sowie bei IT-spezifischen Dienstleistungen auf den jeweiligen zweifachen Vergütungs- oder entsprechenden Teilvergütungsbetrag bzw. jeweils maximal auf den Ersatz des vorhersehbaren, typischerweise eintretenden Schaden beschränkt. \n\n(3) Bei Datenverlusten haftet braintool software nur für den Schaden, der auch bei ordnungsgemäßer Datensicherung gemäß § 8 dieser AGB durch den Kunden entstanden wäre. \n\n(4) Eine weitergehende Haftung von braintool software auf Schadens- oder Aufwendungsersatz ist ohne Rücksicht auf die Rechtsnatur des geltend gemachten Anspruchs ausgeschlossen. Die zwingenden Bestimmungen des Produkthaftungsgesetzes bleiben unberührt. \n\n(5) Soweit nach dem Vorstehenden die Haftung von braintool software ausgeschlossen oder beschränkt ist, gilt dies auch für die Haftung der Organe von braintool software und von Erfüllungs- und Verrichtungsgehilfen, insbesondere von Mitarbeitern.\"},{\"Title\":\"16 Geheimhaltung / Datenschutz\",\"Detail\":\"(1) Die Vertragspartner verpflichten sich, alle ihnen bei der Vertragsdurchführung von dem jeweils anderen Vertragspartner zugehenden oder bekannt werdenden Geschäfts- und Betriebsgeheimnisse oder sonstigen vertraulichen Informationen geheim zu halten. Die vertraulichen Informationen und diese verkörpernden Unterlagen dürfen an der Vertragsdurchführung nicht beteiligten Dritten nicht zugänglich gemacht werden. Die Vertragspartner verwahren und sichern die Informationen und Unterlagen so, dass ein Missbrauch durch Dritte ausgeschlossen ist. \n\n(2) Nicht von der Geheimhaltungspflicht umfasst sind Informationen und Unterlagen, die zum Zeitpunkt der Offenlegung allgemein bekannt und zugänglich oder dem empfangenden Vertragspartner zum Zeitpunkt der Offenlegung bereits bekannt waren oder ihm später von Dritten berechtigterweise zugänglich gemacht worden sind. \n\n(3) Beide Vertragspartner werden die jeweils anwendbaren, insbesondere die in Deutschland gültigen datenschutzrechtlichen Bestimmungen beachten und ihre im Zusammenhang mit dem Vertrag eingesetzten Mitarbeiter auf das Datengeheimnis verpflichten, soweit diese nicht bereits entsprechend verpflichtet sind. Der Kunde wird hierbei davon unterrichtet, dass die für die Geschäftsabwicklung notwendigen personenbezogenen Daten von braintool software gespeichert und zur Abwicklung von Bestellungen, Verwaltung der Kundenbeziehung, Erbringung der Vertragsleistungen, Abwicklung von Zahlungen und Abwendung von Forderungsausfällen verwendet sowie hierfür gegebenenfalls an Dienstleistungspartner, derer braintool software sich zur Vertragsabwicklung bedient (wie beispielsweise Kreditinstitute), weitergegeben werden.\"},{\"Title\":\"17 Abtretung von Ansprüchen / Nichtigkeit einzelner Vertragsklauseln / Schriftform\",\"Detail\":\"(1) Der Kunde ist berechtigt, seine Rechte und Pflichten aus dem Vertrag nach vorheriger Zustimmung von braintool software abzutreten oder zu übertragen. \n\n(2)Sollte eine der in den AGB enthaltenen Bestimmungen unwirksam sein oder werden oder sollte sich hierin eine Lücke befinden, so wird davon die Wirksamkeit der übrigen Bestimmungen nicht berührt. Anstelle der unwirksamen Bestimmung soll eine wirksame treten, die dem wirtschaftlichen Zweck der unwirksamen Bestimmung am nächsten kommt. \n\n(3) Sämtliche Vereinbarungen, die eine Änderung, Ergänzung oder Konkretisierung dieser AGB beinhalten, sowie besondere Zusicherungen und Abmachungen sind vorbehaltlich abweichender Regelungen schriftlich niederzulegen. Die Textform ist ausreichend.\"},{\"Title\":\"18 Erfüllungsort / Gerichtsstand / Anwendbares Recht\",\"Detail\":\"(1) Als Erfüllungsort für alle beiderseitigen Leistungen aus dem Vertrag wird der Unternehmenssitz von braintool software vereinbart. \n\n(2) Ist der Kunde Kaufmann, juristische Person des öffentlichen Rechts oder öffentlich-rechtliches Sondervermögen oder hat keinen allgemeinen Gerichtsstand in Deutschland, ist Gerichtsstand für alle Streitigkeiten am Unternehmenssitz von braintool software, gegenwärtig Stuttgart. braintool software ist berechtigt, eigene Ansprüche am Gerichtsstand des Kunden geltend zu machen. \n\n(3) Diese AGB und auf ihrer Grundlage geschlossene Verträge unterliegen dem Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts.\"}]}</string>
+</resources>

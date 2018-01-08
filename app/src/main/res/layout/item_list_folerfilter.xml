@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_folder_item_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fiftee_sp"
+        android:orientation="vertical">
+
+
+        <TextView android:id="@+id/textviewfolderitem"
+                  xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="wrap_content"
+                  android:layout_height="fill_parent"
+                  android:padding="10dip"
+                  android:gravity="center|left"
+                  android:text="folder"
+                  android:layout_centerVertical="true"
+                  android:layout_marginLeft="@dimen/twentee_sp"
+                  android:textColor="@color/indigo_color"
+                  android:textSize="@dimen/fifteen_sp"
+                  >
+        </TextView>
+
+        <CheckBox
+            android:layout_centerVertical="true"
+            android:id="@+id/checkboxfilter"
+            android:layout_width="@dimen/twentee_sp"
+            android:layout_height="@dimen/twentee_sp"
+            android:layout_marginRight="@dimen/twentee_sp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/check_uncheck_background"
+            android:button="@null">
+        </CheckBox>
+
+
+    </RelativeLayout>
+</LinearLayout>

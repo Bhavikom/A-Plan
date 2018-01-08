@@ -1,0 +1,29 @@
+package com.ssoft.aplanproject.util;
+
+import android.app.Application;
+
+import com.ssoft.aplanproject.Model.ProfileModelClass;
+
+import java.util.ArrayList;
+
+/**
+ * Created by SSoft-13 on 17-12-2016.
+ */
+
+public class MyApplication extends Application
+{
+
+    private static MyApplication instance;
+    //public ArrayList<ProfileModelClass> arraylistProfileGlobal = null;
+
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        instance = this;
+    }
+    public MyApplication()
+    {
+        //arraylistProfileGlobal = new ArrayList();
+    }
+}

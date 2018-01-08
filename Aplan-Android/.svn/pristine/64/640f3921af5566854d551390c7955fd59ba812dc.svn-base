@@ -1,0 +1,54 @@
+package com.ssoft.aplanproject.Model;
+
+/**
+ * Created by SSoft-13 on 11-07-2016.
+ */
+
+public class FilterModelClass
+{
+    int drawable;
+    String name;
+    boolean selected;
+
+    public boolean isSelected()
+    {
+        return selected;
+    }
+
+    public void setSelected(boolean selected)
+    {
+        this.selected = selected;
+    }
+
+    public int getDrawable()
+    {
+        return drawable;
+    }
+
+    public void setDrawable(int drawable)
+    {
+        this.drawable = drawable;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String  getStrOriginalValue()
+    {
+        return strOriginalValue;
+    }
+
+    public void setStrOriginalValue(String strOriginalValue)
+    {
+        this.strOriginalValue = strOriginalValue;
+    }
+
+    String strOriginalValue;
+}

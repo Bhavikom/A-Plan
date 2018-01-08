@@ -1,0 +1,2100 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.ssoft.aplanproject.DashboardModel.DashboardResponse;
+import com.ssoft.aplanproject.Model.AgreegateDataModelClass;
+import com.ssoft.aplanproject.Model.FilterModelClass;
+import com.ssoft.aplanproject.Model.TaskListModelClass;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.LoginActivity;
+import com.ssoft.aplanproject.adapter.AgreegateAdapter;
+import com.ssoft.aplanproject.adapter.DateFilterAdapter;
+import com.ssoft.aplanproject.adapter.DatesAdapter;
+import com.ssoft.aplanproject.adapter.GridCellAdapter;
+import com.ssoft.aplanproject.adapter.StatusFilterAdapter;
+import com.ssoft.aplanproject.adapter.TasklistAdapter;
+import com.ssoft.aplanproject.adapter.TrafficFilterAdapter;
+import com.ssoft.aplanproject.timesquare.CalendarPickerView;
+
+
+import com.ssoft.aplanproject.util.CustomDialogSelectedDates;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+
+
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceServiceClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+import com.ssoft.aplanproject.util.TaskComparableClass;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Header;
+import retrofit.client.Response;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+/**
+ * Created by SSOFT4 on 10/25/2016.
+ */
+
+public class FragmentDashBoard extends Fragment implements View.OnClickListener,
+        CustomDialogSelectedDates.IntefaceDialog
+{
+    String strNodedata="";
+    Taskclicked taskclicked;
+    public Context context;
+    Activity activity;
+    private View footerViewforListview;
+    private Button footerButtonforListview;
+    private TextView textviewDone, textviewCurrentMonth, textviewCurrentDate, textviewCurrentDate2,
+            textviewSelectedDates, textviewLabledate, textviewLableTraffic, textviewLableStatus;
+    private ListView listviewAgreegateList, listviewTasklist;
+    SearchView searchViewProject, searchViewTask;
+    private static CalendarPickerView calendarPicker;
+    ImageView imgFilterDate, imgFilterStatus, imgFilterTrafficelights;
+    ImageView imgSortProject, imgSortTask, imgRefresh;
+    DatabaseHandler dbHandler;
+    PreferencesClass preferenes;
+    TaskListModelClass tasklistModelTemp;
+    View rootView;
+    // all adapter
+    private GridCellAdapter adapter;
+    TasklistAdapter adapterTasklist;
+    DateFilterAdapter adapterDate;
+    StatusFilterAdapter adapterStatus;
+    TrafficFilterAdapter adapterTrafficLight;
+    Boolean isFirsttimeClicked = true;
+    String strFinalResponsesStringTemp = "";
+    String clickedProjectId = "", clickedTaskId = "", clickedParentId = "", clickedGroupId = "";
+    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat();
+    private static final String dateTemplate = "MMMM yyyy";
+    PopupWindow popupWindowDate, popupWindowStatus, popupWindowTraffic,popupWindowFinishDates;
+    boolean isPopupDate = false, isPopupStatus = false, isPopupTraffic = false,isPopupFinishDate = false;
+    boolean isAscendingProject = false, isAscendingTask = false;
+    String strTaskFilter = "", strProjectFilter = "";
+    ArrayList<String> arrayFinishDate = new ArrayList<>();
+    ArrayList<String> arrayTrafficLightfilter = new ArrayList<>();
+    ArrayList<String> arrayStatusfilter = new ArrayList<>();
+    ArrayList<String> arrayDatefilter = new ArrayList<>();
+    boolean isFilterFired = false;
+    int totRecord = 10;
+    int startRecord = 0;
+    int endRecord = 0;
+    static Calendar nextYear;
+    static Calendar lastYear;
+
+    // all arraylist
+    static List<Date> allDatesBetweenDates;
+    public static ArrayList<Date> selectedDatesStartEnd;
+    ArrayList<String> arraylistStringDates = new ArrayList<>();
+    String[] dateArray = null;
+    private ArrayList<String> arraylistFinishDates;
+    private ArrayList<FilterModelClass> arraylistDatesToFilter;
+    private ArrayList<AgreegateDataModelClass> arraylistAgreegate;
+    private ArrayList<TaskListModelClass> arraylistTasklistforAdapter = new ArrayList<>();
+    ArrayList<TaskListModelClass> arrayTasklistAllDataPermenent = new ArrayList<>();
+    ArrayList<TaskListModelClass> arrayTasklistafterFiltered = new ArrayList<>();
+
+    private ArrayList<TaskListModelClass> arraylistTaskAssignedTree = new ArrayList<>();
+    private ArrayList<TaskListModelClass> arraylistTaskCompleteNextFiveDayTree = new ArrayList<>();
+    private ArrayList<TaskListModelClass> arraylistTaskCompleteTodayTree = new ArrayList<>();
+    private ArrayList<TaskListModelClass> arraylistTaskCompleteTree = new ArrayList<>();
+    private ArrayList<TaskListModelClass> arraylistTaskPendingTree = new ArrayList<>();
+
+    private ArrayList<FilterModelClass> arraylistPopupViewforFilter = new ArrayList<>();
+    ArrayList<JSONObject> arraylistJsonObjChildren = new ArrayList<JSONObject>();
+
+    /// json elements
+    JSONObject child;
+    JSONArray jsonarrayAsignmentdata;
+    JSONArray jsonarrayResources;
+    JSONArray jsonarrayTaskAssignedTree;
+    JSONArray jsonarrayTaskCompleteNextFiveDayTree;
+    JSONArray jsonarrayTaskCompleteTodayTree;
+    JSONArray jsonarrayTaskCompleteTree;
+    JSONArray jsonarrayTaskPendingTree;
+    JSONObject sentObje = new JSONObject();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
+    {
+        rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        preferenes = new PreferencesClass(getActivity());
+        dbHandler = new DatabaseHandler(getActivity());
+        preferenes.saveIsfirstTime(true);
+        initControl();
+        return rootView;
+    }
+
+    public void initControl()
+    {
+        /* footer button for load more records on listview fotter button */
+        footerViewforListview = ((LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_list_button, null, false);
+        footerButtonforListview = (Button) footerViewforListview.findViewById(R.id.buttonLoadMore);
+        footerButtonforListview.setOnClickListener(this);
+
+        arraylistFinishDates = new ArrayList<>();
+        imgFilterDate = (ImageView) rootView.findViewById(R.id.imgsortdateicon);
+        imgFilterStatus = (ImageView) rootView.findViewById(R.id.imgstatussorticon);
+        imgFilterTrafficelights = (ImageView) rootView.findViewById(R.id.imgtrafficsorticon);
+        imgRefresh = (ImageView) rootView.findViewById(R.id.imgrefresh);
+        imgRefresh.setOnClickListener(this);
+        imgFilterDate.setBackgroundResource(R.drawable.fitler_date);
+        imgFilterTrafficelights.setBackgroundResource(R.drawable.traffic_light);
+        imgFilterStatus.setBackgroundResource(R.drawable.to_do_list);
+        imgSortProject = (ImageView) rootView.findViewById(R.id.imgsortproject);
+        imgSortTask = (ImageView) rootView.findViewById(R.id.imgsorttask);
+        imgSortProject.setOnClickListener(this);
+        imgSortTask.setOnClickListener(this);
+        imgFilterDate.setOnClickListener(this);
+        imgFilterTrafficelights.setOnClickListener(this);
+        imgFilterStatus.setOnClickListener(this);
+
+        textviewSelectedDates = (TextView) rootView.findViewById(R.id.textviewSelectedDates);
+        textviewDone = (TextView) rootView.findViewById(R.id.textviewDone);
+        textviewDone.setOnClickListener(this);
+        textviewSelectedDates.setOnClickListener(this);
+        textviewCurrentMonth = (TextView) rootView.findViewById(R.id.textviewcurrentmonth);
+        textviewCurrentMonth.setOnClickListener(this);
+        textviewCurrentDate = (TextView) rootView.findViewById(R.id.textviewcurrentdate);
+        textviewCurrentDate2 = (TextView) rootView.findViewById(R.id.textviewcurrentdate2);
+        textviewLabledate = (TextView) rootView.findViewById(R.id.textviewlabledate);
+        textviewLableTraffic = (TextView) rootView.findViewById(R.id.textviewlabeltraffic);
+        textviewLableStatus = (TextView) rootView.findViewById(R.id.textviewlablestatus);
+
+        long date = System.currentTimeMillis();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        String dateString = formatter.format(date);
+
+        textviewCurrentDate.setText(GlobalClass.dateFormateChanged(new Date()));
+        textviewCurrentDate2.setText(GlobalClass.dateFormateChanged(new Date()));
+
+
+        listviewAgreegateList = (ListView) rootView.findViewById(R.id.listviewtaskstatuslist);
+        listviewAgreegateList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_filter));
+                //preferenes.saveAlreadyFiredFilter(getResources().getString(R.string.agreegate_filter));
+                if (arraylistAgreegate.get(position).isClickable())
+                {
+                    if(preferenes.getCurrentFiredFilter() != null && !preferenes.getCurrentFiredFilter().equalsIgnoreCase("")){
+                        if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("3")){
+                            preferenes.saveCurrentFiredFilter("4");
+                        }
+                        else if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("4")){
+                            preferenes.saveCurrentFiredFilter("4");
+                        }
+                        else if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("1") ||
+                                preferenes.getCurrentFiredFilter().equalsIgnoreCase("2")){
+                            preferenes.saveCurrentFiredFilter("3");
+                        }
+                        else if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("5")
+                                || preferenes.getCurrentFiredFilter().equalsIgnoreCase("6")){
+                            preferenes.saveCurrentFiredFilter("3");
+                        }
+                    }
+                    else {
+                        preferenes.saveCurrentFiredFilter("3");
+                    }
+
+                    /*if(preferenes.getAgreegatePosition() == 0){
+                        preferenes.saveAgreegatePosition(position+1);
+                        if (dbHandler.getCursorCountFilterForAllFilter(preferenes.getUserID(),preferenes.getProfileId()) > 0) {
+                            preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_click_control_load_and_general_filter));
+                        }
+                        else {
+                            preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_click_control_load));
+                        }
+                    }
+                    else if(preferenes.getAgreegatePosition() == position+1){
+                        if (dbHandler.getCursorCountFilterForAllFilter(preferenes.getUserID(),preferenes.getProfileId()) > 0) {
+                            preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_click_and_general_filter));
+                        }
+                        else {
+                            preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_click));
+                        }
+                    }
+                    else {
+                        preferenes.saveAgreegatePosition(position+1);
+                        if (dbHandler.getCursorCountFilterForAllFilter(preferenes.getUserID(),preferenes.getProfileId()) > 0) {
+                            preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_click_control_load_and_general_filter));
+                        }
+                        else {
+                            preferenes.saveCurrentFiredFilter(getResources().getString(R.string.agreegate_click_control_load));
+                        }
+                    }*/
+                    String str = arraylistAgreegate.get(position).getJsonString();
+                    String GroupId = arraylistAgreegate.get(position).getStrGroupId();
+                    taskclicked.onAgreegateClicked(str,GroupId,"agreegate");
+                } else {
+                    Toast.makeText(getActivity(), " not clickable : ", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        listviewTasklist = (ListView) rootView.findViewById(R.id.listviewProject);
+        listviewTasklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* getting clicked items value on click */
+                clickedProjectId = arraylistTasklistforAdapter.get(position).getStrProjectId();
+                clickedTaskId = arraylistTasklistforAdapter.get(position).getStrTaskid();
+                clickedParentId = arraylistTasklistforAdapter.get(position).getStrparentId();
+                clickedGroupId = arraylistTasklistforAdapter.get(position).getStrGroupId();
+
+                if(preferenes.getCurrentFiredFilter()!= null && !preferenes.getCurrentFiredFilter().equalsIgnoreCase("")){
+                    if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("1")){
+                        preferenes.saveCurrentFiredFilter("2");
+                    }
+                    else if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("2")){
+                        preferenes.saveCurrentFiredFilter("2");
+                    }
+                    else if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("3") ||
+                            preferenes.getCurrentFiredFilter().equalsIgnoreCase("4")){
+                        preferenes.saveCurrentFiredFilter("1");
+                    }
+                    else if(preferenes.getCurrentFiredFilter().equalsIgnoreCase("5")
+                            || preferenes.getCurrentFiredFilter().equalsIgnoreCase("6")){
+                        preferenes.saveCurrentFiredFilter("1");
+                    }
+                }
+                else {
+                    preferenes.saveCurrentFiredFilter("1");
+                }
+
+                /*if(!preferenes.getAlreadyFiredFilter().equalsIgnoreCase("") && preferenes.getAlreadyFiredFilter() != null){
+
+                }*/
+                //preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_filter));
+                //preferenes.saveAlreadyFiredFilter(getResources().getString(R.string.task_filter));
+                /*if(preferenes.getTaskPosition() == 0){
+                    preferenes.saveTaskPosition(position+1);
+                    if (dbHandler.getCursorCountFilterForAllFilter(preferenes.getUserID(),preferenes.getProfileId()) > 0) {
+                        preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_click_control_load_and_general_filter));
+                    }
+                    else {
+                        preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_click_control_load));
+                    }
+
+                }
+                else if(preferenes.getTaskPosition() == position+1){
+                    if (dbHandler.getCursorCountFilterForAllFilter(preferenes.getUserID(),preferenes.getProfileId()) > 0) {
+                        preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_click_and_genaral_filter));
+                    }
+                    else {
+                        preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_click));
+                    }
+
+                }
+                else {
+                    preferenes.saveTaskPosition(position+1);
+                    if (dbHandler.getCursorCountFilterForAllFilter(preferenes.getUserID(),preferenes.getProfileId()) > 0) {
+                        preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_click_and_genaral_filter));
+                    }
+                    else {
+                        preferenes.saveCurrentFiredFilter(getResources().getString(R.string.task_click));
+                    }
+
+
+                }*/
+                taskclicked.ontaskClicked(strNodedata,clickedTaskId,"task");
+            }
+        });
+        searchViewProject = (SearchView) rootView.findViewById(R.id.search_viewproject);
+        searchViewProject.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String filterText) {
+                strProjectFilter = filterText;
+                if (adapterTasklist != null) {
+                    arrayTasklistafterFiltered = new ArrayList<>();
+                    arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                            arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                    isFilterFired = true;
+                    setAdapterforFilter(arrayTasklistafterFiltered);
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String filterText) {
+                strProjectFilter = filterText;
+                if (filterText.length() == 0) {
+                    GlobalClass.hideSoftKeyboard(searchViewProject,getActivity());
+                    if (adapterTasklist != null) {
+                        arrayTasklistafterFiltered = new ArrayList<>();
+                        arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                                arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                        isFilterFired = true;
+                        setAdapterforFilter(arrayTasklistafterFiltered);
+                    }
+                }
+                return false;
+            }
+        });
+
+        searchViewTask = (SearchView) rootView.findViewById(R.id.search_viewtask);
+        searchViewTask.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String filterText) {
+                strTaskFilter = filterText;
+                if (adapterTasklist != null) {
+                    arrayTasklistafterFiltered = new ArrayList<>();
+                    arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                            arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                    isFilterFired = true;
+                    setAdapterforFilter(arrayTasklistafterFiltered);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String filterText) {
+                strTaskFilter = filterText;
+                if (filterText.length() == 0) {
+                    GlobalClass.hideSoftKeyboard(searchViewTask,getActivity());
+                    if (adapterTasklist != null) {
+                        arrayTasklistafterFiltered = new ArrayList<>();
+                        arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                                arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                        isFilterFired = true;
+                        setAdapterforFilter(arrayTasklistafterFiltered);
+                    }
+                }
+                return false;
+            }
+        });
+
+        nextYear = Calendar.getInstance();
+        nextYear.add(Calendar.YEAR, 50);
+
+        lastYear = Calendar.getInstance();
+        lastYear.add(Calendar.YEAR, -50);
+
+        calendarPicker = (CalendarPickerView) rootView.findViewById(R.id.calendar_view);
+        calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                .withSelectedDate(new Date());
+        /* getting today's date and pass to service */
+        gettingTodayDateForService();
+        /* calling dashboard service firtst time */
+        if (GlobalClass.isNetworkAvailable(getActivity())) {
+            callDashboardWebService();
+        } else {
+            GlobalClass.showToastInternet(getActivity());
+        }
+    }
+    public interface Taskclicked{
+        void ontaskClicked(String strFinalResponsesStringTemp, String clickedTaskId,String task);
+        void onAgreegateClicked(String strjson,String taskId,String agreegate);
+    }
+    public void dismissPopup(PopupWindow popup){
+        if(popup != null && popup.isShowing()){
+            popup.dismiss();
+        }
+    }
+    @Override
+    public void onClick(View v) {
+        if (v== footerButtonforListview) {
+            paginationForListview();
+        }
+        if (v== textviewDone) {
+            doneButoonTocallService();
+        }
+        if (v== textviewSelectedDates) {
+            dismissPopup(popupWindowDate);
+            dismissPopup(popupWindowStatus);
+            dismissPopup(popupWindowTraffic);
+            if(popupWindowFinishDates != null){
+                if (popupWindowFinishDates.isShowing())
+                {
+                    if (popupWindowFinishDates != null) {
+                        popupWindowFinishDates.dismiss();
+                        isPopupFinishDate = false;
+                    }
+                } else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                    //addingDataInPopup(4);
+                /* this will show popup of filtering based on contioin */
+                    //showPopupWindow(4);
+                    showSelectedDatesDialog();
+                    isPopupFinishDate = true;
+                }
+            }else {
+                showSelectedDatesDialog();
+                isPopupFinishDate = true;
+            }
+
+
+
+        }
+        /* show dateFilter dialog*/
+        if (v == imgFilterDate) {
+            dismissPopup(popupWindowFinishDates);
+            dismissPopup(popupWindowStatus);
+            dismissPopup(popupWindowTraffic);
+            if(popupWindowDate != null){
+                if (popupWindowDate.isShowing()) {
+                    if (popupWindowDate != null)
+                    {
+                        popupWindowDate.dismiss();
+                        isPopupDate = false;
+                    }
+                } else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                    addingDataInPopup(1);
+                /* this will show popup of filtering based on contioin */
+                    showPopupWindow(1);
+                    isPopupDate = true;
+                }
+            }
+            else {
+                 /* this function will store data in arraylist to show in popup basen on condition */
+                addingDataInPopup(1);
+                /* this will show popup of filtering based on contioin */
+                showPopupWindow(1);
+                isPopupDate = true;
+            }
+
+        }
+        /* show status filter dialog*/
+        if (v == imgFilterStatus) {
+            dismissPopup(popupWindowFinishDates);
+            dismissPopup(popupWindowDate);
+            dismissPopup(popupWindowTraffic);
+            if(popupWindowStatus != null){
+                if (popupWindowStatus.isShowing()) {
+                    popupWindowStatus.dismiss();
+                    isPopupStatus = false;
+                } else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                    addingDataInPopup(2);
+                /* this will show popup of filtering based on contioin */
+                    showPopupWindow(2);
+                    isPopupStatus = true;
+                }
+            }
+            else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                addingDataInPopup(2);
+                /* this will show popup of filtering based on contioin */
+                showPopupWindow(2);
+                isPopupStatus = true;
+            }
+
+        }
+        /* show traffic filter dialog*/
+        if (v == imgFilterTrafficelights) {
+            dismissPopup(popupWindowFinishDates);
+            dismissPopup(popupWindowDate);
+            dismissPopup(popupWindowStatus);
+            if(popupWindowTraffic != null){
+                if (popupWindowTraffic.isShowing()) {
+                    popupWindowTraffic.dismiss();
+                    isPopupTraffic = false;
+                } else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                    addingDataInPopup(3);
+                /* this will show popup of filtering based on contioin */
+                    showPopupWindow(3);
+                    isPopupTraffic = true;
+                }
+            }
+            else {
+               /* this function will store data in arraylist to show in popup basen on condition */
+                addingDataInPopup(3);
+                /* this will show popup of filtering based on contioin */
+                showPopupWindow(3);
+                isPopupTraffic = true;
+            }
+
+        }
+        /* sort project in asending or descending*/
+        if (v == imgSortProject) {
+            if (!isAscendingProject) {
+                //((TextView)rootView.findViewById(R.id.labelAgendaWeeklyDueName)).setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, R.drawable.ic_sort_asc_24dp);
+                imgSortProject.setImageResource(R.drawable.desending);
+                Collections.sort(arraylistTasklistforAdapter, new TaskComparableClass(1, 0));
+                isAscendingProject = true;
+            } else {
+                imgSortProject.setImageResource(R.drawable.asending);
+                Collections.sort(arraylistTasklistforAdapter, new TaskComparableClass(1, 1));
+                isAscendingProject = false;
+            }
+            adapterTasklist.notifyDataSetChanged();
+        }
+        /* sort task in asending or descending */
+        if (v == imgSortTask) {
+            if (!isAscendingTask) {
+                imgSortTask.setImageResource(R.drawable.desending);
+                Collections.sort(arraylistTasklistforAdapter, new TaskComparableClass(2, 0));
+                isAscendingTask = true;
+            } else {
+                imgSortTask.setImageResource(R.drawable.asending);
+                Collections.sort(arraylistTasklistforAdapter, new TaskComparableClass(2, 1));
+                isAscendingTask = false;
+            }
+            adapterTasklist.notifyDataSetChanged();
+        }
+        /* will refresh whole dashboard */
+        if (v == imgRefresh) {
+            refreshActivityAndCallService();
+        }
+    }
+
+    private void callDashboardWebService() {
+        try {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...", false, false);
+            //Creating a rest adapter
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .build();
+
+            String finalUrl=preferenes.getDomain()+"Get";
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(finalUrl).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+            String jsonDateString = JsonString(dateArray);
+            LogApp.e(" 111111 ", " json string before service : " + JsonString(dateArray));
+            interfaceObject.callDashboard("1148", jsonDateString, "", "", "1", "10", "1", new Callback<DashboardResponse>() {
+                @TargetApi(Build.VERSION_CODES.KITKAT)
+                @Override
+                public void success(DashboardResponse dashboardResponse, Response response) {
+                    List<Header> header = null;
+                    String finalResponseString = new Gson().toJson(dashboardResponse);
+                    LogApp.e(" 555555 ", " response from retro : " + finalResponseString);
+                    strFinalResponsesStringTemp = finalResponseString;
+                    try {
+                        header = response.getHeaders();
+                        if (response != null) {
+                            if (dashboardResponse.getStatus() == 0) {
+                                LogApp.e(" dashboard success ", " response from service : " + dashboardResponse.getStatus());
+                                //addAgreegateData(dashboardResponse);
+                                List<TaskListModelClass> arrayTask = new ArrayList<TaskListModelClass>();
+                                try {
+                                    JSONObject obj = (JSONObject) new JSONTokener(finalResponseString).nextValue();
+                                    JSONObject obj1 = obj.getJSONObject("Payload");
+                                    JSONArray jsonArrayMain = obj1.getJSONArray("NodeData");
+                                    strNodedata = jsonArrayMain.toString();
+                                    JSONObject objResourceAssignement = obj1.getJSONObject("ResourceAssignments");
+                                    jsonarrayAsignmentdata = objResourceAssignement.getJSONArray("assignmentdata");
+                                    jsonarrayResources = objResourceAssignement.getJSONArray("resources");
+
+                                    jsonarrayTaskAssignedTree = obj1.getJSONArray("TaskAssignedTree");
+                                    jsonarrayTaskCompleteNextFiveDayTree = obj1.getJSONArray("TaskCompleteNextFiveDayTree");
+                                    jsonarrayTaskCompleteTodayTree = obj1.getJSONArray("TaskCompleteTodayTree");
+                                    jsonarrayTaskCompleteTree = obj1.getJSONArray("TaskCompleteTree");
+                                    jsonarrayTaskPendingTree = obj1.getJSONArray("TaskPendingTree");
+                                    arraylistAgreegate = new ArrayList<AgreegateDataModelClass>();
+
+                                    ///// TaskAssignedTree
+                                    arraylistTaskAssignedTree.clear();
+                                    arraylistTaskCompleteNextFiveDayTree.clear();
+                                    arraylistTaskCompleteTodayTree.clear();
+                                    arraylistTaskCompleteTree.clear();
+                                    arraylistTaskPendingTree.clear();
+                                    if (jsonarrayTaskAssignedTree.length() > 0) {
+                                        getTaskCountofJsonArray(jsonarrayTaskAssignedTree, 1);
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+
+                                        model.setStrName("TaskAssignedTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskAssignedTree.size()));
+                                        model.setJsonString(jsonarrayTaskAssignedTree.toString());
+                                        model.setStrGroupId(arraylistTaskAssignedTree.get(0).getGroupId());
+                                        if (arraylistTaskAssignedTree.size() > 0) {
+                                            model.setClickable(true);
+                                        } else {
+                                            model.setClickable(false);
+                                        }
+                                        arraylistAgreegate.add(model);
+
+                                    } else {
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskAssignedTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskAssignedTree.size()));
+                                        model.setJsonString("");
+                                        model.setStrGroupId("");
+                                        model.setClickable(false);
+                                        arraylistAgreegate.add(model);
+                                    }
+
+                                    ///// TaskCompleteNextFiveDayTree
+                                    if (jsonarrayTaskCompleteNextFiveDayTree.length() > 0) {
+                                        getTaskCountofJsonArray(jsonarrayTaskCompleteNextFiveDayTree, 2);
+
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskCompleteNextFiveDayTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskCompleteNextFiveDayTree.size()));
+                                        model.setJsonString(jsonarrayTaskCompleteNextFiveDayTree.toString());
+                                        model.setStrGroupId(arraylistTaskCompleteNextFiveDayTree.get(0).getGroupId());
+                                        if (arraylistTaskCompleteNextFiveDayTree.size() > 0) {
+                                            model.setClickable(true);
+                                        } else {
+                                            model.setClickable(false);
+                                        }
+                                        arraylistAgreegate.add(model);
+
+                                    } else {
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskCompleteNextFiveDayTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskCompleteNextFiveDayTree.size()));
+                                        model.setJsonString("");
+                                        model.setStrGroupId("");
+                                        model.setClickable(false);
+                                        arraylistAgreegate.add(model);
+                                    }
+
+                                    //// TaskCompleteTodayTree
+                                    if (jsonarrayTaskCompleteTodayTree.length() > 0) {
+                                        LogApp.e(" eeeee ", " json array of aggregate : " + jsonarrayTaskCompleteTodayTree.toString());
+                                        getTaskCountofJsonArray(jsonarrayTaskCompleteTodayTree, 3);
+
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskCompleteTodayTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskCompleteTodayTree.size()));
+                                        model.setJsonString(jsonarrayTaskCompleteTodayTree.toString());
+                                        model.setStrGroupId(arraylistTaskCompleteTodayTree.get(0).getGroupId());
+                                        if (arraylistTaskCompleteTodayTree.size() > 0) {
+                                            model.setClickable(true);
+                                        } else {
+                                            model.setClickable(false);
+                                        }
+                                        arraylistAgreegate.add(model);
+
+                                    } else {
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskCompleteTodayTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskCompleteTodayTree.size()));
+                                        model.setJsonString("");
+                                        model.setStrGroupId("");
+                                        model.setClickable(false);
+                                        arraylistAgreegate.add(model);
+                                    }
+
+                                    ///// TaskCompleteTree
+                                    if (jsonarrayTaskCompleteTree.length() > 0) {
+                                        getTaskCountofJsonArray(jsonarrayTaskCompleteTree, 4);
+
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskCompleteTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskCompleteTree.size()));
+                                        model.setJsonString(jsonarrayTaskCompleteTree.toString());
+                                        model.setStrGroupId(arraylistTaskCompleteTree.get(0).getGroupId());
+                                        if (arraylistTaskCompleteTree.size() > 0) {
+                                            model.setClickable(true);
+                                        } else {
+                                            model.setClickable(false);
+                                        }
+                                        arraylistAgreegate.add(model);
+
+                                    } else {
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskCompleteTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskCompleteTree.size()));
+                                        model.setJsonString("");
+                                        model.setStrGroupId("");
+                                        arraylistAgreegate.add(model);
+                                    }
+
+                                    //// TaskPendingTree
+                                    if (jsonarrayTaskPendingTree.length() > 0) {
+                                        getTaskCountofJsonArray(jsonarrayTaskPendingTree, 5);
+
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskPendingTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskPendingTree.size()));
+                                        model.setJsonString(jsonarrayTaskPendingTree.toString());
+                                        model.setStrGroupId(arraylistTaskPendingTree.get(0).getGroupId());
+                                        if (arraylistTaskPendingTree.size() > 0) {
+                                            model.setClickable(true);
+                                        } else {
+                                            model.setClickable(false);
+                                        }
+                                        arraylistAgreegate.add(model);
+                                    } else {
+                                        AgreegateDataModelClass model = new AgreegateDataModelClass();
+                                        model.setStrName("TaskPendingTree");
+                                        model.setStrNo(String.valueOf(arraylistTaskPendingTree.size()));
+                                        model.setJsonString("");
+                                        model.setStrGroupId("");
+                                        model.setClickable(false);
+                                        arraylistAgreegate.add(model);
+                                    }
+                                    if (jsonArrayMain.length() > 0) {
+                                        arraylistTasklistforAdapter.clear();
+                                        arraylistFinishDates.clear();
+                                        isFirsttimeClicked = true;
+                                    } else {
+                                        arraylistTasklistforAdapter.clear();
+                                        arraylistFinishDates.clear();
+                                        listviewTasklist.setAdapter(null);
+                                    }
+                                    for (int i = 0; i < jsonArrayMain.length(); i++) {
+                                        JSONObject objInner = jsonArrayMain.getJSONObject(i);
+                                        LogApp.e(" in for loop : ", " Node object in string : " + jsonArrayMain.getJSONObject(i));
+                                        JSONArray jsonArrayInner = objInner.getJSONArray("children");
+                                        for (int j = 0; j < jsonArrayInner.length(); j++) {
+                                            LogApp.e(" in for loop : ", " Project object in string : " + jsonArrayInner.getJSONObject(j));
+
+                                            String ProjectName = jsonArrayInner.getJSONObject(j).get("Name").toString();
+                                            String groupId = jsonArrayInner.getJSONObject(j).get("GroupId").toString();
+                                            String projectId = jsonArrayInner.getJSONObject(j).get("Id").toString();
+                                            TaskListModelClass dataEntity = recursionTogetAllTaskforListviewtoSet(jsonArrayInner.getJSONObject(j), ProjectName,
+                                                    groupId, projectId);
+                                            arrayTask.add(dataEntity);
+                                        }
+                                    }
+                                    /* this is user defined function to set adapter*/
+                                    setAdapterforTasklist(arraylistTasklistforAdapter);
+                                    if (arraylistAgreegate.size() > 0) {
+                                        AgreegateAdapter adapter = new AgreegateAdapter(getActivity(), arraylistAgreegate);
+                                        listviewAgreegateList.setAdapter(adapter);
+                                    }
+                                } catch (JSONException e) {
+                                    LogApp.e(" json exception ", " exception while parsing : " + e.toString());
+                                    e.printStackTrace();
+                                    arraylistTasklistforAdapter.clear();
+                                    arraylistFinishDates.clear();
+                                    listviewTasklist.setAdapter(null);
+                                }
+                                progressDialog.dismiss();
+                            }
+                        } else {
+                            LogApp.e(" no response from service dashboard :  ", " response from service : ");
+                        }
+                    } catch (Exception e) {
+                        resetAlllistandAdapter();
+                        String statusCode = "";
+                        String name = "";
+                        for (int i = 0; i < header.size(); i++) {
+                            name = header.get(i).getName();
+                            if (!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")) {
+                                statusCode = header.get(i).getValue();
+                            }
+                        }
+                        if (statusCode.equalsIgnoreCase("1004")) {
+                            // GlobalClass.showToast(activity,"Email is wrong");
+                        } else if (statusCode.equalsIgnoreCase("1005")) {
+                            //GlobalClass.showToast(activity,"Password is wrong");
+                        }
+                        progressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    LogApp.e(" dashboard failed ", " response from service : " + error.toString());
+                    resetAlllistandAdapter();
+                    progressDialog.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            LogApp.e(" while login service : ", " in catch : " + e.toString());
+        }
+    }
+
+    public void resetAlllistandAdapter() {
+        arraylistTaskAssignedTree.clear();
+        arraylistTaskCompleteNextFiveDayTree.clear();
+        arraylistTaskCompleteTodayTree.clear();
+        arraylistTaskCompleteTree.clear();
+        arraylistTaskPendingTree.clear();
+        listviewAgreegateList.setAdapter(null);
+        arraylistTasklistforAdapter.clear();
+        arraylistFinishDates.clear();
+        listviewTasklist.setAdapter(null);
+        footerButtonforListview.setText("0/0");
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void showSelectedDatesDialog()
+    {
+        if (isFirsttimeClicked) {
+            addFinishDatefromAdapter();
+        }
+        if (arraylistFinishDates.size() > 0)
+        {
+
+            HashSet<String> hashSet = new HashSet<String>();
+            hashSet.addAll(arraylistFinishDates);
+            arraylistFinishDates.clear();
+            arraylistFinishDates.addAll(hashSet);
+
+                /* sorting arraylist*/
+            ArrayList<Date> arrayListTemp = new ArrayList<>();
+            for (int j = 0; j < arraylistFinishDates.size(); j++) {
+                arrayListTemp.add(GlobalClass.convertStringToDate(arraylistFinishDates.get(j)));
+            }
+            Collections.sort(arrayListTemp);
+            arraylistFinishDates = new ArrayList<>();
+            for (int k = 0; k < arrayListTemp.size(); k++) {
+                arraylistFinishDates.add(GlobalClass.convertDateToString(arrayListTemp.get(k)));
+            }
+
+                /* getting selected item from db to show in list as selected */
+            String selectedItem = dbHandler.getSelectedItems("4");
+            ArrayList<String> selectedString = new ArrayList<>();
+            if (!selectedItem.equalsIgnoreCase("")) {
+
+                String[] split = selectedItem.split(",");
+
+                for (int i = 0; i < split.length; i++) {
+                    selectedString.add(split[i]);
+                }
+            }
+            arraylistDatesToFilter = new ArrayList<>();
+            for (int i = 0; i < arraylistFinishDates.size(); i++) {
+                FilterModelClass filterModel = new FilterModelClass();
+                filterModel.setName(arraylistFinishDates.get(i));
+                filterModel.setSelected(false);
+                for (int k = 0; k < selectedString.size(); k++) {
+                    if (selectedString.get(k).equalsIgnoreCase(arraylistFinishDates.get(i))) {
+                        filterModel.setSelected(true);
+                    }
+                }
+                arraylistDatesToFilter.add(filterModel);
+            }
+
+            LayoutInflater layoutInflater4 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView4 = layoutInflater4.inflate(R.layout.custom_dialog_selected_dates, null);
+            popupWindowFinishDates = new PopupWindow(popupView4, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            popupWindowFinishDates.setWidth((GlobalClass.screenWidth(getContext()) * 33) / 100);
+            popupWindowFinishDates.setAnimationStyle(R.style.DialogAnimation);
+            //popupWindowFinishDates.setHeight((GlobalClass.screenHeight(getContext()) * 40) / 100);
+            //popupWindowFinishDates.setWidth(500);
+            //popupWindowFinishDates.setHeight(600);
+            //popupWindowFinishDates.setOutsideTouchable(true);
+            //popupWindowTraffic.showAtLocation(imgFilterTrafficelights, Gravity.CENTER|Gravity.BOTTOM,0, 0);
+            popupWindowFinishDates.showAsDropDown(textviewSelectedDates,-250, 0, Gravity.CENTER | Gravity.BOTTOM);
+
+            TextView textviewOk=(TextView)popupView4.findViewById(R.id.ok);
+            ListView listviewDates=(ListView)popupView4.findViewById(R.id.listviewdates);
+            listviewDates.setSelector(R.drawable.list_selector);
+
+            final DatesAdapter adapter = new DatesAdapter(getActivity(),arraylistDatesToFilter);
+            listviewDates.setAdapter(adapter);
+
+            textviewOk.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    isPopupFinishDate=false;
+                    ArrayList<FilterModelClass> arrayList = adapter.getSelectedItem();
+                    ArrayList<String> arrayStringName = new ArrayList<>();
+                    if(arrayList.size()> 0)
+                    {
+                        dbHandler.deleteSelectedITem("4");
+                        for (int i = 0; i < arrayList.size(); i++)
+                        {
+                            arrayStringName.add(arrayList.get(i).getName());
+                        }
+                        String commaSeperated="";
+                        String commaSeperatedID="";
+                        commaSeperated= TextUtils.join(",",arrayStringName);
+                        dbHandler.addSelectedItem("4",commaSeperated);
+                        popupWindowFinishDates.dismiss();
+
+
+                        if (arrayStringName.size() > 0) {
+                            arrayFinishDate = new ArrayList<>();
+                            arrayFinishDate.addAll(arrayStringName);
+                            LogApp.e(" $$$$$$$$$$$ ", " clicked ok button fire : " + arrayStringName);
+                            if (adapterTasklist != null) {
+                                arrayTasklistafterFiltered = new ArrayList<>();
+                                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                                isFilterFired = true;
+                                setAdapterforFilter(arrayTasklistafterFiltered);
+                            }
+                            if (arrayStringName.size() > 1) {
+                                textviewSelectedDates.setText(arrayStringName.get(0).toString() + " +");
+                            } else {
+                                textviewSelectedDates.setText(arrayStringName.get(0).toString());
+                            }
+                        } else {
+                            textviewSelectedDates.setText("Selected Dates");
+                            arrayFinishDate = new ArrayList<>();
+                            if (adapterTasklist != null) {
+                                arrayTasklistafterFiltered = new ArrayList<>();
+                                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                                isFilterFired = true;
+                                setAdapterforFilter(arrayTasklistafterFiltered);
+                            }
+                        }
+
+                    }
+                    else{
+                        dbHandler.deleteSelectedITem("4");
+                        popupWindowFinishDates.dismiss();
+
+                        if (arrayStringName.size() > 0) {
+                            arrayFinishDate = new ArrayList<>();
+                            arrayFinishDate.addAll(arrayStringName);
+                            LogApp.e(" $$$$$$$$$$$ ", " clicked ok button fire : " + arrayStringName);
+                            if (adapterTasklist != null) {
+                                arrayTasklistafterFiltered = new ArrayList<>();
+                                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                                isFilterFired = true;
+                                setAdapterforFilter(arrayTasklistafterFiltered);
+                            }
+                            if (arrayStringName.size() > 1) {
+                                textviewSelectedDates.setText(arrayStringName.get(0).toString() + " +");
+                            } else {
+                                textviewSelectedDates.setText(arrayStringName.get(0).toString());
+                            }
+                        } else {
+                            textviewSelectedDates.setText("Selected Dates");
+                            arrayFinishDate = new ArrayList<>();
+                            if (adapterTasklist != null) {
+                                arrayTasklistafterFiltered = new ArrayList<>();
+                                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                                isFilterFired = true;
+                                setAdapterforFilter(arrayTasklistafterFiltered);
+                            }
+                        }
+
+                    }
+                }
+            });
+            //&&&&&&&&& CustomDialogSelectedDates customDialog = new CustomDialogSelectedDates();
+            //customDialog.showDialog(getActivity(), arraylistDatesToFilter);
+        } else {
+            GlobalClass.showToast(getActivity(), "Please select dates first");
+        }
+    }
+
+    public void doneButoonTocallService() {
+        if (calendarPicker.getSelectedDates().size() > 0) {
+            LogApp.e(" selected dates ", " selected dates on done button : " + calendarPicker.getSelectedDates().size());
+            if (calendarPicker.getSelectedDates().size() > 1) {
+                textviewCurrentDate.setText(GlobalClass.dateFormateChanged(calendarPicker.getSelectedDates().get(0)) + " To "
+                        + GlobalClass.dateFormateChanged(calendarPicker.getSelectedDates().get(calendarPicker.getSelectedDates().size() - 1)));
+                textviewCurrentDate2.setText(GlobalClass.dateFormateChanged(calendarPicker.getSelectedDates().get(0)) + " To "
+                        + GlobalClass.dateFormateChanged(calendarPicker.getSelectedDates().get(calendarPicker.getSelectedDates().size() - 1)));
+            }
+            arraylistStringDates.clear();
+            for (int i = 0; i < calendarPicker.getSelectedDates().size(); i++) {
+                if (i == 0 || i == calendarPicker.getSelectedDates().size() - 1) {
+                    arraylistStringDates.add(GlobalClass.dateFormateChanged2(calendarPicker.getSelectedDates().get(i)));
+                }
+            }
+            if (arraylistStringDates.size() == 1) {
+                arraylistStringDates.add(arraylistStringDates.get(0));
+            }
+               /* for (int i = 0; i < calendarPicker.getSelectedDates().size(); i++)
+                {*/
+            dateArray = new String[arraylistStringDates.size()];
+            dateArray = arraylistStringDates.toArray(dateArray);
+            //}
+            if (GlobalClass.isNetworkAvailable(getActivity())) {
+                callDashboardWebService();
+            } else {
+                GlobalClass.showToastInternet(getActivity());
+            }
+        }
+    }
+
+    public void paginationForListview() {
+    /* if any type of filter is fired this condition will call */
+        if (isFilterFired) {
+            if (arrayTasklistafterFiltered.size() > totRecord) {
+                if ((arrayTasklistafterFiltered.size() - 10) < totRecord) {
+                    int remain = arrayTasklistafterFiltered.size() - totRecord;
+                    totRecord = arrayTasklistafterFiltered.size();
+                    ArrayList<TaskListModelClass> arrayTask = new ArrayList<>();
+                    arrayTask = new ArrayList<>(arrayTasklistafterFiltered.subList(startRecord, totRecord));
+                    arraylistTasklistforAdapter.addAll(arrayTask);
+                    adapterTasklist.notifyDataSetChanged();
+                    startRecord = 10;
+                    endRecord = 20;
+                    footerButtonforListview.setText(totRecord + "/" + arraylistTasklistforAdapter.size());
+                } else {
+                    arraylistTasklistforAdapter.addAll(arrayTasklistafterFiltered.subList(startRecord, endRecord));
+                    adapterTasklist.notifyDataSetChanged();
+                    totRecord = totRecord + 10;
+                    startRecord = startRecord + 10;
+                    endRecord = endRecord + 10;
+                    footerButtonforListview.setText(totRecord + "/" + arrayTasklistafterFiltered.size());
+
+                    if (arrayTasklistafterFiltered.size() == arraylistTasklistforAdapter.size()) {
+                        startRecord = 10;
+                        endRecord = 20;
+                    }
+                }
+            }
+        }
+            /* if any filter is not fired this condition will call */
+        else {
+            if (arrayTasklistAllDataPermenent.size() > totRecord) {
+                if ((arrayTasklistAllDataPermenent.size() - 10) < totRecord) {
+                    int remain = arrayTasklistAllDataPermenent.size() - totRecord;
+                    totRecord = arrayTasklistAllDataPermenent.size();
+                    ArrayList<TaskListModelClass> arrayTask = new ArrayList<>();
+                    arrayTask = new ArrayList<>(arrayTasklistAllDataPermenent.subList(startRecord, totRecord));
+                    arraylistTasklistforAdapter.addAll(arrayTask);
+                    adapterTasklist.notifyDataSetChanged();
+                    startRecord = 10;
+                    endRecord = 20;
+                    footerButtonforListview.setText(totRecord + "/" + arrayTasklistAllDataPermenent.size());
+                } else {
+                    arraylistTasklistforAdapter.addAll(arrayTasklistAllDataPermenent.subList(startRecord, endRecord));
+                    adapterTasklist.notifyDataSetChanged();
+                    totRecord = totRecord + 10;
+                    startRecord = startRecord + 10;
+                    endRecord = endRecord + 10;
+                    footerButtonforListview.setText(totRecord + "/" + arrayTasklistAllDataPermenent.size());
+                    if (arrayTasklistAllDataPermenent.size() == arraylistTasklistforAdapter.size()) {
+                        startRecord = 10;
+                        endRecord = 20;
+                    }
+                }
+            }
+        }
+    }
+
+    public void refreshActivityAndCallService() {
+        isFilterFired = false;
+        isFirsttimeClicked = true;
+        dbHandler.deleteAllSelectedITem();
+        preferenes.saveIsfirstTime(true);
+        arraylistFinishDates = new ArrayList<>();
+        arraylistTasklistforAdapter.clear();
+        if (adapterTasklist != null) {
+            adapterTasklist.notifyDataSetChanged();
+        }
+        if (selectedDatesStartEnd != null) {
+            selectedDatesStartEnd.clear();
+        }
+        if (allDatesBetweenDates != null) {
+            allDatesBetweenDates.clear();
+        }
+        /// adding calendar to screen
+        calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                .withSelectedDate(new Date());
+        /// addding calendar to screen
+        gettingTodayDateForService();
+        // calling service
+        if (GlobalClass.isNetworkAvailable(getActivity())) {
+            callDashboardWebService();
+        } else {
+            GlobalClass.showToastInternet(getActivity());
+        }
+    }
+
+    public TaskListModelClass recursionTogetAllTaskforListviewtoSet(JSONObject dataEntityObject, String ProjectName, String groupId, String ProjectId)
+            throws JSONException {
+        tasklistModelTemp = new TaskListModelClass();
+        tasklistModelTemp.setProjectName(ProjectName);
+        if (dataEntityObject.has("children")) {
+            try {
+                JSONArray children = dataEntityObject.getJSONArray("children");
+                int count = children.length();
+                LogApp.e(" in method : ", " children lenght : " + count);
+                for (int i = 0; i < children.length(); i++) {
+                    JSONObject jsonObject = children.getJSONObject(i);
+                    tasklistModelTemp.setName(jsonObject.getString("Name"));
+                    tasklistModelTemp.setEndDate(GlobalClass.epochTimeToDate(GlobalClass.epochFormatetoString(jsonObject.getString("EndDate"))));
+                    tasklistModelTemp.setTrafficLightObj(jsonObject.getString("TrafficLightObj"));
+                    tasklistModelTemp.setStatusObj(jsonObject.getString("StatusObj"));
+                    tasklistModelTemp.setTaskObject(children.getJSONObject(i).toString());
+
+                    tasklistModelTemp.setStrGroupId(groupId);
+                    tasklistModelTemp.setStrProjectId(ProjectId);
+                    tasklistModelTemp.setStrTaskid(jsonObject.getString("Id"));
+                    tasklistModelTemp.setStrparentId(jsonObject.getString("parentId"));
+
+                    /* setting traffic light object */
+                    if (!TextUtils.isEmpty(jsonObject.getString("TrafficLightObj"))) {
+                        tasklistModelTemp.setTrafficLight(jsonObject.getString("TrafficLightObj"));
+                    } else {
+                        tasklistModelTemp.setTrafficLight("");
+                    }
+
+                    /* setting status and date object */
+                    ArrayList<String> arrayliststatusObject = null;
+                    ArrayList<String> arrayStatus = new ArrayList<>();
+                    if (!TextUtils.isEmpty(jsonObject.getString("StatusObj"))) {
+                        arrayliststatusObject = new ArrayList<String>(Arrays.asList(jsonObject.getString("StatusObj").split(",")));
+                    }
+
+                    if (arrayliststatusObject != null) {
+                        if (arrayliststatusObject.size() > 0) {
+                            for (int k = 0; k < arrayliststatusObject.size(); k++) {
+                                /* if this condition meet than string will be store in Date object  */
+                                if (arrayliststatusObject.get(k).equalsIgnoreCase("ShowOverdueFinished") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowFinishToday") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowFinishWeek") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowStarted") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowPending") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowNoTime") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowPassiv") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowCanceled")) {
+                                    tasklistModelTemp.setDateImage(arrayliststatusObject.get(k));
+                                }
+                                /* if this condition meet than string will be store in Status object */
+                                else if (arrayliststatusObject.get(k).equalsIgnoreCase("ShowArrow") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowQuestion") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowCritical") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowReminder") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowFinished") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowOverdueLimit") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowCapacityTooHigh") ||
+                                        arrayliststatusObject.get(k).equalsIgnoreCase("ShowCapacityTooLow")) {
+                                    //tasklistModelTemp.setStatusImage(arrayliststatusObject.get(k));
+                                    arrayStatus.add(arrayliststatusObject.get(k));
+
+                                }
+                            }
+                            tasklistModelTemp.setStatusArray(arrayStatus);
+
+                        }
+                    } else {
+                        tasklistModelTemp.setStatusImage("");
+                        tasklistModelTemp.setDateImage("");
+                    }
+
+
+                    arraylistTasklistforAdapter.add(tasklistModelTemp);
+                    recursionTogetAllTaskforListviewtoSet(jsonObject, ProjectName, groupId, ProjectId);
+                }
+            } catch (Exception e) {
+            }
+        } else {
+        }
+        return tasklistModelTemp;
+    }
+
+    public TaskListModelClass recursionCallChild2(JSONObject dataEntityObject, int arrayNo)
+            throws JSONException {
+        if (arrayNo == 1) {
+            tasklistModelTemp = new TaskListModelClass();
+            if (dataEntityObject.has("children")) {
+                try {
+                    JSONArray children = dataEntityObject.getJSONArray("children");
+                    int count = children.length();
+                    LogApp.e(" in method : ", " children lenght : " + count);
+                    for (int i = 0; i < children.length(); i++) {
+                        JSONObject jsonObject = children.getJSONObject(i);
+                        tasklistModelTemp.setName(jsonObject.getString("Name"));
+                        tasklistModelTemp.setGroupId(jsonObject.getString("GroupId"));
+                        arraylistTaskAssignedTree.add(tasklistModelTemp);
+                        recursionCallChild2(jsonObject, arrayNo);
+                    }
+                } catch (Exception e) {
+                }
+            } else {
+            }
+        }
+        if (arrayNo == 2) {
+            tasklistModelTemp = new TaskListModelClass();
+            if (dataEntityObject.has("children")) {
+                try {
+                    JSONArray children = dataEntityObject.getJSONArray("children");
+                    int count = children.length();
+                    LogApp.e(" in method : ", " children lenght : " + count);
+                    for (int i = 0; i < children.length(); i++) {
+                        JSONObject jsonObject = children.getJSONObject(i);
+                        tasklistModelTemp.setName(jsonObject.getString("Name"));
+                        arraylistTaskCompleteNextFiveDayTree.add(tasklistModelTemp);
+                        recursionCallChild2(jsonObject, arrayNo);
+                    }
+                } catch (Exception e) {
+                }
+            } else {
+            }
+        }
+        if (arrayNo == 3) {
+            tasklistModelTemp = new TaskListModelClass();
+            if (dataEntityObject.has("children")) {
+                try {
+                    JSONArray children = dataEntityObject.getJSONArray("children");
+                    int count = children.length();
+                    LogApp.e(" in method : ", " children lenght : " + count);
+                    for (int i = 0; i < children.length(); i++) {
+                        JSONObject jsonObject = children.getJSONObject(i);
+                        tasklistModelTemp.setName(jsonObject.getString("Name"));
+                        arraylistTaskCompleteTodayTree.add(tasklistModelTemp);
+                        recursionCallChild2(jsonObject, arrayNo);
+                    }
+                } catch (Exception e) {
+                }
+            } else {
+            }
+        }
+        if (arrayNo == 4) {
+            tasklistModelTemp = new TaskListModelClass();
+            if (dataEntityObject.has("children")) {
+                try {
+                    JSONArray children = dataEntityObject.getJSONArray("children");
+                    int count = children.length();
+                    LogApp.e(" in method : ", " children lenght : " + count);
+                    for (int i = 0; i < children.length(); i++) {
+                        JSONObject jsonObject = children.getJSONObject(i);
+                        tasklistModelTemp.setName(jsonObject.getString("Name"));
+                        arraylistTaskCompleteTree.add(tasklistModelTemp);
+                        recursionCallChild2(jsonObject, arrayNo);
+                    }
+                } catch (Exception e) {
+                }
+            } else {
+            }
+        }
+        if (arrayNo == 5) {
+            tasklistModelTemp = new TaskListModelClass();
+            if (dataEntityObject.has("children")) {
+                try {
+                    JSONArray children = dataEntityObject.getJSONArray("children");
+                    int count = children.length();
+                    LogApp.e(" in method : ", " children lenght : " + count);
+                    for (int i = 0; i < children.length(); i++) {
+                        JSONObject jsonObject = children.getJSONObject(i);
+                        tasklistModelTemp.setName(jsonObject.getString("Name"));
+                        arraylistTaskPendingTree.add(tasklistModelTemp);
+                        recursionCallChild2(jsonObject, arrayNo);
+                    }
+                } catch (Exception e) {
+                }
+            } else {
+            }
+        }
+        return tasklistModelTemp;
+    }
+
+    public JSONObject recursionToCreateTreeStructure() {
+        for (int i = 0; i < arraylistJsonObjChildren.size(); i++) {
+            child = new JSONObject();
+            LogApp.e(" $$$$$$$ ", " arrraylistjson obje value : " + arraylistJsonObjChildren.get(i));
+            try {
+                if (i == 0) {
+                    arraylistJsonObjChildren.get(0).put("children", arraylistJsonObjChildren.get(i + 1));
+                    LogApp.e("", " finally done : " + arraylistJsonObjChildren.get(0));
+
+
+                } else {
+                    child = getJsonTreeforTreeStructure(arraylistJsonObjChildren.get(0), arraylistJsonObjChildren.get(i + 1), i + 1);
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return child;
+    }
+
+    public JSONObject getJsonTreeforTreeStructure(JSONObject obj, JSONObject objToput, int pos) {
+        if (pos < arraylistJsonObjChildren.size()) {
+            if (obj.has("children")) {
+                try {
+                    JSONObject children = obj.getJSONObject("children");
+                    LogApp.e("", " json object child : " + children);
+                    children.put("children", arraylistJsonObjChildren.get(pos));
+                    LogApp.e("", " json object child : " + children);
+                    sentObje = obj;
+                    LogApp.e("", "sent obj value : " + sentObje);
+                    getJsonTreeforTreeStructure(children, arraylistJsonObjChildren.get(3), pos + 1);
+                } catch (Exception e) {
+
+                }
+            }
+        } else {
+            return sentObje;
+        }
+        return sentObje;
+    }
+
+    public void recursionTogetAllChildren(String parentId) {
+        for (int i = 0; i < arraylistTasklistforAdapter.size(); i++) {
+            try {
+                JSONObject jsonObj = new JSONObject(arraylistTasklistforAdapter.get(i).getTaskObject());
+                String Id = jsonObj.get("Id").toString();
+                if (parentId.equalsIgnoreCase(Id)) {
+                    arraylistJsonObjChildren.add(jsonObj);
+                    String newParentId = jsonObj.get("parentId").toString();
+                    recursionTogetAllChildren(newParentId);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private void addFinishDatefromAdapter() {
+        arraylistFinishDates = new ArrayList<>();
+        if (arrayTasklistAllDataPermenent.size() > 0) {
+            for (int i = 0; i < arrayTasklistAllDataPermenent.size(); i++) {
+                arraylistFinishDates.add(arrayTasklistAllDataPermenent.get(i).getEndDate());
+            }
+            isFirsttimeClicked = false;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void showPopupWindow(int popupNo) {
+        switch (popupNo) {
+            /* for date filter */
+            case 1:
+                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = layoutInflater.inflate(R.layout.popupview_date, null);
+                popupWindowDate = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                popupWindowDate.setWidth((GlobalClass.screenWidth(getContext()) * 33) / 100);
+                popupWindowDate.setAnimationStyle(R.style.DialogAnimation);
+                //popupWindowDate.setHeight((GlobalClass.screenHeight(getContext()) * 37) / 100);
+                //popupWindowDate.setOutsideTouchable(true);
+                //popupWindowDate.showAtLocation(imgFilterDate, Gravity.CENTER|Gravity.BOTTOM,0, 0);
+                popupWindowDate.showAsDropDown(imgFilterDate, 0 , 0, Gravity.CENTER | Gravity.BOTTOM);
+
+                ListView listviewDateFilter = (ListView) popupView.findViewById(R.id.listviewdatefilter);
+
+                adapterDate = new DateFilterAdapter(getActivity(), arraylistPopupViewforFilter);
+                listviewDateFilter.setAdapter(adapterDate);
+
+                TextView textViewDone = (TextView) popupView.findViewById(R.id.txtdone);
+                textViewDone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        filterDate(adapterDate);
+                    }
+                });
+                break;
+
+            /* for status filter */
+            case 2:
+                LayoutInflater layoutInflater2 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView2 = layoutInflater2.inflate(R.layout.popupview_status, null);
+                popupWindowStatus = new PopupWindow(popupView2, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                popupWindowStatus.setWidth((GlobalClass.screenWidth(getContext()) * 33) / 100);
+                popupWindowStatus.setAnimationStyle(R.style.DialogAnimation);
+                //popupWindowStatus.setHeight((GlobalClass.screenHeight(getContext()) * 37) / 100);
+                //popupWindowStatus.setOutsideTouchable(true);
+                //popupWindowStatus.showAtLocation(imgFilterStatus, Gravity.CENTER|Gravity.BOTTOM,0, 0);
+                popupWindowStatus.showAsDropDown(imgFilterStatus, 0, 0, Gravity.CENTER | Gravity.BOTTOM);
+                ListView listviewStatusFilter = (ListView) popupView2.findViewById(R.id.listviewstatusfilter);
+                adapterStatus = new StatusFilterAdapter(getActivity(), arraylistPopupViewforFilter);
+                listviewStatusFilter.setAdapter(adapterStatus);
+
+                TextView textViewDone2 = (TextView) popupView2.findViewById(R.id.txtdone);
+                textViewDone2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        filterStatus(adapterStatus);
+
+                    }
+                });
+                break;
+
+            /* for traffic light */
+            case 3:
+                LayoutInflater layoutInflater3 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView3 = layoutInflater3.inflate(R.layout.popup_view_traffic, null);
+                popupWindowTraffic = new PopupWindow(popupView3, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                popupWindowTraffic.setWidth((GlobalClass.screenWidth(getContext()) * 30) / 100);
+                popupWindowTraffic.setAnimationStyle(R.style.DialogAnimation);
+                //popupWindowTraffic.setHeight((GlobalClass.screenHeight(getContext()) * 30) / 100);
+                //popupWindowTraffic.setOutsideTouchable(true);
+                //popupWindowTraffic.showAtLocation(imgFilterTrafficelights, Gravity.CENTER|Gravity.BOTTOM,0, 0);
+                popupWindowTraffic.showAsDropDown(imgFilterTrafficelights,0, 0, Gravity.CENTER | Gravity.BOTTOM);
+
+                ListView listviewTrafficFilter = (ListView) popupView3.findViewById(R.id.listviewtrafficfilter);
+
+                adapterTrafficLight = new TrafficFilterAdapter(getActivity(), arraylistPopupViewforFilter);
+                listviewTrafficFilter.setAdapter(adapterTrafficLight);
+
+                TextView textViewDone3 = (TextView) popupView3.findViewById(R.id.txtdone);
+                textViewDone3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        filterTrafficLight(adapterTrafficLight);
+                    }
+                });
+                break;
+            /* for traffic light */
+        }
+    }
+
+    public void addingDataInPopup(int pos) {
+        String[] arrayDate = {"Completion overrun", "Complete today", "Completed in 1 week", "Started tasks", "Pending tasks",
+                "Task without date", "Passive tasks", "Canceled tasks"};
+        String[] arrayDateOriginalvalue = {"ShowOverdueFinished", "ShowFinishToday", "ShowFinishWeek", "ShowStarted", "ShowPending",
+                "ShowNoTime", "ShowPassiv", "ShowCanceled"};
+
+
+        String[] arrayStatus = {"Notice Arrow", "Not Clear", "Critical", "Remindar", "Completed tasks", "Limit",
+                "CapacityTooHigh", "CapacityTooLow"};
+        String[] arrayStatusOriginal = {"ShowArrow", "ShowQuestion", "ShowCritical", "ShowReminder", "ShowFinished",
+                "ShowOverdueLimit", "ShowCapacityTooHigh", "ShowCapacityTooLow"};
+
+        String[] arrayTraffic = {"Green", "Yellow", "Red"};
+        String[] arrayTrafficOriginalvalue = {"TrafficLightGreen", "TrafficLightYellow", "TrafficlightRed"};
+
+
+        int[] imgDate = {R.drawable.completion, R.drawable.completed_today, R.drawable.completed_in_one_week
+                , R.drawable.started_task, R.drawable.pending_task, R.drawable.task_without_date, R.drawable.reminders,
+                R.drawable.canceled_task};
+
+        int[] imgTraffice = {R.drawable.traffic_green, R.drawable.traffic_yellow, R.drawable.traffic_red};
+
+        int[] imgStatus = {R.drawable.notice_arrow, R.drawable.not_clear, R.drawable.critical
+                , R.drawable.reminders, R.drawable.completed_task, R.drawable.limit, R.drawable.capacity_too_high,
+                R.drawable.capacity_too_low};
+
+        /* for date */
+        if (pos == 1) {
+            String selectedItem = dbHandler.getSelectedItems("1");
+            ArrayList<String> selectedString = new ArrayList<>();
+            if (!selectedItem.equalsIgnoreCase("")) {
+
+                String[] split = selectedItem.split(",");
+
+                for (int i = 0; i < split.length; i++) {
+                    selectedString.add(split[i]);
+                }
+            }
+            arraylistPopupViewforFilter.clear();
+            for (int i = 0; i < arrayDate.length; i++) {
+                FilterModelClass filter = new FilterModelClass();
+                filter.setName(arrayDate[i]);
+                filter.setStrOriginalValue(arrayDateOriginalvalue[i]);
+                filter.setDrawable(imgDate[i]);
+                filter.setSelected(false);
+                for (int k = 0; k < selectedString.size(); k++) {
+                    if (selectedString.get(k).equalsIgnoreCase(arrayDate[i])) {
+                        filter.setSelected(true);
+                    }
+
+                }
+
+                arraylistPopupViewforFilter.add(filter);
+            }
+        }
+        /* for status */
+        if (pos == 2) {
+            String selectedItem = dbHandler.getSelectedItems("2");
+            ArrayList<String> selectedString = new ArrayList<>();
+            if (!selectedItem.equalsIgnoreCase("")) {
+
+                String[] split = selectedItem.split(",");
+
+                for (int i = 0; i < split.length; i++) {
+                    selectedString.add(split[i]);
+                }
+            }
+            arraylistPopupViewforFilter.clear();
+            for (int i = 0; i < arrayStatus.length; i++) {
+                FilterModelClass filter = new FilterModelClass();
+                filter.setName(arrayStatus[i]);
+                filter.setStrOriginalValue(arrayStatusOriginal[i]);
+                filter.setDrawable(imgStatus[i]);
+                filter.setSelected(false);
+                for (int k = 0; k < selectedString.size(); k++) {
+                    if (selectedString.get(k).equalsIgnoreCase(arrayStatus[i])) {
+                        filter.setSelected(true);
+                    }
+
+                }
+
+                arraylistPopupViewforFilter.add(filter);
+            }
+        }
+
+        /* for traffic light*/
+        if (pos == 3) {
+            String selectedItem = dbHandler.getSelectedItems("3");
+            ArrayList<String> selectedString = new ArrayList<>();
+            if (!selectedItem.equalsIgnoreCase("")) {
+
+                String[] split = selectedItem.split(",");
+
+                for (int i = 0; i < split.length; i++) {
+                    selectedString.add(split[i]);
+                }
+            }
+            arraylistPopupViewforFilter.clear();
+            for (int i = 0; i < arrayTraffic.length; i++) {
+                FilterModelClass filter = new FilterModelClass();
+                filter.setName(arrayTraffic[i]);
+                filter.setStrOriginalValue(arrayTrafficOriginalvalue[i]);
+                filter.setDrawable(imgTraffice[i]);
+                filter.setSelected(false);
+                for (int k = 0; k < selectedString.size(); k++) {
+                    if (selectedString.get(k).equalsIgnoreCase(arrayTraffic[i])) {
+                        filter.setSelected(true);
+                    }
+
+                }
+
+                arraylistPopupViewforFilter.add(filter);
+            }
+        }
+
+    }
+
+    public void gettingFilterarraylistFromDb() {
+        String[] arrayDate = {"Completion overrun", "Complete today", "Completed in 1 week", "Started tasks", "Pending tasks",
+                "Task without date", "Passive tasks", "Canceled tasks"};
+        String[] arrayDateOriginalvalue = {"ShowOverdueFinished", "ShowFinishToday", "ShowFinishWeek", "ShowStarted", "ShowPending",
+                "ShowNoTime", "ShowPassiv", "ShowCanceled"};
+        String[] arrayStatus = {"Notice Arrow", "Not Clear", "Critical", "Remindar", "Completed tasks", "Limit",
+                "CapacityTooHigh", "CapacityTooLow"};
+        String[] arrayStatusOriginal = {"ShowArrow", "ShowQuestion", "ShowCritical", "ShowReminder", "ShowFinished",
+                "ShowOverdueLimit", "ShowCapacityTooHigh", "ShowCapacityTooLow"};
+        String[] arrayTraffic = {"Green", "Yellow", "Red"};
+        String[] arrayTrafficOriginalvalue = {"TrafficLightGreen", "TrafficLightYellow", "TrafficlightRed"};
+        int[] imgDate = {R.drawable.completion, R.drawable.completed_today, R.drawable.completed_in_one_week
+                , R.drawable.started_task, R.drawable.pending_task, R.drawable.task_without_date, R.drawable.reminder,
+                R.drawable.canceled_task};
+
+        int[] imgTraffice = {R.drawable.traffic_green, R.drawable.traffic_yellow, R.drawable.traffic_red};
+
+        int[] imgStatus = {R.drawable.notice_arrow, R.drawable.not_clear, R.drawable.critical
+                , R.drawable.reminder, R.drawable.completed_task, R.drawable.limit, R.drawable.capacity_too_high,
+                R.drawable.capacity_too_low};
+
+        /* for date */
+        String selectedItemDate = dbHandler.getSelectedItems("1");
+        ArrayList<String> selectedStringDate = new ArrayList<>();
+        if (!selectedItemDate.equalsIgnoreCase("")) {
+
+            String[] split = selectedItemDate.split(",");
+            for (int i = 0; i < split.length; i++) {
+                selectedStringDate.add(split[i]);
+            }
+        }
+        arrayDatefilter = new ArrayList<>();
+        for (int i = 0; i < arrayDate.length; i++) {
+            for (int k = 0; k < selectedStringDate.size(); k++) {
+                if (selectedStringDate.get(k).equalsIgnoreCase(arrayDate[i])) {
+                    arrayDatefilter.add(arrayDateOriginalvalue[i]);
+                }
+            }
+        }
+        /* for status */
+        String selectedItemStatus = dbHandler.getSelectedItems("2");
+        ArrayList<String> selectedStringStatus = new ArrayList<>();
+        if (!selectedItemStatus.equalsIgnoreCase("")) {
+            String[] split = selectedItemStatus.split(",");
+            for (int i = 0; i < split.length; i++) {
+                selectedStringStatus.add(split[i]);
+            }
+        }
+        arrayStatusfilter = new ArrayList<>();
+        for (int i = 0; i < arrayStatus.length; i++) {
+            for (int k = 0; k < selectedStringStatus.size(); k++) {
+                if (selectedStringStatus.get(k).equalsIgnoreCase(arrayStatus[i])) {
+                    arrayStatusfilter.add(arrayStatusOriginal[i]);
+                }
+            }
+        }
+        /* for traffic light*/
+        String selectedItemTraffic = dbHandler.getSelectedItems("3");
+        ArrayList<String> selectedStringTraffic = new ArrayList<>();
+        if (!selectedItemTraffic.equalsIgnoreCase("")) {
+            String[] split = selectedItemTraffic.split(",");
+            for (int i = 0; i < split.length; i++) {
+                selectedStringTraffic.add(split[i]);
+            }
+        }
+        arrayTrafficLightfilter = new ArrayList<>();
+        for (int i = 0; i < arrayTraffic.length; i++) {
+            for (int k = 0; k < selectedStringTraffic.size(); k++) {
+                if (selectedStringTraffic.get(k).equalsIgnoreCase(arrayTraffic[i])) {
+                    arrayTrafficLightfilter.add(arrayTrafficOriginalvalue[i]);
+                }
+            }
+        }
+
+        /* for finish date*/
+        String selectedItemFinishdate = dbHandler.getSelectedItems("4");
+        arrayFinishDate = new ArrayList<>();
+        if (!selectedItemFinishdate.equalsIgnoreCase("")) {
+
+            String[] split = selectedItemFinishdate.split(",");
+
+            for (int i = 0; i < split.length; i++) {
+                arrayFinishDate.add(split[i]);
+            }
+        }
+    }
+
+
+    public void setAdapterforTasklist(ArrayList<TaskListModelClass> arraylistTasklist) {
+        if (arraylistTasklist.size() > 0) {
+            if (arraylistTasklist.size() > totRecord) {
+                listviewTasklist.addFooterView(footerViewforListview);
+                startRecord = 10;
+                endRecord = 20;
+                arrayTasklistAllDataPermenent = new ArrayList<TaskListModelClass>();
+                arrayTasklistAllDataPermenent.addAll(arraylistTasklist);
+                arraylistTasklistforAdapter = new ArrayList<>();
+                arraylistTasklistforAdapter = new ArrayList<>(arrayTasklistAllDataPermenent.subList(0, 10));
+                adapterTasklist = new TasklistAdapter(getActivity(), arraylistTasklistforAdapter);
+                listviewTasklist.setAdapter(adapterTasklist);
+                footerButtonforListview.setText("" + startRecord + "/" + "" + arrayTasklistAllDataPermenent.size());
+            } else {
+                arraylistTasklistforAdapter = new ArrayList<>();
+                arraylistTasklistforAdapter.addAll(arraylistTasklist);
+                adapterTasklist = new TasklistAdapter(getActivity(), arraylistTasklistforAdapter);
+                listviewTasklist.setAdapter(adapterTasklist);
+                footerButtonforListview.setText("" + arraylistTasklist.size() + "/" + "" + arraylistTasklist.size());
+            }
+            gettingFilterarraylistFromDb();
+            arrayTasklistafterFiltered = new ArrayList<>();
+            arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate,
+                    arrayTrafficLightfilter, arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+            isFilterFired = true;
+            setAdapterforFilter(arrayTasklistafterFiltered);
+        } else {
+            footerButtonforListview.setText("0/0");
+        }
+    }
+
+    public void setAdapterforFilter(ArrayList<TaskListModelClass> arraylistTasklistlocal)
+    {
+        if (arraylistTasklistlocal.size() > 0) {
+            totRecord = 10;
+            if (arraylistTasklistlocal.size() > totRecord) {
+                listviewTasklist.addFooterView(footerViewforListview);
+                startRecord = 10;
+                endRecord = 20;
+                ArrayList<TaskListModelClass> arrayTemp = new ArrayList<TaskListModelClass>();
+                arrayTemp = new ArrayList<>(arraylistTasklistlocal.subList(0, 10));
+                arraylistTasklistforAdapter = new ArrayList<>();
+                arraylistTasklistforAdapter.addAll(arrayTemp);
+                adapterTasklist = new TasklistAdapter(getActivity(), arraylistTasklistforAdapter);
+                listviewTasklist.setAdapter(adapterTasklist);
+                footerButtonforListview.setText("" + startRecord + "/" + "" + arraylistTasklistlocal.size());
+            } else {
+                arraylistTasklistforAdapter = new ArrayList<>();
+                arraylistTasklistforAdapter.addAll(arraylistTasklistlocal);
+                adapterTasklist = new TasklistAdapter(getActivity(), arraylistTasklistforAdapter);
+                listviewTasklist.setAdapter(adapterTasklist);
+                footerButtonforListview.setText("" + arraylistTasklistforAdapter.size() + "/" + "" + arraylistTasklistforAdapter.size());
+            }
+        } else {
+            footerButtonforListview.setText("0/0");
+        }
+    }
+
+    public void getTaskCountofJsonArray(JSONArray jsonArrayMain, int arrayNo) {
+        for (int i = 0; i < jsonArrayMain.length(); i++) {
+            try {
+                JSONObject objInner = jsonArrayMain.getJSONObject(i);
+                LogApp.e(" in for loop : ", " Node object in string : " + jsonArrayMain.getJSONObject(i));
+                JSONArray jsonArrayInner = objInner.getJSONArray("children");
+
+                for (int j = 0; j < jsonArrayInner.length(); j++) {
+                    LogApp.e(" in for loop : ", " Project object in string : " + jsonArrayInner.getJSONObject(j));
+                    TaskListModelClass dataEntity = recursionCallChild2(jsonArrayInner.getJSONObject(j), arrayNo);
+                }
+            } catch (Exception e) {
+
+            }
+
+        }
+    }
+
+    public String JsonString(String[] dates) {
+        //String[] data = {"2016/07/06", "2016/07/07","2016/07/08","2016/07/09"};
+        String[] date = dates;
+        JSONArray json = new JSONArray(Arrays.asList(date));
+        return json.toString();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        preferenes.saveIsfirstTime(true);
+    }
+    public void filterDate(DateFilterAdapter adapterDate) {
+        ArrayList<FilterModelClass> arrayList = adapterDate.getSelectedItem();
+        //ArrayList<String> arraylistOriginalValue = new ArrayList<String>();
+        arrayDatefilter = new ArrayList<String>();
+        ArrayList<Integer> arrayDrawable = new ArrayList<>();
+        if (arrayList.size() > 0) {
+
+            dbHandler.deleteSelectedITem("1");
+            ArrayList<String> arrayStringName = new ArrayList<>();
+            for (int i = 0; i < arrayList.size(); i++) {
+                arrayStringName.add(arrayList.get(i).getName());
+                arrayDatefilter.add(arrayList.get(i).getStrOriginalValue());
+                arrayDrawable.add(arrayList.get(i).getDrawable());
+            }
+            String commaSeperated = "";
+            String commaSeperatedID = "";
+            commaSeperated = TextUtils.join(",", arrayStringName);
+            dbHandler.addSelectedItem("1", commaSeperated);
+            popupWindowDate.dismiss();
+            isPopupDate = false;
+
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                //if(arrayTasklistafterFiltered.size() > 0){
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+                //}
+            }
+
+            //adapterTasklist.filterDateLight(arraylistOriginalValue);
+            //adapterTasklist.setIsFiltered(true);
+            if (arrayList.size() > 1) {
+                textviewLabledate.setTypeface(null, Typeface.BOLD);
+                imgFilterDate.setBackgroundResource(R.drawable.date_plus);
+
+            } else {
+                imgFilterDate.setBackgroundResource(arrayDrawable.get(0));
+                textviewLabledate.setTypeface(null, Typeface.NORMAL);
+            }
+        } else {
+            imgFilterDate.setBackgroundResource(R.drawable.date_icon);
+            textviewLabledate.setTypeface(null, Typeface.NORMAL);
+            dbHandler.deleteSelectedITem("1");
+            popupWindowDate.dismiss();
+            isPopupDate = false;
+            ArrayList<String> arrayAllvalue = new ArrayList<String>();
+            for (int k = 0; k < arraylistPopupViewforFilter.size(); k++) {
+                arrayAllvalue.add(arraylistPopupViewforFilter.get(k).getStrOriginalValue());
+            }
+
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                //if(arrayTasklistafterFiltered.size() > 0){
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+                //}
+            }
+
+
+            //adapterTasklist.filterDateLight(arrayAllvalue);
+            //adapterTasklist.setIsFiltered(true);
+        }
+    }
+
+    public void filterTrafficLight(TrafficFilterAdapter adapterTrafficLight) {
+        ArrayList<FilterModelClass> arrayList = adapterTrafficLight.getSelectedItem();
+        //ArrayList<String> arraylistOriginalValue = new ArrayList<String>();
+        arrayTrafficLightfilter = new ArrayList<String>();
+        ArrayList<Integer> arrayDrawable = new ArrayList<>();
+        if (arrayList.size() > 0) {
+            dbHandler.deleteSelectedITem("3");
+            ArrayList<String> arrayStringName = new ArrayList<>();
+            for (int i = 0; i < arrayList.size(); i++) {
+                arrayStringName.add(arrayList.get(i).getName());
+                arrayTrafficLightfilter.add(arrayList.get(i).getStrOriginalValue());
+                arrayDrawable.add(arrayList.get(i).getDrawable());
+            }
+            String commaSeperated = "";
+            String commaSeperatedID = "";
+            commaSeperated = TextUtils.join(",", arrayStringName);
+            dbHandler.addSelectedItem("3", commaSeperated);
+            popupWindowTraffic.dismiss();
+            isPopupTraffic = false;
+
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                //if(arrayTasklistafterFiltered.size() > 0){
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+                //}
+            }
+            if (arrayList.size() > 1) {
+                textviewLableTraffic.setTypeface(null, Typeface.BOLD);
+                imgFilterTrafficelights.setBackgroundResource(R.drawable.traffic_plus);
+
+            } else {
+                imgFilterTrafficelights.setBackgroundResource(arrayDrawable.get(0));
+                textviewLableTraffic.setTypeface(null, Typeface.NORMAL);
+            }
+        } else {
+            imgFilterTrafficelights.setBackgroundResource(R.drawable.traffic_lights);
+            textviewLableTraffic.setTypeface(null, Typeface.NORMAL);
+
+            dbHandler.deleteSelectedITem("3");
+            popupWindowTraffic.dismiss();
+            isPopupTraffic = false;
+
+            ArrayList<String> arrayAllvalue = new ArrayList<String>();
+            for (int k = 0; k < arraylistPopupViewforFilter.size(); k++) {
+                arrayAllvalue.add(arraylistPopupViewforFilter.get(k).getStrOriginalValue());
+            }
+
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                //if(arrayTasklistafterFiltered.size() > 0){
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+                //}
+
+            }
+            //adapterTasklist.filterTrafficLight(arrayAllvalue);
+            //adapterTasklist.setIsFiltered(true);
+        }
+    }
+
+    public void filterStatus(StatusFilterAdapter adapterStatus) {
+        ArrayList<FilterModelClass> arrayList = adapterStatus.getSelectedItem();
+        //ArrayList<String> arraylistOriginalValue = new ArrayList<String>();
+        arrayStatusfilter = new ArrayList<String>();
+        ArrayList<Integer> arrayDrawable = new ArrayList<>();
+        if (arrayList.size() > 0) {
+
+            dbHandler.deleteSelectedITem("2");
+            ArrayList<String> arrayStringName = new ArrayList<>();
+            for (int i = 0; i < arrayList.size(); i++) {
+                arrayStringName.add(arrayList.get(i).getName());
+                arrayStatusfilter.add(arrayList.get(i).getStrOriginalValue());
+                arrayDrawable.add(arrayList.get(i).getDrawable());
+            }
+            String commaSeperated = "";
+            String commaSeperatedID = "";
+            commaSeperated = TextUtils.join(",", arrayStringName);
+            dbHandler.addSelectedItem("2", commaSeperated);
+            popupWindowStatus.dismiss();
+            isPopupStatus = false;
+
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                //if(arrayTasklistafterFiltered.size() > 0){
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+                //}
+            }
+            if (arrayList.size() > 1) {
+                textviewLableStatus.setTypeface(null, Typeface.BOLD);
+                imgFilterStatus.setBackgroundResource(R.drawable.status_plus);
+
+            } else {
+                imgFilterStatus.setBackgroundResource(arrayDrawable.get(0));
+                textviewLableStatus.setTypeface(null, Typeface.NORMAL);
+            }
+
+        } else {
+            imgFilterStatus.setBackgroundResource(R.drawable.status_icon);
+            textviewLableStatus.setTypeface(null, Typeface.NORMAL);
+            dbHandler.deleteSelectedITem("2");
+            popupWindowStatus.dismiss();
+            isPopupStatus = false;
+            ArrayList<String> arrayAllvalue = new ArrayList<String>();
+            for (int k = 0; k < arraylistPopupViewforFilter.size(); k++) {
+                arrayAllvalue.add(arraylistPopupViewforFilter.get(k).getStrOriginalValue());
+            }
+
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                //if(arrayTasklistafterFiltered.size() > 0){
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+                //}
+            }
+            //adapterTasklist.filterStatus(arrayAllvalue);
+            //adapterTasklist.setIsFiltered(true);
+        }
+    }
+
+    public void gettingTodayDateForService() {
+        String todayDate = GlobalClass.dateFormateChanged2(new Date());
+        ArrayList<String> arraylistTodaydate = new ArrayList<>();
+        arraylistTodaydate.add(todayDate);
+        arraylistTodaydate.add(todayDate);
+        dateArray = new String[arraylistTodaydate.size()];
+        dateArray = arraylistTodaydate.toArray(dateArray);
+    }
+
+    /*private void footerLayout() {
+        relativeFooter = (RelativeLayout) view.findViewById(R.id.footer);
+        relativeFooter.addView(new FooterView(getActivity(), "Dashboard"));
+    }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        preferenes.saveIsfirstTime(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        preferenes.saveIsfirstTime(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    /* this is interface method will call when any date is selected from dialog */
+    @Override
+    public void clickedOkButton(ArrayList<String> selectedDates)
+    {
+        if (selectedDates.size() > 0) {
+            arrayFinishDate = new ArrayList<>();
+            arrayFinishDate.addAll(selectedDates);
+            LogApp.e(" $$$$$$$$$$$ ", " clicked ok button fire : " + selectedDates);
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+            }
+            if (selectedDates.size() > 1) {
+                textviewSelectedDates.setText(selectedDates.get(0).toString() + " +");
+            } else {
+                textviewSelectedDates.setText(selectedDates.get(0).toString());
+            }
+        } else {
+            textviewSelectedDates.setText("Selected Dates");
+            arrayFinishDate = new ArrayList<>();
+            if (adapterTasklist != null) {
+                arrayTasklistafterFiltered = new ArrayList<>();
+                arrayTasklistafterFiltered = adapterTasklist.filterListview(strTaskFilter, strProjectFilter, arrayFinishDate, arrayTrafficLightfilter,
+                        arrayStatusfilter, arrayDatefilter, arrayTasklistAllDataPermenent);
+                isFilterFired = true;
+                setAdapterforFilter(arrayTasklistafterFiltered);
+            }
+        }
+    }
+
+    public static void showDatePickerDialog(Context con)
+    {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        DatePickerDialog datePickerDialog = new DatePickerDialog(con,
+                new DatePickerDialog.OnDateSetListener()
+                {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        String selectedDate = dayOfMonth+"."+(monthOfYear+1)+"."+year;
+                        Date Dateselected = GlobalClass.convertStringToDate(selectedDate);
+
+                        Log.e(" %%%%%%% "," called interface : "+Dateselected);
+                        allDatesBetweenDates = new ArrayList<>();
+                        allDatesBetweenDates = calendarPicker.getSelectedDates();
+                        if (allDatesBetweenDates.size() > 0) {
+                            if (allDatesBetweenDates.contains(Dateselected)) {
+                                if (Dateselected.after(allDatesBetweenDates.get(0))) {
+                                    selectedDatesStartEnd = new ArrayList<>();
+                                    selectedDatesStartEnd.add(allDatesBetweenDates.get(0));
+                                    selectedDatesStartEnd.add(Dateselected);
+                                    calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                                            .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                                            .withSelectedDates(selectedDatesStartEnd);
+                                } else {
+                                    if (Dateselected.equals(allDatesBetweenDates.get(0))) {
+                                        selectedDatesStartEnd = new ArrayList<>();
+                                        selectedDatesStartEnd.add(Dateselected);
+                                        ///selectedDatesStartEnd.add(allDatesBetweenDates.get(allDatesBetweenDates.size()-1));
+                                        calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                                                .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                                                .withSelectedDates(selectedDatesStartEnd);
+                                    } else {
+                                        selectedDatesStartEnd = new ArrayList<>();
+                                        selectedDatesStartEnd.add(Dateselected);
+                                        selectedDatesStartEnd.add(allDatesBetweenDates.get(allDatesBetweenDates.size() - 1));
+                                        calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                                                .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                                                .withSelectedDates(selectedDatesStartEnd);
+                                    }
+
+                                }
+                            } else {
+                                selectedDatesStartEnd = new ArrayList<>();
+                                allDatesBetweenDates.add(Dateselected);
+                                Collections.sort(allDatesBetweenDates);
+
+                                selectedDatesStartEnd.add(allDatesBetweenDates.get(0));
+                                selectedDatesStartEnd.add(allDatesBetweenDates.get(allDatesBetweenDates.size() - 1));
+                                calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                                        .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                                        .withSelectedDates(selectedDatesStartEnd);
+                            }
+
+                        } else {
+                            selectedDatesStartEnd = new ArrayList<>();
+                            selectedDatesStartEnd.add(Dateselected);
+                            calendarPicker.init(lastYear.getTime(), nextYear.getTime()) //
+                                    .inMode(CalendarPickerView.SelectionMode.RANGE) //
+                                    .withSelectedDates(selectedDatesStartEnd);
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+    @Override
+    public void onAttach(Activity context)
+    {
+        super.onAttach(context);
+        activity = context;
+        //((HomeActivity)context).interfaceLoadWebview = this;
+        taskclicked =(Taskclicked) context;
+        //((HomeActivity)context).interfaceLoadWebview = this;
+    }
+}

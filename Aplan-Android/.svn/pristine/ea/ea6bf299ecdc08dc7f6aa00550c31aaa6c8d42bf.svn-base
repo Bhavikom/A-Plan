@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@color/white_color">
+
+    <!--start for header-->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/seventee_sp"
+        android:layout_alignParentTop="true"
+
+        android:background="@color/header_color">
+
+        <TextView
+            android:id="@+id/textview_generalfilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:text="@string/genralfilter"
+            android:textColor="@color/textview_presseffect"
+            android:textSize="@dimen/twentee_sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/UserDefineFilter"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/header_textsize"/>
+
+        <TextView
+            android:id="@+id/textview_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/twentee_sp"
+            android:text="@string/Done"
+            android:textColor="@color/textview_presseffect"
+            android:textSize="@dimen/twentee_sp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearBottom"
+        android:layout_below="@+id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview1"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text1"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext1Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview2"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text2"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext2Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview3"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text3"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext3Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview4"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text4"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext4Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview5"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text5"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext5Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview6"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text6"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/edittext6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:layout_marginRight="@dimen/twentee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:paddingLeft="@dimen/ten_sp"
+                    android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext6Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview7"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text7"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/edittext7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:layout_marginRight="@dimen/twentee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:paddingLeft="@dimen/ten_sp"
+                    android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext7Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview8"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text8"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext8Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview9"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text9"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext9"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext9Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview10"
+                    android:layout_width="@dimen/hundred_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/key_text10"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/edittext10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    <EditText
+                        android:id="@+id/edittext10Number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_marginRight="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:textSize="@dimen/twentee_sp"/>
+                    </FrameLayout>
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+
+                android:id="@+id/reletiveswitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_marginTop="@dimen/ten_sp"
+                android:layout_marginBottom="@dimen/fourtee_sp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/txtText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/switchnumber"
+                    android:layout_marginRight="@dimen/twentee_sp"
+                    android:text="Text"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/textnumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/twentee_sp"
+                    android:text="Number"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <Switch
+                    android:layout_width="@dimen/seventee_sp"
+                    android:layout_height="@dimen/twentee_five_sp"
+                    android:id="@+id/switchnumber"
+                    android:track="@drawable/switch_track_selector"
+                    android:switchMinWidth="50dp"
+                    android:layout_marginRight="@dimen/twentee_sp"
+                    android:thumb="@drawable/switch_thumb_selector"
+                    android:layout_alignBaseline="@+id/textnumber"
+                    android:layout_alignBottom="@+id/textnumber"
+                    android:layout_toLeftOf="@+id/textnumber"
+                    android:layout_toStartOf="@+id/textnumber"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:paddingBottom="@dimen/ten_sp"
+        android:id="@+id/linearBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:gravity="center"
+        android:weightSum="1">
+
+        <CheckBox
+            android:id="@+id/checkbox_donotshowcompletedproject"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/footer"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:layout_weight="0.9"
+            android:text="@string/do_not_show_all_project"
+            android:textSize="20dp"/>
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+
+                android:layout_marginRight="20dp"
+                android:src="@drawable/delete"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+

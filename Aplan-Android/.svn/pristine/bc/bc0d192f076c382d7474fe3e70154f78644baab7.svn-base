@@ -1,0 +1,286 @@
+
+package com.ssoft.aplanproject.Model;
+
+
+import javax.annotation.Generated;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+@Generated("org.jsonschema2pojo")
+public class Payload {
+
+    @SerializedName("__type")
+    @Expose
+    private String type;
+    @SerializedName("ActiveUsers")
+    @Expose
+    private Integer activeUsers;
+    @SerializedName("AllowedUsaers")
+    @Expose
+    private Integer allowedUsaers;
+    @SerializedName("Database")
+    @Expose
+    private Object database;
+    @SerializedName("DatabasePassword")
+    @Expose
+    private Object databasePassword;
+    @SerializedName("DatabaseUrl")
+    @Expose
+    private Object databaseUrl;
+    @SerializedName("DatabaseUser")
+    @Expose
+    private Object databaseUser;
+    @SerializedName("Domain")
+    @Expose
+    private String domain;
+    @SerializedName("Email")
+    @Expose
+    private String email;
+    @SerializedName("FullName")
+    @Expose
+    private String fullName;
+    @SerializedName("Id")
+    @Expose
+    private Integer id;
+    @SerializedName("Password")
+    @Expose
+    private Object password;
+    @SerializedName("UserName")
+    @Expose
+    private String userName;
+
+    /**
+     *
+     * @return
+     *     The type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     *
+     * @param type
+     *     The __type
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     *
+     * @return
+     *     The activeUsers
+     */
+    public Integer getActiveUsers() {
+        return activeUsers;
+    }
+
+    /**
+     *
+     * @param activeUsers
+     *     The ActiveUsers
+     */
+    public void setActiveUsers(Integer activeUsers) {
+        this.activeUsers = activeUsers;
+    }
+
+    /**
+     *
+     * @return
+     *     The allowedUsaers
+     */
+    public Integer getAllowedUsaers() {
+        return allowedUsaers;
+    }
+
+    /**
+     *
+     * @param allowedUsaers
+     *     The AllowedUsaers
+     */
+    public void setAllowedUsaers(Integer allowedUsaers) {
+        this.allowedUsaers = allowedUsaers;
+    }
+
+    /**
+     *
+     * @return
+     *     The database
+     */
+    public Object getDatabase() {
+        return database;
+    }
+
+    /**
+     *
+     * @param database
+     *     The Database
+     */
+    public void setDatabase(Object database) {
+        this.database = database;
+    }
+
+    /**
+     *
+     * @return
+     *     The databasePassword
+     */
+    public Object getDatabasePassword() {
+        return databasePassword;
+    }
+
+    /**
+     *
+     * @param databasePassword
+     *     The DatabasePassword
+     */
+    public void setDatabasePassword(Object databasePassword) {
+        this.databasePassword = databasePassword;
+    }
+
+    /**
+     *
+     * @return
+     *     The databaseUrl
+     */
+    public Object getDatabaseUrl() {
+        return databaseUrl;
+    }
+
+    /**
+     *
+     * @param databaseUrl
+     *     The DatabaseUrl
+     */
+    public void setDatabaseUrl(Object databaseUrl) {
+        this.databaseUrl = databaseUrl;
+    }
+
+    /**
+     *
+     * @return
+     *     The databaseUser
+     */
+    public Object getDatabaseUser() {
+        return databaseUser;
+    }
+
+    /**
+     *
+     * @param databaseUser
+     *     The DatabaseUser
+     */
+    public void setDatabaseUser(Object databaseUser) {
+        this.databaseUser = databaseUser;
+    }
+
+    /**
+     *
+     * @return
+     *     The domain
+     */
+    public String getDomain() {
+        return domain;
+    }
+
+    /**
+     *
+     * @param domain
+     *     The Domain
+     */
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    /**
+     *
+     * @return
+     *     The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     *
+     * @param email
+     *     The Email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     *
+     * @return
+     *     The fullName
+     */
+    public String getFullName() {
+        return fullName;
+    }
+
+    /**
+     *
+     * @param fullName
+     *     The FullName
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
+     *
+     * @return
+     *     The id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     *     The Id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     *
+     * @return
+     *     The password
+     */
+    public Object getPassword() {
+        return password;
+    }
+
+    /**
+     *
+     * @param password
+     *     The Password
+     */
+    public void setPassword(Object password) {
+        this.password = password;
+    }
+
+    /**
+     *
+     * @return
+     *     The userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     *
+     * @param userName
+     *     The UserName
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+}

@@ -1,0 +1,25 @@
+package com.ssoft.aplanproject.Model;
+
+/**
+ * Created by SSOFT4 on 7/25/2016.
+ */
+public class TableDataModelClass
+{
+    public String name;
+    public String width;
+    public int image;
+    public boolean selected;
+    public String Id;
+
+
+
+    public TableDataModelClass(String _name, String _width, int _image, boolean _selected,String id)
+    {
+        name = _name;
+        width = _width;
+        image = _image;
+        selected = _selected;
+        Id = id;
+
+    }
+}

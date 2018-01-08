@@ -1,0 +1,98 @@
+
+package de.smacsoftwares.aplanapp.Model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Child {
+
+    @SerializedName("Availability")
+    @Expose
+    private Object availability;
+    @SerializedName("Description")
+    @Expose
+    private Object description;
+    @SerializedName("Id")
+    @Expose
+    private Integer id;
+    @SerializedName("IsDeleted")
+    @Expose
+    private Boolean isDeleted;
+    @SerializedName("Name")
+    @Expose
+    private String name;
+    @SerializedName("ResourceId")
+    @Expose
+    private String resourceId;
+    @SerializedName("ResourceType")
+    @Expose
+    private Integer resourceType;
+    @SerializedName("Unit")
+    @Expose
+    private Integer unit;
+
+    public Object getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Object availability) {
+        this.availability = availability;
+    }
+
+    public Object getDescription() {
+        return description;
+    }
+
+    public void setDescription(Object description) {
+        this.description = description;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public Integer getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(Integer resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
+    }
+
+}

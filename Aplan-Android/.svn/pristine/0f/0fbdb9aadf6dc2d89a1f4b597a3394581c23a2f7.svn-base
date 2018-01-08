@@ -1,0 +1,63 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@drawable/tutorial_first"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  tools:context="com.ssoft.aplanproject.fragment.FragmentTutorial1">
+
+        <!-- TODO: Update blank fragment layout -->
+        <ImageView
+            android:layout_width="@dimen/two_hundred"
+            android:layout_height="@dimen/two_hundred"
+            android:layout_marginTop="@dimen/fiftee_sp"
+            android:src="@drawable/app_logo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/hundred_sp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't show it again"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/twentee_sp"
+                />
+
+            <Switch
+                android:layout_width="@dimen/seventee_sp"
+                android:layout_height="@dimen/twentee_five_sp"
+                android:id="@+id/switchbutton"
+                android:track="@drawable/switch_track_selector"
+                android:switchMinWidth="50dp"
+                android:checked="false"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:thumb="@drawable/switch_thumb_selector"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:layout_marginRight="@dimen/ten_sp"
+        android:text="Skip"
+        android:id="@+id/textskip"
+        android:textColor="@color/black_color"
+        android:textSize="@dimen/twentee_five_sp"/>
+</RelativeLayout>

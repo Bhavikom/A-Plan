@@ -1,0 +1,45 @@
+package com.ssoft.aplanproject.Model;
+
+import java.util.Date;
+
+/**
+ * Created by SSoft-13 on 18-06-2016.
+ */
+
+public class SelectedDateModelClass
+{
+    Date date;
+    String strdate;
+
+    public String getStrdate()
+    {
+        return strdate;
+    }
+
+    public void setStrdate(String strdate)
+    {
+        this.strdate = strdate;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
+    public int getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(int position)
+    {
+        this.position = position;
+    }
+
+    int position;
+}

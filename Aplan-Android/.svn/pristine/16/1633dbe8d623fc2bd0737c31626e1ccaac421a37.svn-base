@@ -1,0 +1,96 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.TutorialActivity;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+public class FragmentTutorial1 extends Fragment {
+    ToggleButton toggleButton;
+    PreferencesClass preferences;
+    TextView textViewSkip, textViewLink;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_tutorial1, container, false);
+
+
+        textViewSkip = (TextView) rootView.findViewById(R.id.textskip);
+        textViewSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((TutorialActivity) getActivity()).viewPager.setCurrentItem(7);
+
+            }
+        });
+
+        textViewLink = (TextView) rootView.findViewById(R.id.textViewLink);
+        SpannableString ss = new SpannableString(getString(R.string.first_screen));
+        ss.setSpan(new URLSpanNoUnderline("http://www.braintool.com"), 256, 273, 0);
+        ss.setSpan(new ForegroundColorSpan(Color.BLUE), 256, 273, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+       /* ss.setSpan(new MyClickableSpan(), 256, 273, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // 32 to 46 stack is clickable*/
+        textViewLink.setText(ss);
+
+        textViewLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        preferences = new PreferencesClass(getActivity());
+        if (preferences.isTutorialShow()) {
+
+        } else {
+
+        }
+
+        return rootView;
+
+    }
+
+    public class URLSpanNoUnderline extends URLSpan {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+        }
+    }
+
+    class MyClickableSpan extends ClickableSpan {
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        public void onClick(View textView) {
+            // when your click on Privacy Policy link
+            Toast.makeText(getActivity(), "link click", Toast.LENGTH_LONG).show();
+
+
+        }
+
+        /*@Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(Color.parseColor("#4F83CF"));
+           *//* ds.setUnderlineText(true);*//*
+        }*/
+    }
+}

@@ -1,0 +1,16 @@
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="false">
+    <shape
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:padding="10dp"
+        android:shape="rectangle">
+        <solid android:color="@android:color/transparent"/>
+    </shape>
+    </item>
+
+    <item android:state_checked="true"
+          android:drawable="@drawable/checkbox_blue" />
+
+</selector>

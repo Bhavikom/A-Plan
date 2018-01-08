@@ -1,0 +1,206 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.HomeActivity;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceLoadWebview;
+import com.ssoft.aplanproject.util.InterfaceforSelectFilter;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+/**
+ * Created by SSOFT4 on 10/25/2016.
+ */
+
+public class FragmentSelectFilter extends Fragment implements View.OnClickListener,InterfaceforSelectFilter{
+    public InterfaceLoadWebview interfaceLoadWebview;
+    RelativeLayout relativeFolder,relativeText,relativeDate,relativeUserDefined;
+    View rootView;
+    TextView txtlink;
+    DatabaseHandler dbHandler;
+    PreferencesClass preferences;
+    Context context;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_select_filter, container,false);
+        initControl();
+        return rootView;
+    }
+
+    public void initControl()
+    {
+        getActivity();
+
+        preferences = new PreferencesClass(getActivity());
+        dbHandler = new DatabaseHandler(getActivity());
+        relativeFolder= (RelativeLayout)rootView.findViewById(R.id.relative_folder);
+        relativeText= (RelativeLayout)rootView.findViewById(R.id.relative_text);
+        relativeDate= (RelativeLayout)rootView.findViewById(R.id.relative_date);
+        relativeUserDefined= (RelativeLayout)rootView.findViewById(R.id.relative_userdefined);
+
+        relativeFolder.setOnClickListener(this);
+        relativeText.setOnClickListener(this);
+        relativeDate.setOnClickListener(this);
+        relativeUserDefined.setOnClickListener(this);
+
+        txtlink= (TextView) rootView.findViewById(R.id.txt_ssoft_link);
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        SpannableString ss = new SpannableString(getString(R.string.my_smsc_link));
+        ss.setSpan(new URLSpanNoUnderline("http://www.smacsoftwares.de/"),0,33, 0);
+        ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,33, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txtlink.setText(ss);
+
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        /* this is for date filter to get data from database*/
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.DateFilter)) > 0)
+        {
+                relativeDate.setBackgroundResource(R.drawable.rounded_rectangle_grey2);
+        }
+        else {
+                relativeDate.setBackgroundResource(R.drawable.rounded_rectangle_without_border);
+        }
+
+        /* this is for folder filter to get data from database*/
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.FolderFilter)) > 0)
+        {
+            relativeFolder.setBackgroundResource(R.drawable.rounded_rectangle_grey2);
+        }
+        else {
+            relativeFolder.setBackgroundResource(R.drawable.rounded_rectangle_without_border);
+        }
+
+        /* this is for user defined to get data from database*/
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.UserDefindedFilterForNumber)) > 0
+                || dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.UserDefinedFilter)) > 0)
+        {
+            relativeUserDefined.setBackgroundResource(R.drawable.rounded_rectangle_grey2);
+        }
+        else {
+            relativeUserDefined.setBackgroundResource(R.drawable.rounded_rectangle_without_border);
+        }
+
+        /* this is for text filter to get data from database*/
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.TextFilter)) > 0)
+        {
+            relativeText.setBackgroundResource(R.drawable.rounded_rectangle_grey2);
+        }
+        else {
+            relativeText.setBackgroundResource(R.drawable.rounded_rectangle_without_border);
+        }
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if(v== relativeText){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentFilterText fragment = new FragmentFilterText();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
+        if(v== relativeDate){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentFilterDate fragment = new FragmentFilterDate();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
+        if(v== relativeFolder){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentFilterFolder fragment = new FragmentFilterFolder();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(v== relativeUserDefined){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentFilterUserDefined fragment = new FragmentFilterUserDefined();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+
+
+    public class URLSpanNoUnderline extends URLSpan
+    {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(true);
+        }
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        clearReferences();
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+/*        clearReferences();*/
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+    private void clearReferences()
+    {
+
+    }
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        context = activity;
+        ((HomeActivity)context).interfaceforSelectFilter = this;
+    }
+
+    @Override
+    public void callSelectFilterFragment()
+    {
+            initControl();
+            GlobalClass.showToast(getActivity()," interface callled : ");
+    }
+
+    @Override
+    public void callUpdateFilter()
+    {
+
+    }
+
+}

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative_folder_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_color">
+    <LinearLayout
+        android:layout_above="@+id/linearBottom"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--start for header-->
+        <RelativeLayout
+            android:layout_weight="0.06"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_alignParentTop="true"
+            android:background="@color/header_color">
+
+            <LinearLayout
+                android:id="@+id/linearback"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgback"
+                    android:layout_width="@dimen/thirtee_sp"
+                    android:layout_height="@dimen/thirtee_sp"
+                    android:src="@drawable/back_button_selector"/>
+                <TextView
+                    android:id="@+id/textview_generalfilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/general_filte_title"
+                    android:visibility="gone"
+                    android:textColor="@color/textview_presseffect"
+                    android:textSize="@dimen/twentee_sp"/>
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/textview_lable_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/filterfolder_title"
+                android:textColor="@color/red"
+                android:textSize="@dimen/header_textsize"/>
+
+            <TextView
+                android:id="@+id/textview_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:text="@string/done"
+                android:textColor="@color/textview_presseffect"
+                android:textSize="@dimen/twentee_sp"/>
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="@color/textview_color_grey" />
+        <LinearLayout
+            android:layout_weight="0.94"
+            android:layout_width="match_parent"
+            android:layout_height="0sp">
+        <ListView
+            android:layout_above="@+id/linearBottom"
+            android:id="@+id/listviewFolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:paddingBottom="@dimen/ten_sp"
+        android:id="@+id/linearBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:gravity="center"
+        android:weightSum="1">
+
+        <CheckBox
+            android:id="@+id/checkbox_donotshowcompletedproject"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/footer"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:layout_weight="0.9"
+            android:text="@string/do_not_show_all_project"
+            android:textSize="20dp"/>
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="@dimen/fourtee_sp"
+                android:layout_height="@dimen/fourtee_sp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+
+                android:layout_marginRight="20dp"
+                android:src="@drawable/delete"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

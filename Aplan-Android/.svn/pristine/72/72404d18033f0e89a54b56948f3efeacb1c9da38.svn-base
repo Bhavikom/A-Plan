@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="horizontal">
+
+
+    <TextView android:id="@+id/textweekmitem"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="@dimen/ten_sp"
+              android:layout_marginLeft="@dimen/twentee_sp"
+              android:background="@drawable/list_selector"
+              android:gravity="left"
+              android:text="dates"
+              android:textColor="@color/white_color"
+              android:textSize="@dimen/twentee_sp"
+              android:textStyle="bold"/>
+
+
+</LinearLayout>

@@ -1,0 +1,206 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import java.util.ArrayList;
+
+/**
+ * Created by SSOFT4 on 7/18/2016.
+ */
+public class FragementFilterUserDefined extends Fragment implements View.OnClickListener {
+    DatabaseHandler dbHandler;
+    PreferencesClass preferences;
+    TextView textviewBack, textview1, textview2, textview3, textview4, textview5, textview6,
+            textview7, textview8, textview9, textview10, textviewDone,textviewGeneralFilter;
+    EditText edit1, edit2, edit3, edit4, edit5, edit6, edit7, edit8, edit9, edit10;
+    Switch btnswitch;
+    View rootView;
+    RelativeLayout relativeFooter;
+    String strText1 = "", strText2 = "", strText3 = "", strText4 = "", strText5 = "", strText6 = "", strText7 = "", strText8 = "", strText9 = "", strText10 = "";
+    ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+    ArrayList<String> arraylistValue = new ArrayList<>();
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_user_defined_filter, container, false);
+        initControl();
+        return rootView;
+    }
+
+    public void initControl() {
+
+        dbHandler = new DatabaseHandler(getActivity());
+        preferences = new PreferencesClass(getActivity());
+        textview1 = (TextView) rootView.findViewById(R.id.textview1);
+        textview2 = (TextView) rootView.findViewById(R.id.textview2);
+        textview3 = (TextView) rootView.findViewById(R.id.textview3);
+        textview4 = (TextView) rootView.findViewById(R.id.textview4);
+        textview5 = (TextView) rootView.findViewById(R.id.textview5);
+        textview6 = (TextView) rootView.findViewById(R.id.textview6);
+        textview7 = (TextView) rootView.findViewById(R.id.textview7);
+        textview8 = (TextView) rootView.findViewById(R.id.textview8);
+        textview9 = (TextView) rootView.findViewById(R.id.textview9);
+        textview10 = (TextView) rootView.findViewById(R.id.textview10);
+
+        edit1 = (EditText) rootView.findViewById(R.id.edittext1);
+        edit2 = (EditText) rootView.findViewById(R.id.edittext2);
+        edit3 = (EditText) rootView.findViewById(R.id.edittext3);
+        edit4 = (EditText) rootView.findViewById(R.id.edittext4);
+        edit5 = (EditText) rootView.findViewById(R.id.edittext5);
+        edit6 = (EditText) rootView.findViewById(R.id.edittext6);
+        edit7 = (EditText) rootView.findViewById(R.id.edittext7);
+        edit8 = (EditText) rootView.findViewById(R.id.edittext8);
+        edit9 = (EditText) rootView.findViewById(R.id.edittext9);
+        edit10 = (EditText) rootView.findViewById(R.id.edittext10);
+
+        textviewBack = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewBack.setOnClickListener(this);
+        textviewDone = (TextView)rootView.findViewById(R.id.textview_done);
+        textviewDone.setOnClickListener(this);
+        textviewGeneralFilter = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewGeneralFilter.setOnClickListener(this);
+        btnswitch = (Switch)rootView.findViewById(R.id.switchnumber);
+        btnswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    textview1.setText("Number1");
+                    textview2.setText("Number2");
+                    textview3.setText("Number3");
+                    textview4.setText("Number4");
+                    textview5.setText("Number5");
+                    textview6.setText("Number6");
+                    textview7.setText("Number7");
+                    textview8.setText("Number8");
+                    textview9.setText("Number9");
+                    textview10.setText("Number10");
+
+                } else {
+                    textview1.setText("Text1");
+                    textview2.setText("Text1");
+                    textview3.setText("Text1");
+                    textview4.setText("Text1");
+                    textview5.setText("Text1");
+                    textview6.setText("Text1");
+                    textview7.setText("Text1");
+                    textview8.setText("Text1");
+                    textview9.setText("Text1");
+                    textview10.setText("Text1");
+                }
+
+            }
+        });
+        if (dbHandler.getCursorCountFilterData(preferences.getUserID()) > 0) {
+            arraylistgetedFromDatabase = dbHandler.getFilterData("UserDefinedFilter", preferences.getUserID());
+        }
+        arraylistValue = new ArrayList<>();
+        if (arraylistgetedFromDatabase.size() > 0) {
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i = 0; i < split.length; i++) {
+                String[] spliteInner = split[i].split("-");
+                arraylistValue.add(spliteInner[1]);
+            }
+
+        }
+        for (int i = 0; i < arraylistValue.size(); i++) {
+            LogApp.e(" ###### ", " get value from db splited : " + arraylistValue.get(i));
+        }
+        if (arraylistValue.size() > 0) {
+            edit1.setText(setTextinEdittext(arraylistValue.get(0)));
+            edit2.setText(setTextinEdittext(arraylistValue.get(1)));
+            edit3.setText(setTextinEdittext(arraylistValue.get(2)));
+            edit4.setText(setTextinEdittext(arraylistValue.get(3)));
+            edit5.setText(setTextinEdittext(arraylistValue.get(4)));
+            edit6.setText(setTextinEdittext(arraylistValue.get(5)));
+            edit7.setText(setTextinEdittext(arraylistValue.get(6)));
+            edit8.setText(setTextinEdittext(arraylistValue.get(7)));
+            edit9.setText(setTextinEdittext(arraylistValue.get(8)));
+            edit10.setText(setTextinEdittext(arraylistValue.get(9)));
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == textviewBack) {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragementSelectFilter fragment = new FragementSelectFilter();
+            //transaction.replace(R.id.container_home, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if (v == textviewDone) {
+            strText1 = "text1-" + getEdittextValue(edit1);
+            strText2 = "text2-" + getEdittextValue(edit2);
+            strText3 = "text3-" + getEdittextValue(edit3);
+            strText4 = "text4-" + getEdittextValue(edit4);
+            strText5 = "text5-" + getEdittextValue(edit5);
+            strText6 = "text6-" + getEdittextValue(edit6);
+            strText7 = "text7-" + getEdittextValue(edit7);
+            strText8 = "text8-" + getEdittextValue(edit8);
+            strText9 = "text9-" + getEdittextValue(edit9);
+            strText10 = "text10-" + getEdittextValue(edit10);
+            String finalCommaseperated = strText1 + "," + strText2 + "," + strText3 + "," + strText4 + "," + strText5 + "," + strText6 + "," +
+                    strText7 + "," + strText8 + "," + strText9 + "," + strText10;
+            dbHandler.deleteFilter(preferences.getUserID(), "UserDefinedFilter");
+            dbHandler.addFilterInfo("UserDefinedFilter", finalCommaseperated, "", "", preferences.getUserID());
+        }
+        if(v== textviewGeneralFilter)
+        {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragementSelectFilter fragment = new FragementSelectFilter();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+  /*  @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this, FragementSelectFilter.class);
+        startActivity(i);
+        finish();
+    }
+
+*//*    private void footerLayout() {
+        relativeFooter = (RelativeLayout) findViewById(R.id.footer);
+        relativeFooter.addView(new FooterView(this, "UserDefined"));
+    }
+*/
+    public String getEdittextValue(EditText edittext) {
+        String value = "";
+        if (edittext.getText().toString().equalsIgnoreCase("")) {
+            value = "null";
+        } else {
+            value = edittext.getText().toString();
+        }
+        return value;
+    }
+
+    public String setTextinEdittext(String text) {
+        String value = "";
+        if (text.equalsIgnoreCase("null") || text.equalsIgnoreCase("")) {
+            value = "";
+        } else {
+            value = text;
+        }
+        return value;
+    }
+}

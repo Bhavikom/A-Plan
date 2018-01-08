@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="@dimen/three_hundred_twenty"
+        android:layout_height="@dimen/three_hundred_twenty"
+        android:background="@drawable/custom_dialog_selected_date_background">
+        <ListView
+            android:choiceMode="singleChoice"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/ok"
+            android:id="@+id/listviewcriteria"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/ten_sp"
+            android:layout_marginRight="@dimen/ten_sp">
+        </ListView>
+    </RelativeLayout>
+</LinearLayout>

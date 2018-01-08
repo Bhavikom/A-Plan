@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reletive_table_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="de.smacsoftwares.aplanapp.fragment.FragmentTable">
+
+    <LinearLayout
+        android:id="@+id/lineartop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fourtee_sp"
+        android:background="@color/select_filter"
+        android:gravity="center"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/textview_lable_name"
+            android:textColor="@color/black"
+            android:gravity="left|center"
+            android:layout_weight="1.2"
+            android:textSize="@dimen/seventeen_sp"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@string/name"/>
+        <TextView
+            android:id="@+id/textview_lable_show"
+            android:textColor="@color/black"
+            android:gravity="left"
+            android:layout_weight="0.65"
+            android:textSize="@dimen/seventeen_sp"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@string/show"/>
+        <TextView
+            android:id="@+id/textview_lable_width"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_weight="0.75"
+            android:textSize="@dimen/seventeen_sp"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@string/width"/>
+    <LinearLayout
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25">
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <view
+        android:id="@+id/recyclerView"
+        class="android.support.v7.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lineartop"
+        android:layout_marginTop="@dimen/twentee_sp">
+
+    </view>
+
+</RelativeLayout>

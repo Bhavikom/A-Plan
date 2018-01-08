@@ -1,0 +1,688 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.ssoft.aplanproject.ClientResponsibleModel.ClientDataSetClass;
+import com.ssoft.aplanproject.ClientResponsibleModel.GroupDatasetClass;
+import com.ssoft.aplanproject.ClientResponsibleModel.ResourceDataSetClass;
+import com.ssoft.aplanproject.ClientResponsibleModel.ResponsibleDataSetClass;
+import com.ssoft.aplanproject.Model.ClientAndResponsiblePojo;
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.HomeActivity;
+import com.ssoft.aplanproject.adapter.ClientSpinnerAdapter;
+import com.ssoft.aplanproject.adapter.GroupAdapter;
+import com.ssoft.aplanproject.adapter.ResourceAdapter;
+import com.ssoft.aplanproject.adapter.ResponsibleSpinnerAdapter;
+import com.ssoft.aplanproject.adapter.SpinnerAdapter;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceLoadWebview;
+import com.ssoft.aplanproject.util.InterfaceServiceClass;
+import com.ssoft.aplanproject.util.InterfaceforSelectFilter;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+
+/**
+ * Created by SSOFT4 on 7/15/2016.
+ */
+public class FragmentFilterText extends Fragment implements View.OnClickListener,InterfaceforSelectFilter
+{
+    Context context;
+    DatabaseHandler dbHandler;
+    PreferencesClass preferences;
+
+    ArrayList<ResourceDataSetClass> arraylistResourceTemp;
+    ArrayList<GroupDatasetClass> arrayListGroup = new ArrayList<>();
+    ArrayList<ResourceDataSetClass> arrayListResource = new ArrayList<>();
+    HashMap<String, ArrayList<ResourceDataSetClass>> hashMap = new HashMap<String, ArrayList<ResourceDataSetClass>>();
+
+    TextView textviewBack,textviewDone,textviewGeneralFilter;
+    Spinner spinnerPriorityfrm,spinnerPriorityTo,spinnerClient,spinnerResponsible,spinnerLevel, spinnerGroup, spinnerResourse;
+    EditText edittextAnytext,edittextIdentNo,edittextTask;
+    ImageView imgDeleteFilter;
+
+    ArrayList<String> arraylistPriority = new ArrayList<>();
+    ArrayList<String> arraylistPriorityTo = new ArrayList<>();
+    ArrayList<String> arraylistLevel = new ArrayList<>();
+    ArrayList<ClientDataSetClass> arraylistClient = new ArrayList<>();
+    ArrayList<ResponsibleDataSetClass> arraylistResponsible = new ArrayList<>();
+    ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+    ArrayList<String> arraylistValue = new ArrayList<>();
+
+    SpinnerAdapter spinnerAdapter;
+    ResponsibleSpinnerAdapter responsibleAdapter;
+    ClientSpinnerAdapter clientAdapter;
+    GroupAdapter gruopAdapter;
+    ResourceAdapter resourceAdapter;
+
+    RelativeLayout relativeFooter;
+    View rootView;
+    String strAnytext="",strPriofrm="",strPrioto="",strLevel="",strIdentNo="",strTask="",strClient="",strResponsible="";
+    String strAnytextfinal="",strPriofrmfinal="",strPriotofinal="",strLevelfinal="",strIdentNofinal="",strTaskfinal="",
+            strClientfinal="",strResponsiblefinal="",strResourcefinal="",strGroupfinal="";
+    String strSelectedClient="",strSelectedResponsible="",strSelectedGroup="",strSelectedResource="";
+    String strSelectedClientId="",strSelectedResponsibleId="",strSelectedGroupId="",strSelectedResourceId="";
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_filter_text, container, false);
+        initControl();
+        return rootView;
+    }
+
+    public void initControl()
+    {
+        arrayListResource = new ArrayList<>();
+        arraylistResourceTemp = new ArrayList<>();
+        arraylistPriority = new ArrayList<>();
+        arraylistClient = new ArrayList<>();
+        arraylistPriorityTo = new ArrayList<>();
+        arraylistLevel = new ArrayList<>();
+        arraylistResponsible = new ArrayList<>();
+        arrayListGroup = new ArrayList<>();
+
+        dbHandler = new DatabaseHandler(getActivity());
+        preferences = new PreferencesClass(getActivity());
+        imgDeleteFilter = (ImageView)rootView.findViewById(R.id.img_delete);
+        imgDeleteFilter.setOnClickListener(this);
+        textviewBack = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewBack.setOnClickListener(this);
+        textviewDone= (TextView)rootView.findViewById(R.id.textview_done);
+        textviewDone.setOnClickListener(this);
+        textviewGeneralFilter = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewGeneralFilter.setOnClickListener(this);
+
+        edittextAnytext=(EditText)rootView.findViewById(R.id.edittext_anytext);
+        edittextIdentNo=(EditText)rootView.findViewById(R.id.edittext_identity);
+        edittextTask=(EditText)rootView.findViewById(R.id.edittext_task);
+
+
+        spinnerPriorityfrm = (Spinner)rootView.findViewById(R.id.spinner_priority);
+        spinnerPriorityTo = (Spinner)rootView.findViewById(R.id.spinner_to);
+        spinnerLevel = (Spinner)rootView.findViewById(R.id.spinner_level);
+        spinnerClient = (Spinner)rootView.findViewById(R.id.spinner_client);
+        spinnerResponsible = (Spinner)rootView.findViewById(R.id.spinner_responsible);
+        spinnerGroup = (Spinner)rootView.findViewById(R.id.spinner_group);
+        spinnerResourse = (Spinner)rootView.findViewById(R.id.spinner_resource);
+        addArraylistData();
+        spinnerAdapter = new SpinnerAdapter(getActivity(),arraylistPriority);
+        spinnerPriorityfrm.setAdapter(spinnerAdapter);
+
+        spinnerAdapter = new SpinnerAdapter(getActivity(),arraylistPriorityTo);
+        spinnerPriorityTo.setAdapter(spinnerAdapter);
+
+        spinnerAdapter = new SpinnerAdapter(getActivity(),arraylistLevel);
+        spinnerLevel.setAdapter(spinnerAdapter);
+
+         /* calling the service */
+        if(GlobalClass.isNetworkAvailable(getActivity()))
+        {
+            callClientAndResponsibleWebService();
+        }
+        else
+        {
+            GlobalClass.showToastInternet(getActivity());
+        }
+    }
+    @Override
+    public void onClick(View v) {
+        if(v== textviewBack){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSelectFilter fragment = new FragmentSelectFilter();
+            //transaction.replace(R.id.container_home, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(v==textviewDone)
+        {
+            dbHandler.deleteTextFilter(preferences.getUserID(),preferences.getProfileId());
+            if(edittextAnytext.getText().toString().equalsIgnoreCase("")){
+                strAnytext="null";
+            }
+            else {
+                strAnytext=edittextAnytext.getText().toString();
+                dbHandler.addTextFilter(getString(R.string.key_anyText),strAnytext,preferences.getUserID(),preferences.getProfileId());
+            }
+
+            if(edittextIdentNo.getText().toString().equalsIgnoreCase("")){
+                strIdentNo="null";
+            }
+            else {
+                strIdentNo=edittextIdentNo.getText().toString();
+                dbHandler.addTextFilter(getString(R.string.key_indentyNo),strIdentNo,preferences.getUserID(),preferences.getProfileId());
+            }
+
+            if(edittextTask.getText().toString().equalsIgnoreCase("")){
+                strTask="null";
+            }
+            else {
+                strTask=edittextTask.getText().toString();
+                dbHandler.addTextFilter(getString(R.string.key_Task),strTask,preferences.getUserID(),preferences.getProfileId());
+            }
+
+            if(strSelectedGroupId != null && !TextUtils.isEmpty(strSelectedGroupId)){
+                dbHandler.addTextFilter(getString(R.string.key_ResourceGroupId),strSelectedGroupId,preferences.getUserID(),preferences.getProfileId());
+            }
+            if(strSelectedResourceId != null && !TextUtils.isEmpty(strSelectedResourceId)){
+                dbHandler.addTextFilter(getString(R.string.key_ResourceId),strSelectedResourceId,preferences.getUserID(),preferences.getProfileId());
+            }
+
+            if(spinnerPriorityfrm.getSelectedItem().toString() != null && !spinnerPriorityfrm.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.blank_value))){
+                dbHandler.addTextFilter(getString(R.string.key_priFrom),spinnerPriorityfrm.getSelectedItem().toString(),preferences.getUserID(),preferences.getProfileId());
+            }
+            if(spinnerPriorityTo.getSelectedItem().toString() != null && !spinnerPriorityTo.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.blank_value))){
+                dbHandler.addTextFilter(getString(R.string.key_priTO),spinnerPriorityTo.getSelectedItem().toString(),preferences.getUserID(),preferences.getProfileId());
+            }
+            if(spinnerLevel.getSelectedItem().toString() != null && !spinnerLevel.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.blank_value))){
+                dbHandler.addTextFilter(getString(R.string.key_level),spinnerLevel.getSelectedItem().toString(),preferences.getUserID(),preferences.getProfileId());
+            }
+
+
+            strAnytextfinal="anytext="+strAnytext;
+            strIdentNofinal="identyno="+strIdentNo;
+            strTaskfinal="task="+strTask;
+
+            strPriofrmfinal="priofrm="+spinnerPriorityfrm.getSelectedItem().toString();
+            strPriotofinal="prioto="+spinnerPriorityTo.getSelectedItem().toString();
+            strLevelfinal="level="+spinnerLevel.getSelectedItem().toString();
+
+            strClientfinal="client="+strSelectedClient;
+            strResponsiblefinal="responsible="+strSelectedResponsible;
+            strGroupfinal = "group="+strSelectedGroup;
+            strResourcefinal = "resource="+strSelectedResource;
+
+            String finalCommaseperated = strAnytextfinal+","+strPriofrmfinal+","+strPriotofinal+","+strLevelfinal+","+strIdentNofinal
+                    +","+strTaskfinal+","+strClientfinal+","+strResponsiblefinal+","+strGroupfinal+","+strResourcefinal;
+
+            dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.TextFilter));
+
+            if(strAnytext.equalsIgnoreCase("null") && strIdentNo.equalsIgnoreCase("null") && strTask.equalsIgnoreCase("null")
+                    && spinnerPriorityfrm.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.blank_value))
+                    && spinnerPriorityTo.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.blank_value))
+                    && spinnerLevel.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.blank_value))
+                    && strSelectedClient.equalsIgnoreCase(getResources().getString(R.string.blank_value))
+                    && strSelectedResponsible.equalsIgnoreCase(getResources().getString(R.string.blank_value))
+                    && strSelectedGroup.equalsIgnoreCase(getResources().getString(R.string.blank_value))
+                    && strSelectedResource.equalsIgnoreCase(getResources().getString(R.string.blank_value))){
+            }
+            else {
+                dbHandler.addGeneralFilterInfo(getString(R.string.TextFilter),finalCommaseperated,"","",preferences.getUserID(),preferences.getProfileId());
+            }
+
+
+        }
+        if(v== textviewGeneralFilter)
+        {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSelectFilter fragment = new FragmentSelectFilter();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(v== imgDeleteFilter){
+            dbHandler.deleteTextFilter(preferences.getUserID(),preferences.getProfileId());
+            dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.TextFilter));
+            edittextAnytext.setText("");
+            edittextIdentNo.setText("");
+            edittextTask.setText("");
+            initControl();
+        }
+
+    }
+
+    public void addArraylistData()
+    {
+        arraylistPriority.add(getResources().getString(R.string.blank_value));
+        arraylistPriorityTo.add(getResources().getString(R.string.blank_value));
+        arraylistLevel.add(getResources().getString(R.string.blank_value));
+        for (int i = 1;i<=100;i++){
+            arraylistPriority.add("item"+i);
+            arraylistPriorityTo.add("item"+i);
+            arraylistLevel.add("item"+i);
+            //arraylistClient.add("item"+i);
+           // arraylistResponsible.add("item"+i);
+        }
+    }
+    public String getEdittextValue(EditText edittext)
+    {
+        String value="";
+        if(edittext.getText().toString().equalsIgnoreCase("")){
+            value="null";
+        }
+        else {
+            value=edittext.getText().toString();
+        }
+        return value;
+    }
+    public String setTextinEdittext(String text)
+    {
+        String value="";
+        if(text.equalsIgnoreCase("null") || text.equalsIgnoreCase(""))
+        {
+            value="";
+        }
+        else
+        {
+            value=text;
+        }
+        return  value;
+    }
+    private void callClientAndResponsibleWebService()
+    {
+        try
+        {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(),"","Please wait...",false,false);
+            //Creating a rest adapter
+            String url = preferences.getDomain()+"Get";
+            //String url = "http://138.201.245.106/Aplan/management/Get";
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+            interfaceObject.callClientResponsible(new Callback<ClientAndResponsiblePojo>()
+            {
+                @Override
+                public void success(ClientAndResponsiblePojo clientAndResponsiblePojo, Response response)
+                {
+                    String responseText = new Gson().toJson(clientAndResponsiblePojo);
+                    LogApp.e(" responsible client  ", " response from retro : " + responseText);
+                    LogApp.e(" Client responsible success "," response from service : "+response.toString());
+                    if(clientAndResponsiblePojo.getStatus()==0)
+                    {
+                        try
+                        {
+                            JSONObject obj = (JSONObject) new JSONTokener(responseText).nextValue();
+                            JSONObject objPayload = obj.getJSONObject("Payload");
+                            JSONArray jsonArrayResource = objPayload.getJSONArray("Resources");
+
+                            if(jsonArrayResource.length() > 0){
+                                hashMap = new HashMap<String, ArrayList<ResourceDataSetClass>>();
+                                arrayListGroup = new ArrayList<GroupDatasetClass>();
+                                for (int i=0;i<jsonArrayResource.length();i++){
+
+                                    JSONObject objInner = jsonArrayResource.getJSONObject(i);
+                                    if(i==0){
+                                        addBlankGroup();
+                                    }
+                                    String GroupId=objInner.getString("Id");
+                                    String GroupName=objInner.getString("Name");
+                                    GroupDatasetClass group = new GroupDatasetClass();
+                                    group.setGroupId(GroupId);
+                                    group.setGroupName(GroupName);
+                                    arrayListGroup.add(group);
+                                    LogApp.e(" in outer looop "," Resource Name : "+GroupName);
+                                    if(objInner.has("Childs")){
+                                        JSONArray jsonArrayChild = objInner.getJSONArray("Childs");
+                                        arrayListResource = new ArrayList<ResourceDataSetClass>();
+                                        if(jsonArrayChild.length() > 0){
+                                            for (int k=0;k<jsonArrayChild.length();k++){
+                                                JSONObject objChild = jsonArrayChild.getJSONObject(k);
+                                                if(k==0){
+                                                    //addBlankResource();
+                                                }
+                                                String ResourceName= objChild.getString("Name");
+                                                String Id= objChild.getString("Id");
+                                                String IsDeleted= objChild.getString("IsDeleted");
+                                                String ResourceId= objChild.getString("ResourceId");
+                                                String ResourceType= objChild.getString("ResourceType");
+                                                String ResourceUnit= objChild.getString("Unit");
+
+
+                                                ResourceDataSetClass resource = new ResourceDataSetClass();
+                                                resource.setResourceName(ResourceName);
+                                                resource.setResourceId(ResourceId);
+                                                resource.setId(Id);
+                                                resource.setDeleted(IsDeleted);
+                                                resource.setResourceType(ResourceType);
+                                                resource.setResourceUnit(ResourceUnit);
+                                                arrayListResource.add(resource);
+
+                                                LogApp.e(" in innner looop "," Resource Name : "+ResourceName);
+                                            }
+                                            hashMap.put(GroupId,arrayListResource);
+                                        }
+                                    }
+
+                                }
+                            }
+                            JSONArray jsonArrayClient = objPayload.getJSONArray("Clients");
+                            JSONArray jsonArrayResponsible = objPayload.getJSONArray("ResponsiblePersons");
+                            if(arrayListGroup.size() > 0){
+                                gruopAdapter = new GroupAdapter(getActivity(),arrayListGroup);
+                                spinnerGroup.setAdapter(gruopAdapter);
+                            }
+
+                        }
+                        catch (Exception e){
+                        }
+                        addBlankClient();
+                        addBlankResponsible();
+                        ClientDataSetClass client = new ClientDataSetClass();
+                        client.setName("Client1");
+                        arraylistClient.add(client);
+
+                        ResponsibleDataSetClass responsible = new ResponsibleDataSetClass();
+                        responsible.setName("Responsible1");
+                        arraylistResponsible.add(responsible);
+
+
+                        if(arraylistResponsible.size() > 0){
+                            responsibleAdapter = new ResponsibleSpinnerAdapter(getActivity(),arraylistResponsible);
+                            spinnerResponsible.setAdapter(responsibleAdapter);
+                        }
+                        if(arraylistClient.size() > 0){
+                            clientAdapter = new ClientSpinnerAdapter(getActivity(),arraylistClient);
+                            spinnerClient.setAdapter(clientAdapter);
+                        }
+
+                        if(dbHandler.getCursorCountFilterForAllFilter(preferences.getUserID(),preferences.getProfileId()) > 0)
+                        {
+                            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.TextFilter),preferences.getUserID(),preferences.getProfileId());
+                        }
+                        arraylistValue = new ArrayList<>();
+                        if(arraylistgetedFromDatabase.size() > 0){
+                            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+                            for (int i=0;i<split.length;i++)
+                            {
+                                String[] spliteInner = split[i].split("=");
+                                arraylistValue.add(spliteInner[1]);
+                            }
+
+                        }
+                        if(arraylistValue.size()>0){
+
+                            edittextAnytext.setText(setTextinEdittext(arraylistValue.get(0)));
+                            edittextTask.setText(setTextinEdittext(arraylistValue.get(5)));
+                            edittextIdentNo.setText(setTextinEdittext(arraylistValue.get(4)));
+
+                            spinnerPriorityTo.setSelection(getIndex(spinnerPriorityTo, arraylistValue.get(2).toString()));
+                            spinnerPriorityfrm.setSelection(getIndex(spinnerPriorityfrm, arraylistValue.get(1).toString()));
+                            spinnerLevel.setSelection(getIndex(spinnerLevel, arraylistValue.get(3).toString()));
+                            spinnerClient.setSelection(getIndexClient(arraylistClient, arraylistValue.get(6).toString()));
+                            spinnerResponsible.setSelection(getIndexResponsible(arraylistResponsible, arraylistValue.get(7).toString()));
+                            spinnerGroup.setSelection(getIndexGroup(arrayListGroup, arraylistValue.get(8).toString()));
+                            spinnerResourse.setSelection(getIndexResource(arrayListResource, arraylistValue.get(9).toString()));
+                        }
+                        getspinnerSelectItemEvent();
+                    }
+                    progressDialog.dismiss();
+                }
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" Client responsible failed "," response from service : "+error.toString());
+                    progressDialog.dismiss();
+                }
+            });
+
+
+        }
+        catch (Exception e){
+            LogApp.e(" while client responsible service : "," in catch : "+e.toString());
+        }
+
+    }
+    public void addBlankClient(){
+        ClientDataSetClass client = new ClientDataSetClass();
+        client.setName(getResources().getString(R.string.blank_value));
+        arraylistClient.add(client);
+    }
+    public void addBlankResponsible(){
+        ResponsibleDataSetClass responsible = new ResponsibleDataSetClass();
+        responsible.setName(getResources().getString(R.string.blank_value));
+        arraylistResponsible.add(responsible);
+    }
+    public void addBlankGroup(){
+        GroupDatasetClass group = new GroupDatasetClass();
+        group.setGroupId("null");
+        group.setGroupName(getResources().getString(R.string.blank_value));
+        arrayListGroup.add(group);
+    }
+    public void addBlankResource(){
+        ResourceDataSetClass resource = new ResourceDataSetClass();
+        resource.setResourceName(getResources().getString(R.string.blank_value));
+        resource.setResourceId("null");
+        resource.setId("null");
+        resource.setDeleted("null");
+        resource.setResourceType("null");
+        resource.setResourceUnit("null");
+        arrayListResource.add(resource);
+    }
+    public void getspinnerSelectItemEvent(){
+        spinnerClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(arraylistClient.size() > 0){
+                    strSelectedClient = arraylistClient.get(position).getName();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+        spinnerResponsible.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(arraylistResponsible.size() > 0){
+                    strSelectedResponsible = arraylistResponsible.get(position).getName();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+        spinnerResourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(arraylistResourceTemp != null){
+                    if(arraylistResourceTemp.size() > 0){
+                        strSelectedResource = arraylistResourceTemp.get(position).getResourceName();
+                        if(position != 0){
+                            strSelectedResourceId = arraylistResourceTemp.get(position).getResourceId();
+                        }
+                    }
+                }
+                else {
+                    strSelectedResource = getString(R.string.blank_value);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+        spinnerGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(arrayListGroup.size() > 0){
+                    strSelectedGroup = arrayListGroup.get(position).getGroupName();
+                }
+                if(position == 0){
+                    arraylistResourceTemp = new ArrayList<ResourceDataSetClass>();
+                    ResourceDataSetClass resource = new ResourceDataSetClass();
+                    resource.setResourceName(getResources().getString(R.string.blank_value));
+                    resource.setResourceId("null");
+                    resource.setId("null");
+                    resource.setDeleted("null");
+                    resource.setResourceType("null");
+                    resource.setResourceUnit("null");
+                    arraylistResourceTemp.add(resource);
+
+                    if (arraylistResourceTemp.size() > 0)
+                    {
+                        resourceAdapter = new ResourceAdapter(getActivity(), arraylistResourceTemp);
+                        spinnerResourse.setAdapter(null);
+                        spinnerResourse.setAdapter(resourceAdapter);
+                    }
+
+
+                }else {
+                    strSelectedGroupId = arrayListGroup.get(position).getGroupId();
+                    String selectedGroupId = arrayListGroup.get(position).getGroupId();
+                    if (!selectedGroupId.equalsIgnoreCase(""))
+                    {
+                        arraylistResourceTemp = new ArrayList<ResourceDataSetClass>();
+                        if (hashMap != null && hashMap.size() > 0)
+                        {
+                            if (hashMap.containsKey(selectedGroupId))
+                            {
+                                ResourceDataSetClass resource = new ResourceDataSetClass();
+                                resource.setResourceName(getResources().getString(R.string.blank_value));
+                                resource.setResourceId("null");
+                                resource.setId("null");
+                                resource.setDeleted("null");
+                                resource.setResourceType("null");
+                                resource.setResourceUnit("null");
+                                arraylistResourceTemp.add(resource);
+
+                                arraylistResourceTemp.addAll(hashMap.get(selectedGroupId));
+                            }
+                        }
+                        if (arraylistResourceTemp.size() > 0)
+                        {
+                            resourceAdapter = new ResourceAdapter(getActivity(), arraylistResourceTemp);
+                            spinnerResourse.setAdapter(null);
+                            spinnerResourse.setAdapter(resourceAdapter);
+
+                            if(arraylistValue.size() >= 9){
+                                spinnerResourse.setSelection(getIndexResource(arraylistResourceTemp, arraylistValue.get(9).toString()));
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+    }
+    //private method of your class
+    private int getIndex(Spinner spinner, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    private int getIndexClient(ArrayList<ClientDataSetClass> arrayilist, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<arrayilist.size();i++){
+            if (arrayilist.get(i).getName().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    private int getIndexResponsible(ArrayList<ResponsibleDataSetClass> arrayilist, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<arrayilist.size();i++){
+            if (arrayilist.get(i).getName().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    private int getIndexGroup(ArrayList<GroupDatasetClass> arrayilist, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<arrayilist.size();i++){
+            if (arrayilist.get(i).getGroupName().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    private int getIndexResource(ArrayList<ResourceDataSetClass> arrayilist, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<arrayilist.size();i++){
+            if (arrayilist.get(i).getResourceName().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    @Override
+    public void callSelectFilterFragment()
+    {
+
+    }
+
+    @Override
+    public void callUpdateFilter()
+    {
+        initControl();
+    }
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        context = activity;
+        ((HomeActivity)context).interfaceforSelectFilter = this;
+    }
+}

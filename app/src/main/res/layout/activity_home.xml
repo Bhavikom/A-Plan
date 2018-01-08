@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:id="@+id/linear_container"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="0.86"/>
+    <!-- container for fragment -->
+    <!--<RelativeLayout
+        android:id="@+id/container_home"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_weight="1.01">
+
+    </RelativeLayout>-->
+
+    <de.smacsoftwares.aplanapp.util.NonSwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="0.86"/>
+
+    <View
+        android:background="#828282"
+        android:layout_width="match_parent"
+        android:layout_height="0.5sp"
+        />
+    <!-- start footer layout for tab -->
+    <LinearLayout
+        android:weightSum="1"
+        android:id="@+id/linear_footer"
+        android:gravity="center_vertical"
+        android:layout_weight="0.14"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:background="@color/select_filter"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.00"
+            android:gravity="center"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_dashboard"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/five_sp"
+                android:id="@+id/img_dashboard"
+                android:layout_width="@dimen/twentee_sp"
+                android:layout_height="@dimen/twentee_sp"
+                android:scaleType="centerCrop"
+                />
+
+            <TextView
+                android:id="@+id/textview_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_sp"
+                android:gravity="top|center"
+                android:lines="1"
+                android:text="@string/dashboard_footer"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/nine_sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_project"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/five_sp"
+                android:id="@+id/img_project"
+                android:layout_width="@dimen/twentee_sp"
+                android:layout_height="@dimen/twentee_sp"
+                />
+
+            <TextView
+                android:id="@+id/textview_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_sp"
+                android:gravity="top|center"
+                android:lines="1"
+                android:text="@string/project_footer"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/nine_sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_resource"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/five_sp"
+                android:id="@+id/img_resource"
+                android:layout_width="@dimen/twentee_sp"
+                android:layout_height="@dimen/twentee_sp"
+                />
+
+            <TextView
+                android:lines="1"
+                android:gravity="top|center"
+                android:id="@+id/textview_resource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_sp"
+                android:text="@string/resource_header"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/nine_sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_filter"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="@dimen/five_sp"
+                android:id="@+id/img_filter"
+                android:layout_width="@dimen/twentee_sp"
+                android:layout_height="@dimen/twentee_sp"
+                />
+
+            <TextView
+                android:id="@+id/textview_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_sp"
+                android:gravity="top|center"
+                android:lines="1"
+                android:text="@string/filter_footer"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/nine_sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_setting"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="@dimen/five_sp"
+                android:id="@+id/img_setting"
+                android:layout_width="@dimen/twentee_sp"
+                android:layout_height="@dimen/twentee_sp" />
+
+            <TextView
+                android:lines="1"
+                android:gravity="top|center"
+                android:id="@+id/textview_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_sp"
+                android:text="@string/setting_footer"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/nine_sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.0"
+            android:gravity="center"
+            android:orientation="vertical">
+        </LinearLayout>
+    </LinearLayout>
+    <!-- start footer layout for tab -->
+</LinearLayout>

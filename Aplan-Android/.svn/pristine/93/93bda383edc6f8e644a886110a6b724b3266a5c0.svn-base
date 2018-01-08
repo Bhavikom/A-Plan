@@ -1,0 +1,43 @@
+
+package com.ssoft.aplanproject.ClientResponsibleModel;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class ClientAndResponsiblePojo {
+
+    @SerializedName("Message")
+    @Expose
+    private Object message;
+    @SerializedName("Payload")
+    @Expose
+    private PayloadClientAndResponsible payload;
+    @SerializedName("Status")
+    @Expose
+    private Integer status;
+
+    public Object getMessage() {
+        return message;
+    }
+
+    public void setMessage(Object message) {
+        this.message = message;
+    }
+
+    public PayloadClientAndResponsible getPayload() {
+        return payload;
+    }
+
+    public void setPayload(PayloadClientAndResponsible payload) {
+        this.payload = payload;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+}

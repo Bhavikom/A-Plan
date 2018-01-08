@@ -1,0 +1,85 @@
+package com.ssoft.aplanproject.util;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.adapter.DatesAdapter;
+import com.ssoft.aplanproject.adapter.DatesFilterAdapter;
+
+import java.util.ArrayList;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+/**
+ * Created by SSoft-13 on 01-07-2016.
+ */
+
+public class PopupViewDateIconFilter
+{
+    Context context;
+    private IntefaceDialog interfaceListener;
+    String selectedDates = null;
+    public PopupWindow popupWindow;
+    View popupView;
+
+    public PopupViewDateIconFilter()
+    {
+        this.interfaceListener=null;
+    }
+    public void setCustomObjectListener(IntefaceDialog listener)
+    {
+        this.interfaceListener = listener;
+
+    }
+    public void showPopup(final Activity activity, final ArrayList<String> arrayList, ImageView imageview)
+    {
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(LAYOUT_INFLATER_SERVICE);
+        popupView = layoutInflater.inflate(R.layout.popupview_date, null);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setWidth(500);
+        popupWindow.setHeight(500);
+        popupWindow.showAsDropDown(imageview,0, 0);
+
+
+
+        ListView listviewDateFilter=(ListView)popupView.findViewById(R.id.listviewdatefilter);
+
+        DatesFilterAdapter adapter = new DatesFilterAdapter(activity,arrayList);
+        listviewDateFilter.setAdapter(adapter);
+
+        listviewDateFilter.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            {
+                selectedDates=arrayList.get(position);
+                popupWindow.dismiss();
+
+            }
+        });
+
+    }
+    public void dismissPopup(Activity activity)
+    {
+
+       // popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (popupWindow != null)
+        {
+            popupWindow.dismiss();
+        }
+    }
+
+    public interface  IntefaceDialog
+    {
+        public void dismissPopupDate(String date);
+    }
+}

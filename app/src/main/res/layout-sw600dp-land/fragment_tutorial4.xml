@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/linear_tutorial4_main"
+    android:layout_height="match_parent"
+    android:background="@drawable/tutorial_first">
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:weightSum="1"
+        android:layout_above="@+id/textskip"
+        android:id="@+id/imgcontrol"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        tools:context="de.smacsoftwares.aplanapp.fragment.FragmentTutorial1">
+
+        <View
+            android:layout_weight="0.05"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:id="@+id/view"/>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/two_hundred_sixtee"
+            android:layout_marginRight="@dimen/two_hundred_sixtee"
+            android:layout_weight="0.6"
+            android:layout_width="match_parent"
+            android:layout_height="0sp">
+
+            <ImageView
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/controlscreen"
+                android:id="@+id/imageView7" />
+        </LinearLayout>
+        <View
+            android:layout_weight="0.05"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"/>
+
+        <LinearLayout
+            android:weightSum="1"
+            android:layout_weight="0.3"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_below="@+id/imgcontrol"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lable_title4"
+                android:textStyle="bold"
+                android:layout_weight="0.2"
+                android:layout_width="wrap_content"
+                android:layout_height="0sp"
+                android:text="@string/gantt_chart"
+                android:textColor="@color/red"
+                android:textSize="@dimen/thirtee_sp" />
+
+            <TextView
+                android:layout_weight="0.850"
+                android:gravity="left"
+                android:layout_width="wrap_content"
+                android:layout_height="0sp"
+                android:layout_marginLeft="@dimen/fifteen_sp"
+                android:layout_marginRight="@dimen/fifteen_sp"
+                android:text="@string/fourth_screen"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/fifteen_sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

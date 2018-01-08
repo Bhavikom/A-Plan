@@ -1,0 +1,234 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.TreeViewControl.AndroidTreeView;
+import com.ssoft.aplanproject.TreeViewControl.IconTreeItemHolder;
+import com.ssoft.aplanproject.TreeViewControl.TreeNode;
+import com.ssoft.aplanproject.util.GlobalClass;
+
+public class FragmentSupportHelp extends Fragment {
+
+    private TextView statusBar;
+    private AndroidTreeView tView;
+    private Menu menu;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_help, null, false);
+        ViewGroup containerView = (ViewGroup) rootView.findViewById(R.id.container1);
+
+        statusBar = (TextView) rootView.findViewById(R.id.textviewhelp);
+
+        TreeNode root = TreeNode.root();
+        TreeNode computerRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "My Computer"));
+
+        TreeNode myDocuments = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "My Documents"));
+        TreeNode downloads = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "Downloads"));
+        TreeNode file1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "Folder 1"));
+        TreeNode file2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "Folder 2"));
+        TreeNode file3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "Folder 3"));
+        TreeNode file4 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "Folder 4"));
+
+        downloads.addChildren(file1, file2, file3, file4);
+
+        TreeNode myMedia = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "Photos"));
+        TreeNode photo1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "item1"));
+        TreeNode photo2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "item2"));
+        TreeNode photo3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(0, "item3"));
+        myMedia.addChildren(photo1, photo2, photo3);
+
+        myDocuments.addChild(downloads);
+        computerRoot.addChildren(myDocuments, myMedia);
+
+        root.addChildren(computerRoot);
+
+        tView = new AndroidTreeView(getActivity(), root);
+        tView.setDefaultAnimation(true);
+        tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
+        tView.setDefaultViewHolder(IconTreeItemHolder.class);
+        tView.setDefaultNodeClickListener(nodeClickListener);
+        tView.setDefaultNodeLongClickListener(nodeLongClickListener);
+
+        containerView.addView(tView.getView());
+
+        if (savedInstanceState != null) {
+            String state = savedInstanceState.getString("tState");
+            if (!TextUtils.isEmpty(state)) {
+                tView.restoreState(state);
+            }
+        }
+
+        return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.toolbar_menu_item, menu);
+        this.menu = menu;
+        super.onCreateOptionsMenu(menu,inflater);
+        menu.findItem(R.id.actionEdit).setVisible(true);
+        menu.findItem(R.id.actionDefault).setVisible(false);
+        menu.findItem(R.id.actionSupport).setVisible(false);
+        menu.findItem(R.id.actionSend).setVisible(false);
+        menu.findItem(R.id.actionprofile).setVisible(false);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId())
+        {
+            case R.id.actionEdit:
+                return true;
+            case R.id.actionDefault:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    /*private int counter = 0;
+
+    private void fillDownloadsFolder(TreeNode node) {
+        TreeNode downloads = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Downloads" + (counter++)));
+        node.addChild(downloads);
+        if (counter < 5) {
+            fillDownloadsFolder(downloads);
+        }
+    }*/
+
+    private TreeNode.TreeNodeClickListener nodeClickListener = new TreeNode.TreeNodeClickListener() {
+        @Override
+        public void onClick(TreeNode node, Object value) {
+
+            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
+            Log.e("  @@@@ "," get node level  on clicke : "+((IconTreeItemHolder.IconTreeItem) value).text);
+            if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("My Computer")){
+                        statusBar.setText("My computer");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("My Documents"))
+            {
+                statusBar.setText("My Documents");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("Downloads"))
+            {
+                statusBar.setText("downloads");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("Folder 1")){
+                statusBar.setText("Folder1");
+            }else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("Folder 2")){
+                statusBar.setText("Folder2");
+            }else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("Folder 3")){
+                statusBar.setText("Folder3");
+            }else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("Folder 4")){
+                statusBar.setText("folder4");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("Photos")){
+                statusBar.setText("photos");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("item1")){
+                statusBar.setText("photos1");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("item2")){
+                statusBar.setText("photos2");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("item3")){
+                statusBar.setText("photos3");
+            }
+            else if(((IconTreeItemHolder.IconTreeItem) value).text.equalsIgnoreCase("item4")){
+                statusBar.setText("photos4");
+            }
+            /*if (node.getLevel() == 1)
+            {
+                statusBar.setText("folder1");
+            }
+            else if (node.getLevel() == 2)
+            {
+                statusBar.setText("folder2 ");
+            } else if (node.getLevel() == 3)
+            {
+                statusBar.setText("folder3 ");
+            } else if (node.getParent().getLevel() == 3)
+            {
+                if (((IconTreeItemHolder.IconTreeItem) node.getParent().getValue()).text.equalsIgnoreCase("Downloads")) {
+                    if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("Folder 1")) {
+                        Toast.makeText(getActivity(), "Folder 1 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("folder1");
+                    } else if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("Folder 2")) {
+                        Toast.makeText(getActivity(), "Folder 2 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("folder2");
+                    } else if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("Folder 3")) {
+                        Toast.makeText(getActivity(), "Folder 3 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("folder3");
+                    } else if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("Folder 4")) {
+                        Toast.makeText(getActivity(), "Folder 4 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("folder4");
+                    }
+                }
+
+            }
+            else if (node.getParent().getLevel() == 2) {
+
+
+                if (((IconTreeItemHolder.IconTreeItem) node.getParent().getValue()).text.equals("Photos")) {
+                    if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("item1")) {
+                        Toast.makeText(getActivity(), "Folder 1 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("item1");
+                    } else if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("item2")) {
+                        Toast.makeText(getActivity(), "Folder 2 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("item2");
+                    } else if (((IconTreeItemHolder.IconTreeItem) node.getValue()).text.equalsIgnoreCase("item3")) {
+                        Toast.makeText(getActivity(), "Folder 3 clicked", Toast.LENGTH_LONG).show();
+                        statusBar.setText("item3");
+                    }
+                }
+
+            }
+            else
+            {
+                statusBar.setText(" ");
+            }*/
+        }
+    };
+
+    private TreeNode.TreeNodeLongClickListener nodeLongClickListener = new TreeNode.TreeNodeLongClickListener() {
+        @Override
+        public boolean onLongClick(TreeNode node, Object value) {
+            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
+            Toast.makeText(getActivity(), "Long click: " + item.text, Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    };
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("tState", tView.getSaveState());
+    }
+}
+

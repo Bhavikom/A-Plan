@@ -1,0 +1,22 @@
+package com.ssoft.aplanproject.util;
+
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+
+/**
+ * Created by SSoft-13 on 06-08-2016.
+ */
+
+public class MyCurrentActivity extends Application
+{
+    private Context localContext;
+
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+
+    }
+}
+

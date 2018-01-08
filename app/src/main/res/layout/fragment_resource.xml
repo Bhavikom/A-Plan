@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_resource_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_alignParentTop="true"
+            android:layout_weight="0.08"
+            android:background="@color/header_color">
+
+            <TextView
+                android:id="@+id/txt_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/resource_header"
+                android:textColor="@color/red"
+                android:textSize="@dimen/eighteen_sp" />
+
+            <ImageView
+                android:id="@+id/imageview_refresh"
+                android:layout_width="@dimen/twentee_sp"
+                android:layout_height="@dimen/twentee_sp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/ten_sp"
+                android:layout_toRightOf="@id/textviewToday"
+                android:src="@drawable/refresh_button" />
+
+
+            <TextView
+                android:id="@+id/textviewToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/five_sp"
+                android:text="Today"
+                android:textColor="@color/textview_black_press_effect"
+                android:textSize="@dimen/thirteen_sp" />
+
+            <TextView
+                android:id="@+id/txt_week_m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/five_sp"
+                android:text="@string/set_resolution"
+                android:textColor="@color/textview_black_press_effect"
+                android:textSize="@dimen/thirteen_sp" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_above="@+id/project_heder"
+            android:background="@color/textview_color_grey" />
+
+        <LinearLayout
+            android:id="@+id/project_heder"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/header"
+            android:layout_weight="0.08"
+            android:background="@color/select_filter"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linear_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/thirteen_sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Status"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/thirteen_sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_traffic_lights"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_traffic_lights"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/TrafficLights"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/thirteen_sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/relative_webview"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_below="@+id/project_heder"
+            android:layout_weight="0.84"
+            android:orientation="vertical">
+
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:background="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/select_filter_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_light">
+
+        <!--start for header-->
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/seventee_sp"
+            android:layout_alignParentTop="true"
+            android:background="@color/header_color">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:id="@+id/txtfilter"
+                android:text="@string/filter_header"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/header_textsize"/>
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:background="@color/grey_light"
+                android:layout_marginTop="@dimen/thirtee_sp"
+
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- folder filter -->
+                <RelativeLayout
+                    android:layout_margin="@dimen/twentee_sp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rounded_rectangle_without_border"
+                    android:layout_height="@dimen/hundred_sp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="50dp"
+                    android:id="@+id/relative_folder"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageview_folderfilter"
+
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:src="@drawable/filter_folder"/>
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_toRightOf="@+id/imageview_folderfilter"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textview_folderfilter"
+                        android:text="@string/GenralFilter"
+                        android:textSize="@dimen/twentee_five_sp"
+                        android:textColor="@color/black_color"/>
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView4"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/next"
+                        />
+                </RelativeLayout>
+
+
+                <!-- general filter -->
+                <RelativeLayout
+                    android:layout_margin="@dimen/twentee_sp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rounded_rectangle_without_border"
+                    android:layout_height="@dimen/hundred_sp"
+                    android:id="@+id/relative_text"
+                    >
+                    <ImageView
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageview_generalfilter"
+                        android:src="@drawable/filter_text"/>
+                    <TextView
+                        android:layout_toRightOf="@+id/imageview_generalfilter"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textview_generalfilter"
+                        android:text="@string/Genral_text"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:textSize="@dimen/twentee_five_sp"
+                        android:textColor="@color/black_color"/>
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageviewnext2"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/next"
+                        />
+
+
+                </RelativeLayout>
+
+                <!-- date filter -->
+                <RelativeLayout
+                    android:layout_margin="@dimen/twentee_sp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rounded_rectangle_without_border"
+                    android:layout_height="@dimen/hundred_sp"
+                    android:layout_marginBottom="50dp"
+                    android:id="@+id/relative_date"
+                    android:layout_below="@+id/reletive2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageview_datefiter"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/fitler_date"/>
+
+                    <TextView
+                        android:layout_toRightOf="@+id/imageview_datefiter"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textview_datefilter"
+                        android:text="@string/Genral_Date"
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:textSize="@dimen/twentee_five_sp"
+                        android:textColor="@color/black_color"/>
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageviewnext3"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/next"
+                        />
+
+
+
+                </RelativeLayout>
+
+                <!-- user defined filter -->
+                <RelativeLayout
+                    android:layout_margin="@dimen/twentee_sp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rounded_rectangle_without_border"
+                    android:layout_height="@dimen/hundred_sp"
+                    android:layout_marginBottom="50dp"
+                    android:id="@+id/relative_userdefined"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageview_userfilter"
+                        android:layout_marginTop="20dp"
+
+                        android:src="@drawable/filter_user_defined"/>
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:layout_toRightOf="@+id/imageview_userfilter"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textview_userdefindedfilter"
+                        android:text="@string/Genral_fileds"
+                        android:textSize="@dimen/twentee_five_sp"
+                        android:textColor="@color/black_color"/>
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageviewnext4"
+                        android:src="@drawable/next"
+                        android:layout_alignParentRight="true"
+                        />
+
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_margin="@dimen/twentee_sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/eightee_sp"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_margin="@dimen/twentee_sp"
+                    android:text="@string/my_smsc_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/twentee_sp"
+                    android:id="@+id/txt_ssoft_link" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</FrameLayout>

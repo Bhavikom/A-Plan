@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+                android:id="@+id/linear_date_item_main"
+              android:orientation="horizontal">
+
+    <TextView android:id="@+id/textdateitem"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/ten_sp"
+              android:background="@drawable/list_selector"
+              android:gravity="center"
+              android:text="dates"
+              android:textColor="@color/white_color"
+              android:textSize="@dimen/twentee_sp"/>
+
+    <CheckBox
+        android:visibility="visible"
+        android:id="@+id/cbBox"
+        android:button="@null"
+        android:background="@drawable/checkbox_dashboard_background"
+        android:layout_width="@dimen/thirtee_sp"
+        android:layout_height="@dimen/thirtee_sp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/five_sp"
+        >
+    </CheckBox>
+
+</LinearLayout>

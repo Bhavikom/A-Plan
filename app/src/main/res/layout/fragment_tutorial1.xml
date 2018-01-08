@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linear_tutorial1_main"
+    android:background="@drawable/tutorial_first">
+
+    <LinearLayout
+        android:id="@+id/imgcontrol"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/textskip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:weightSum="1"
+        tools:context="de.smacsoftwares.aplanapp.fragment.FragmentTutorial1">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="0.04" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_marginLeft="@dimen/ten_sp"
+            android:layout_marginRight="@dimen/ten_sp"
+            android:layout_weight="0.4">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/firstscreen" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="0.01" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_below="@+id/imgcontrol"
+            android:layout_marginTop="@dimen/thirtee_sp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textview_lable_whatisaplan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/was_ist_aplan"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/sixteen_sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/twentee_sp"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/ten_sp"
+                        android:layout_marginRight="@dimen/ten_sp"
+                        android:gravity="left"
+                        android:text="A-Plan ist eine Projektmanagement-Software zur Verwaltung von Projekten und Ressourcen. Mit der App können die aktuellen Planungen auf einem Tablett bzw. Smartphone dargestellt werden. Die Planungen werden mit der Desktop-Version von A-Plan erstellt (siehe www.braintool.com) und auf einem SQL-Server innerhalb Ihres Firmennetzwerkes gespeichert. "
+                        android:textColor="@color/black_color"
+                        android:textSize="@dimen/thirteen_sp" />
+                </ScrollView>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,97 @@
+package com.ssoft.aplanproject.adapter;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.R;
+
+import java.util.ArrayList;
+
+/**
+ * Created by SSoft-13 on 03-08-2016.
+ */
+
+public class FilterFolderAdapter extends BaseAdapter
+{
+    Context context;
+    ArrayList<FolderDataset> arraylist;
+
+    public FilterFolderAdapter(Context context, ArrayList<FolderDataset> items) {
+        this.context = context;
+        this.arraylist = items;
+    }
+
+    /*private view holder class*/
+    private class ViewHolder
+    {
+        TextView textviewfolderName;
+    }
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+
+        LayoutInflater mInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null)
+        {
+            convertView = mInflater.inflate(R.layout.item_list_folerfilter, null);
+            holder = new ViewHolder();
+            holder.textviewfolderName = (TextView) convertView.findViewById(R.id.textviewfolderitem);
+            convertView.setTag(holder);
+
+
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.textviewfolderName.setText(arraylist.get(position).getName());
+        CheckBox cbBuy = (CheckBox) convertView.findViewById(R.id.checkboxfilter);
+        cbBuy.setOnCheckedChangeListener(myCheckChangList);
+        cbBuy.setTag(position);
+        cbBuy.setChecked(arraylist.get(position).isSelected());
+
+        return convertView;
+    }
+    CompoundButton.OnCheckedChangeListener myCheckChangList = new CompoundButton.OnCheckedChangeListener()
+    {
+        public void onCheckedChanged(CompoundButton buttonView,boolean isChecked)
+        {
+            getTableData((Integer) buttonView.getTag()).setSelected(isChecked);
+
+        }
+    };
+    public FolderDataset getTableData(int position)
+    {
+        return ((FolderDataset) getItem(position));
+    }
+    public ArrayList<FolderDataset> getSelectedData()
+    {
+        ArrayList<FolderDataset> arraylistSelected = new ArrayList<FolderDataset>();
+        for (FolderDataset tableData : arraylist)
+        {
+            if (tableData.isSelected())
+                arraylistSelected.add(tableData);
+        }
+        return arraylistSelected;
+    }
+    @Override
+    public int getCount() {
+        return arraylist.size();
+    }
+    @Override
+    public Object getItem(int position) {
+        return arraylist.get(position);
+    }
+    @Override
+    public long getItemId(int position) {
+        return arraylist.indexOf(getItem(position));
+    }
+}
+

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_resource_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_weight="0.06"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_alignParentTop="true"
+            android:background="@color/header_color">
+
+            <TextView
+                android:id="@+id/txt_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/resource_header"
+                android:textColor="@color/red"
+                android:textSize="@dimen/header_textsize" />
+
+            <ImageView
+                android:id="@+id/imageview_refresh"
+                android:layout_width="@dimen/thirtee_sp"
+                android:layout_height="@dimen/thirtee_sp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:src="@drawable/refresh_button" />
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/textviewToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:layout_toLeftOf="@+id/imageview_refresh"
+                android:text="Today"
+                android:textColor="@color/textview_black_press_effect"
+                android:textSize="@dimen/eighteen_sp" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_above="@+id/project_heder"
+            android:background="@color/textview_color_grey" />
+
+        <LinearLayout
+            android:layout_weight="0.08"
+            android:id="@+id/project_heder"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/header"
+            android:background="@color/select_filter"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linear_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/eighteen_sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:id="@+id/linear_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Status"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/eighteen_sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:id="@+id/linear_traffic_lights"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_traffic_lights"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/TrafficLights"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/eighteen_sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_week_m"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_resolution"
+                        android:textColor="@color/textview_black_press_effect"
+                        android:textSize="@dimen/eighteen_sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="0.86"
+            android:id="@+id/relative_webview"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_below="@+id/project_heder"
+            android:orientation="vertical">
+
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,12 @@
+package com.ssoft.aplanproject.util;
+
+/**
+ * Created by SSoft-13 on 19-12-2016.
+ */
+
+public interface InterfaceLoadWebview
+{
+    void callWebviewFromDashboard(String json, String id,String comefrom);
+    void callWebviewFromFooter();
+    void changeLanguage();
+}

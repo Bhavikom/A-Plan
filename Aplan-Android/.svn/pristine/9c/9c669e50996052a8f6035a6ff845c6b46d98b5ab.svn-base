@@ -1,0 +1,210 @@
+package com.ssoft.aplanproject.fragment;
+
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import com.google.gson.Gson;
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.HomeActivity;
+import com.ssoft.aplanproject.adapter.FilterFolderAdapter;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceLoadWebview;
+import com.ssoft.aplanproject.util.InterfaceServiceClass;
+import com.ssoft.aplanproject.util.InterfaceforSelectFilter;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+import java.util.ArrayList;
+import java.util.List;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+public class FragmentFilterFolder extends Fragment implements View.OnClickListener,InterfaceforSelectFilter{
+    Context context;
+    PreferencesClass preferences;
+    TextView textviewBack, textviewDone,textviewGeneralFilter;
+    ListView listviewFolder;
+    ArrayList<FolderDataset> arraylistFolder = new ArrayList<>();
+    FilterFolderAdapter adpterFolder;
+    ArrayList<FolderDataset> arraylistSelectedFolders = new ArrayList<>();
+    ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+    DatabaseHandler dbHandler;
+    List<String> arraygetedIdFromdb;
+    View rootView;
+    ImageView imgDeleteFilter;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_filter_folder, container,false);
+        initControl();
+        return rootView;
+    }
+    public void initControl() {
+        preferences = new PreferencesClass(getActivity());
+        dbHandler = new DatabaseHandler(getActivity());
+        imgDeleteFilter = (ImageView)rootView.findViewById(R.id.img_delete);
+        imgDeleteFilter.setOnClickListener(this);
+        textviewBack = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewBack.setOnClickListener(this);
+        textviewDone = (TextView)rootView.findViewById(R.id.textview_done);
+        textviewDone.setOnClickListener(this);
+        textviewGeneralFilter=(TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewGeneralFilter.setOnClickListener(this);
+        listviewFolder = (ListView)rootView.findViewById(R.id.listviewFolder);
+
+        if (dbHandler.getCursorCountFilterForAllFilter(preferences.getUserID(),preferences.getProfileId()) > 0) {
+            arraylistgetedFromDatabase = dbHandler.getGeneralFilterData(getString(R.string.FolderFilter), preferences.getUserID(),preferences.getProfileId());
+        }
+        arraygetedIdFromdb = new ArrayList<>();
+        if (arraylistgetedFromDatabase.size() > 0) {
+            String[] split = arraylistgetedFromDatabase.get(0).getId().split(",");
+
+            for (int i = 0; i < split.length; i++) {
+                arraygetedIdFromdb.add(split[i]);
+            }
+
+        }
+        /* calling the service */
+        if (GlobalClass.isNetworkAvailable(getActivity())) {
+            callFolderlistWebService();
+        } else {
+            GlobalClass.showToastInternet(getActivity());
+        }
+
+
+    }
+
+    private void callFolderlistWebService() {
+        try {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...", false, false);
+            //Creating a rest adapter
+            String url = preferences.getDomain();
+
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url+"Tasks").build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+            interfaceObject.callFolder(new Callback<ArrayList<FolderDataset>>() {
+                @Override
+                public void success(ArrayList<FolderDataset> folderDatasets, Response response) {
+                    String finalResponseString = new Gson().toJson(folderDatasets);
+                    LogApp.e(" ###### ", " response from folder : " + finalResponseString);
+                    if (folderDatasets.size() > 0) {
+                        for (int i = 0; i < folderDatasets.size(); i++) {
+                            LogApp.e(" @@@@@@@ ", " folder name in for loop : " + folderDatasets.get(i).getName());
+                        }
+                        arraylistFolder = folderDatasets;
+
+                        for (int i = 0; i < arraylistFolder.size(); i++) {
+                            if (arraygetedIdFromdb.size() > 0) {
+                                for (int j = 0; j < arraygetedIdFromdb.size(); j++) {
+                                    if (arraylistFolder.get(i).getId().equalsIgnoreCase(arraygetedIdFromdb.get(j))) {
+                                        arraylistFolder.get(i).setSelected(true);
+                                    }
+                                }
+                            }
+                        }
+
+                        adpterFolder = new FilterFolderAdapter(getActivity(), arraylistFolder);
+                        listviewFolder.setAdapter(adpterFolder);
+                    }
+
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    LogApp.e(" folder failed failed ", " response from service : " + error.toString());
+
+                    progressDialog.dismiss();
+                }
+            });
+
+
+        } catch (Exception e) {
+            LogApp.e(" while login service : ", " in catch : " + e.toString());
+        }
+
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if (v== textviewBack)
+        {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSelectFilter fragment = new FragmentSelectFilter();
+            //transaction.replace(R.id.container_home, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if (v== textviewDone) {
+            /* on clicking of done button getting selected value from adapter and storing in database table for retain selected */
+            arraylistSelectedFolders.clear();
+            arraylistSelectedFolders = adpterFolder.getSelectedData();
+            if (arraylistSelectedFolders.size() > 0) {
+
+                dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.FolderFilter));
+                ArrayList<String> arrayStringName = new ArrayList<>();
+                ArrayList<String> arrayStringId = new ArrayList<>();
+                for (int i = 0; i < arraylistSelectedFolders.size(); i++) {
+                    arrayStringName.add(arraylistSelectedFolders.get(i).getName());
+                    arrayStringId.add(arraylistSelectedFolders.get(i).getId());
+                }
+                String commaSeperated = "";
+                String commaSeperatedID = "";
+                commaSeperated = TextUtils.join(",", arrayStringName);
+                commaSeperatedID = TextUtils.join(",", arrayStringId);
+                Log.e(" ^&* "," profile id : "+preferences.getProfileId());
+                dbHandler.addGeneralFilterInfo(getString(R.string.FolderFilter), commaSeperated, arraylistSelectedFolders.get(0).getName(), commaSeperatedID, preferences.getUserID(),preferences.getProfileId());
+            }
+            else {
+                dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.FolderFilter));
+            }
+        }
+        if(v== textviewGeneralFilter)
+        {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSelectFilter fragment = new FragmentSelectFilter();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(v== imgDeleteFilter){
+            dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.FolderFilter));
+            initControl();
+        }
+
+    }
+    @Override
+    public void callSelectFilterFragment()
+    {
+
+    }
+
+    @Override
+    public void callUpdateFilter()
+    {
+        initControl();
+    }
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        context = activity;
+        ((HomeActivity)context).interfaceforSelectFilter = this;
+    }
+}

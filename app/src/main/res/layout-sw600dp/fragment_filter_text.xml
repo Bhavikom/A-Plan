@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative_text_main"
+    android:background="@color/white_color"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_above="@+id/linearBottom"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--start for header-->
+        <RelativeLayout
+            android:layout_weight="0.06"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_alignParentTop="true"
+            android:background="@color/header_color">
+
+            <LinearLayout
+                android:id="@+id/linearback"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgback"
+                    android:layout_width="@dimen/thirtee_sp"
+                    android:layout_height="@dimen/thirtee_sp"
+                    android:src="@drawable/back_button_selector"/>
+
+                <TextView
+                    android:id="@+id/textview_generalfilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:text="@string/general_filte_title"
+                    android:textColor="@color/textview_presseffect"
+                    android:textSize="20dp"
+                    />
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/textview_lable_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/filterText_header"
+                android:textColor="@color/red"
+                android:textSize="@dimen/header_textsize"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:layout_centerVertical="true"
+                android:id="@+id/textview_done"
+                android:textSize="@dimen/twentee_sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:textColor="@color/textview_presseffect"/>
+        </RelativeLayout>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="@color/textview_color_grey" />
+        <ScrollView
+            android:layout_weight="0.94"
+            android:layout_width="match_parent"
+            android:layout_height="0sp">
+        <LinearLayout
+            android:layout_weight="0.94"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_anytext"
+                    android:textColor="@color/black_color"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/anytextfiled"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:layout_weight="0.55"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:id="@+id/edittext_anytext"
+                    android:layout_width="0sp"
+                    android:layout_height="@dimen/fourtee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:lines="1"
+                    android:paddingLeft="@dimen/ten_sp"
+                    android:textSize="@dimen/twentee_sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_prio"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_color"
+                    android:text="@string/prio"
+                    android:textSize="@dimen/twentee_sp"
+                    />
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_weight="0.55"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent">
+                    <FrameLayout
+                        android:layout_marginLeft="@dimen/twentee_sp"
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:layout_weight="0.22"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content">
+                        <Spinner
+                            android:background="@android:color/transparent"
+                            android:layout_marginRight="@dimen/thirtee_sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/fourtee_sp"
+                            android:id="@+id/spinner_priority"/>
+                        <ImageView
+                            android:id="@+id/img_cross_priofrm"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_width="@dimen/thirtee_sp"
+                            android:layout_height="@dimen/thirtee_sp"
+                            android:src="@drawable/cross"/>
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:textColor="@color/black_color"
+                        android:layout_weight="0.11"
+                        android:id="@+id/textview_lable_prioto"
+                        android:gravity="center"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/to"
+                        android:textSize="@dimen/twentee_sp"
+                        />
+                    <FrameLayout
+                        android:background="@drawable/rounded_rectangle_white"
+                        android:layout_weight="0.22"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content">
+                        <Spinner
+                            android:background="@android:color/transparent"
+                            android:layout_marginRight="@dimen/thirtee_sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/fourtee_sp"
+                            android:id="@+id/spinner_to"/>
+
+                        <ImageView
+
+                            android:id="@+id/img_cross_prioto"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_width="@dimen/thirtee_sp"
+                            android:layout_height="@dimen/thirtee_sp"
+                            android:src="@drawable/cross"/>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_levelto"
+                    android:textColor="@color/black_color"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/leaveto"
+                    android:textSize="@dimen/twentee_sp"
+                    />
+
+                <FrameLayout
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:layout_weight="0.22"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:background="@android:color/transparent"
+                        android:layout_marginRight="@dimen/thirtee_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:id="@+id/spinner_level"/>
+                    <ImageView
+                        android:id="@+id/img_cross_level"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_width="@dimen/thirtee_sp"
+                        android:layout_height="@dimen/thirtee_sp"
+                        android:src="@drawable/cross"/>
+                    </FrameLayout>
+
+
+                <View
+                    android:layout_weight="0.53"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_identno"
+                    android:textColor="@color/black_color"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/identno"
+                    android:textSize="@dimen/twentee_sp"
+                    />
+
+                <EditText
+                    android:layout_weight="0.55"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:id="@+id/edittext_identity"
+                    android:layout_width="0sp"
+                    android:layout_height="@dimen/fourtee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:lines="1"
+                    android:paddingLeft="@dimen/ten_sp"
+                    android:textSize="@dimen/twentee_sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_task"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_color"
+                    android:text="@string/task"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:layout_weight="0.55"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:id="@+id/edittext_task"
+                    android:layout_width="0sp"
+                    android:layout_height="@dimen/fourtee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:lines="1"
+                    android:paddingLeft="@dimen/ten_sp"
+                    android:textSize="@dimen/twentee_sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_client"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_color"
+                    android:text="@string/client"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <FrameLayout
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:layout_weight="0.55"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:background="@android:color/transparent"
+                        android:layout_marginRight="@dimen/thirtee_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:id="@+id/spinner_client"/>
+                    <ImageView
+                        android:id="@+id/img_cross_client"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_width="@dimen/thirtee_sp"
+                        android:layout_height="@dimen/thirtee_sp"
+                        android:src="@drawable/cross"/>
+                    </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_responsible"
+                    android:textColor="@color/black_color"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/responsible"
+                    android:textSize="@dimen/twentee_sp"
+                    />
+
+                <FrameLayout
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:layout_weight="0.55"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:background="@android:color/transparent"
+                        android:layout_marginRight="@dimen/thirtee_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:id="@+id/spinner_responsible"/>
+
+                    <ImageView
+                        android:id="@+id/img_cross_responsible"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_width="@dimen/thirtee_sp"
+                        android:layout_height="@dimen/thirtee_sp"
+                        android:src="@drawable/cross"/>
+                </FrameLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_group"
+                    android:textColor="@color/black_color"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group"
+                    android:textSize="@dimen/twentee_sp" />
+
+                <FrameLayout
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:layout_weight="0.55"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:background="@android:color/transparent"
+                        android:layout_marginRight="@dimen/thirtee_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:id="@+id/spinner_group"/>
+                    <ImageView
+                        android:id="@+id/img_cross_group"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_width="@dimen/thirtee_sp"
+                        android:layout_height="@dimen/thirtee_sp"
+                        android:src="@drawable/cross"/>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/twentee_sp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftee_sp">
+
+                <TextView
+                    android:layout_weight="0.25"
+                    android:id="@+id/textview_lable_source"
+                    android:textColor="@color/black_color"
+                    android:gravity="right"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resources"
+                    android:textSize="@dimen/twentee_sp"
+                    />
+
+                <FrameLayout
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:background="@drawable/rounded_rectangle_white"
+                    android:layout_weight="0.55"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:background="@android:color/transparent"
+                        android:layout_marginRight="@dimen/thirtee_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:id="@+id/spinner_resource"/>
+
+                    <ImageView
+                        android:id="@+id/img_cross_resource"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_width="@dimen/thirtee_sp"
+                        android:layout_height="@dimen/thirtee_sp"
+                        android:src="@drawable/cross"/>
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:paddingBottom="@dimen/ten_sp"
+        android:id="@+id/linearBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:gravity="center"
+        android:weightSum="1">
+
+        <CheckBox
+            android:id="@+id/checkbox_donotshowcompletedproject"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/footer"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:layout_weight="0.9"
+            android:text="@string/do_not_show_all_project"
+            android:textSize="20dp"/>
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="@dimen/fourtee_sp"
+                android:layout_height="@dimen/fourtee_sp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+
+                android:layout_marginRight="20dp"
+                android:src="@drawable/delete"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

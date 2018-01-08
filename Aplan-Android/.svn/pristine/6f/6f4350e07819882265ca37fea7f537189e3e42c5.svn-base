@@ -1,0 +1,82 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
+
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.AdminSplashActivity;
+import com.ssoft.aplanproject.activity.LoginActivity;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+public class FragmentTutorial8 extends Fragment
+{
+    Switch switchButton;
+    PreferencesClass preferences;
+    TextView textViewSkip;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
+    {
+        View rootView = inflater.inflate(R.layout.fragment_tutorial8, container,false);
+        preferences = new PreferencesClass(getActivity());
+        switchButton =(Switch) rootView.findViewById(R.id.switchbutton);
+        textViewSkip=(TextView)rootView.findViewById(R.id.textskip);
+        textViewSkip.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(switchButton.isChecked()){
+                    preferences.saveIsTutorialShow(false);
+                }
+                else {
+                    preferences.saveIsTutorialShow(true);
+                }
+
+                if(preferences.isAdminShow()){
+
+                    startActivity(new Intent(getActivity(),AdminSplashActivity.class));
+                }
+                else {
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                }
+
+
+            }
+        });
+
+        if(preferences.isTutorialShow()){
+            switchButton.setChecked(false);
+        }
+        else {
+            switchButton.setChecked(true);
+        }
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
+
+                LogApp.e(" &&&&&& "," toggle chacked change : "+isChecked);
+                if(isChecked){
+                    preferences.saveIsTutorialShow(false);
+                }
+                else {
+                    preferences.saveIsTutorialShow(true);
+                }
+
+            }
+        });
+        return rootView;
+
+    }
+}

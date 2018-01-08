@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:background="@drawable/popup_background"
+              android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add New Profile"
+        android:textSize="@dimen/thirtee_sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <EditText
+        android:lines="1"
+        android:padding="@dimen/ten_sp"
+        android:id="@+id/edittext_profile_name"
+        android:layout_width="match_parent"
+        android:hint="Profile Name"
+        android:layout_margin="@dimen/ten_sp"
+        android:layout_height="@dimen/fiftee_sp"
+        android:background="@drawable/rounded_black_border"
+        android:textSize="@dimen/twentee_sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_margin="@dimen/ten_sp"
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twentee_sp"
+            android:id="@+id/btnCancel"/>
+        <Button
+            android:layout_margin="@dimen/ten_sp"
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twentee_sp"
+            android:id="@+id/btnOk"/>
+    </LinearLayout>
+</LinearLayout>

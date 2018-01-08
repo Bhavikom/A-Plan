@@ -1,0 +1,632 @@
+package com.ssoft.aplanproject.activity;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+
+import com.android.internal.http.multipart.MultipartEntity;
+import com.ssoft.aplanproject.GetProfileModel.GetProfilePojo;
+import com.ssoft.aplanproject.Model.LoginPojo;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceServiceClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+
+import java.nio.charset.Charset;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Header;
+import retrofit.client.Response;
+
+
+
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener
+{
+    String userIdTemp="",strLangauge="";
+    String userIdPermenent="",strEmail="",strUsername="",strFullname="";
+    Button btnSingin;
+    EditText editTextServer,editTextDatabase,editTextuser,editTextPassword,editSqlServerName,editSqlLogin,editSqlPassword;
+    TextView textviewForgottPassword,txtlink;;
+    ImageView imgAboutus,imgVisibility,imgVisibility2,imgEnglish,imgGermany;
+    Activity activity;
+    PreferencesClass preferences;
+    DatabaseHandler dbHandler;
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_login);
+        initControl();
+    }
+    public  void initControl(){
+
+        activity=this;
+        preferences = new PreferencesClass(activity);
+        dbHandler =  new DatabaseHandler(activity);
+        strLangauge = getString(R.string.language_germany);
+        imgEnglish=(ImageView)findViewById(R.id.img_english);
+        imgGermany=(ImageView)findViewById(R.id.img_germany);
+        imgEnglish.setOnClickListener(this);
+        imgGermany.setOnClickListener(this);
+
+        btnSingin=(Button)findViewById(R.id.btnsignin);
+        editTextDatabase=(EditText)findViewById(R.id.editdatabase);
+        editTextServer=(EditText)findViewById(R.id.editservername);
+        editTextuser=(EditText)findViewById(R.id.edit_user);
+        editTextPassword=(EditText)findViewById(R.id.editpassword);
+
+        editSqlServerName=(EditText)findViewById(R.id.editservernamesql);
+        editSqlLogin=(EditText)findViewById(R.id.editsqllogin);
+        editSqlPassword=(EditText)findViewById(R.id.editsqlpassword);
+
+        textviewForgottPassword=(TextView)findViewById(R.id.textview_forgottpass);
+        imgAboutus=(ImageView)findViewById(R.id.imgaboutus);
+        imgVisibility=(ImageView)findViewById(R.id.imgvisibility);
+        imgVisibility.setOnClickListener(this);
+        imgVisibility2=(ImageView)findViewById(R.id.imgvisibility2);
+        imgVisibility2.setOnClickListener(this);
+        txtlink= (TextView) findViewById(R.id.txt_ssoft_link);
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        SpannableString ss = new SpannableString(getString(R.string.my_smsc_link));
+        ss.setSpan(new URLSpanNoUnderline("http://www.smacsoftwares.de/"),0,33, 0);
+        ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,33, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txtlink.setText(ss);
+
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        imgAboutus.setOnClickListener(this);
+
+        imgAboutus.setEnabled(false);
+        textviewForgottPassword.setEnabled(true);
+
+        btnSingin.setOnClickListener(this);
+        textviewForgottPassword.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        if(v==btnSingin){
+            if(GlobalClass.isNetworkAvailable(activity)){
+                if(checkValidation())
+                {
+                    /// call login service here
+                    //GlobalClass.URL_HEADER_MAIN=editTextServer.getText().toString();
+                    preferences.saveServerUrl(editTextServer.getText().toString());
+                    preferences.saveServerUrlUser(preferences.getServerUrl()+"/User");
+                    preferences.saveServerUrlGet(preferences.getServerUrl()+"/Get/");
+                    preferences.saveServerUrlTask(preferences.getServerUrl()+"/Tasks");
+                    callLogintoGetUrlService();
+                }
+
+
+            }
+            else {
+                GlobalClass.showToastInternet(activity);
+            }
+        }
+        if(v==textviewForgottPassword){
+            Intent i = new Intent(activity,ForgottPasswordActivity.class);
+            startActivity(i);
+            finish();
+        }
+        if(v==imgAboutus){
+            Intent i = new Intent(activity,AboutUsActivity.class);
+            startActivity(i);
+            finish();
+        }
+        if(v==imgVisibility){
+            if (editTextPassword.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            {
+                editTextPassword.setInputType(129);
+                imgVisibility.setImageResource(R.drawable.visibility_off);
+            }
+            else
+            {
+                editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imgVisibility.setImageResource(R.drawable.visibility);
+            }
+        }
+        if(v==imgVisibility2)
+        {
+            if (editSqlPassword.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            {
+                editSqlPassword.setInputType(129);
+                imgVisibility2.setImageResource(R.drawable.visibility_off);
+            }
+            else
+            {
+                editSqlPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imgVisibility2.setImageResource(R.drawable.visibility);
+            }
+        }
+        if(v==imgEnglish){
+            strLangauge=getString(R.string.language_english);
+        }
+        if(v==imgGermany){
+            strLangauge=getString(R.string.language_germany);
+        }
+    }
+    public boolean checkValidation()
+    {
+        boolean flag = true;
+        if(TextUtils.isEmpty(editTextuser.getText().toString()) ||
+                        TextUtils.isEmpty(editTextPassword.getText().toString()))
+        {
+            GlobalClass.showToastField(activity);
+            flag=false;
+        }
+        else {
+            if(!GlobalClass.isEmailValid(editTextuser.getText().toString())){
+                //GlobalClass.showToastEmail(activity);
+                flag=true;
+            }
+            else {
+                flag=true;
+            }
+        }
+        return flag;
+    }
+    private void callLogintoGetUrlService()
+    {
+        try
+        {
+            final ProgressDialog progressDialog = ProgressDialog.show(this,"Login","Please wait...",false,false);
+           
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(GlobalClass.LOGIN_URL).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+
+            String strUser=editTextuser.getText().toString();
+            String strPass=editTextPassword.getText().toString();
+            String strDatabase=editTextDatabase.getText().toString();
+            String strServer=editSqlServerName.getText().toString();
+            String strSqlUser=editSqlLogin.getText().toString();
+            String strSqlPass=editSqlPassword.getText().toString();
+
+            interfaceObject.callLogin(strUser,strPass,new Callback<LoginPojo>()
+            {
+                @Override
+                public void success(LoginPojo loginPojo, Response response)
+                {
+                    List<Header> header = null;
+                    try
+                    {
+                        header = response.getHeaders();
+                        if(response != null)
+                        {
+                            if (loginPojo.getStatus() == 0)
+                            {
+                                LogApp.e(" login success ", " response from service : " + loginPojo.getStatus() + " id : " + loginPojo.getPayload().getId());
+                                String id=String.valueOf(loginPojo.getPayload().getId());
+                                String length=String.valueOf(id.length());
+                                preferences.saveDomain(String.valueOf(loginPojo.getPayload().getDomain()));
+                                progressDialog.dismiss();
+                                callAuthenticateService();
+
+                            }
+                        }
+                        else {
+                            LogApp.e(" no response from service :  ", " response from service : ");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        String statusCode="";
+                        String name="";
+                        for (int i=0;i<header.size();i++)
+                        {
+                            LogApp.e(" header size : "," response from service : "+header.size()+" name : "+header.get(i).getName()+" value : "+header.get(i).getValue());
+                            name=header.get(i).getName();
+                            if(!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")){
+                                statusCode=header.get(i).getValue();
+                            }
+                        }
+                        if(statusCode.equalsIgnoreCase("1004"))
+                        {
+                            GlobalClass.showToast(activity,"Email is wrong");
+                        }
+                        else if(statusCode.equalsIgnoreCase("1005"))
+                        {
+                            GlobalClass.showToast(activity,"Password is wrong");
+                        }
+
+                        progressDialog.dismiss();
+                    }
+                }
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" login failed "," response from service : "+error.toString());
+                    progressDialog.dismiss();
+                }
+
+            });
+
+        }
+        catch (Exception e){
+            LogApp.e(" while login service : "," in catch : "+e.toString());
+        }
+
+    }
+    private void callAuthenticateService()
+    {
+        try
+        {
+            final ProgressDialog progressDialog = ProgressDialog.show(this,"Login","Please wait...",false,false);
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(preferences.getDomain()).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+
+            String strUser=editTextuser.getText().toString();
+            String strPass=editTextPassword.getText().toString();
+            interfaceObject.callAuthenticate(strUser,strPass,new Callback<LoginPojo>()
+            {
+                @Override
+                public void success(LoginPojo loginPojo, Response response)
+                {
+                    List<Header> header = null;
+                    try
+                    {
+                        header = response.getHeaders();
+                        if(response != null)
+                        {
+                            if (loginPojo.getStatus() == 0)
+                            {
+                                LogApp.e(" login success ", " response from service : " + loginPojo.getStatus() + " id : " + loginPojo.getPayload().getId());
+                                userIdPermenent=String.valueOf(loginPojo.getPayload().getId());
+                                strEmail=String.valueOf(loginPojo.getPayload().getEmail());
+                                strFullname=String.valueOf(loginPojo.getPayload().getFullName());
+                                strUsername=String.valueOf(loginPojo.getPayload().getUserName());
+                                if(preferences.getUserIdTemp() == null || preferences.getUserIdTemp().equalsIgnoreCase("")){
+                                    String ephoch=String.valueOf(GlobalClass.getEpochTime());
+                                    String sumOfepoch=String.valueOf(GlobalClass.sumFromString(ephoch));
+                                    int random1=GlobalClass.getRandomNumber();
+                                    //int random2=GlobalClass.getRandomNumber();
+                                    //int sumofRandom=random1+random2;
+                                    userIdTemp=sumOfepoch+String.valueOf(random1);
+                                    preferences.saveUserIdTemp(userIdTemp);
+                                }
+                                else {
+                                    userIdTemp = preferences.getUserIdTemp();
+                                }
+                                progressDialog.dismiss();
+                                //new getUserPRofile().execute();
+                                callGetUserProfile();
+                            }
+                        }
+                        else {
+                            LogApp.e(" no response from service :  ", " response from service : ");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        String statusCode="";
+                        String name="";
+                        for (int i=0;i<header.size();i++)
+                        {
+                            LogApp.e(" header size : "," response from service : "+header.size()+" name : "+header.get(i).getName()+" value : "+header.get(i).getValue());
+                            name=header.get(i).getName();
+                            if(!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")){
+                                statusCode=header.get(i).getValue();
+                            }
+                        }
+                        if(statusCode.equalsIgnoreCase("1004"))
+                        {
+                            GlobalClass.showToast(activity,"Email is wrong");
+                        }
+                        else if(statusCode.equalsIgnoreCase("1005"))
+                        {
+                            GlobalClass.showToast(activity,"Password is wrong");
+                        }
+
+                        progressDialog.dismiss();
+                    }
+                }
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" login failed "," response from service : "+error.toString());
+                    progressDialog.dismiss();
+                }
+
+            });
+
+        }
+        catch (Exception e){
+            LogApp.e(" while login service : "," in catch : "+e.toString());
+        }
+
+    }
+    public void callGetUserProfile(){
+        try
+        {
+            final ProgressDialog progressDialog = ProgressDialog.show(this,"Login","Please wait...",false,false);
+            String url = preferences.getDomain()+"Get";
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+            String strUser=editTextuser.getText().toString();
+            String strPass=editTextPassword.getText().toString();
+
+            interfaceObject.callGetProfile(userIdTemp,strLangauge,new Callback<GetProfilePojo>()
+            {
+                @Override
+                public void success(GetProfilePojo getProfilePojo, Response response)
+                {
+                    List<Header> header = null;
+                    try
+                    {
+                        header = response.getHeaders();
+                        if(response != null)
+                        {
+                            if (getProfilePojo.getStatus() == 0)
+                            {
+                                LogApp.e(" login success ", " response from service : " + getProfilePojo.getStatus());
+                                if(getProfilePojo.getPayload().size() > 0){
+                                    for (int i=0;i<getProfilePojo.getPayload().size();i++)
+                                    {
+                                        String ColumnsDetail = getProfilePojo.getPayload().get(i).getColsDetail();
+                                        String ProfileId = String.valueOf(getProfilePojo.getPayload().get(i).getId());
+                                        String Name = String.valueOf(getProfilePojo.getPayload().get(i).getName());
+                                        String UserId = String.valueOf(getProfilePojo.getPayload().get(i).getUserId());
+                                        String ExpandedId = String.valueOf(getProfilePojo.getPayload().get(i).getExpandedIds());
+                                        preferences.saveProfileId(ProfileId);
+                                        preferences.saveLanguage(strLangauge);
+                                        /* adding default profile to database for table screen */
+                                        dbHandler.addUserProfile(ProfileId, Name, ColumnsDetail, userIdPermenent, ExpandedId, userIdTemp, preferences.getLanguage(), getResources().getString(R.string.weekm));
+                                    }
+                                }
+
+
+                                GlobalClass.showToast(LoginActivity.this,"Profile sucesss");
+
+                                /* saving logged in user detail in preferences */
+                                preferences.saveUserID(userIdPermenent);
+                                preferences.saveEmail(strEmail);
+                                preferences.saveFullName(strFullname);
+                                preferences.saveUserName(strUsername);
+                                preferences.saveUserLogged(true);
+
+                                progressDialog.dismiss();
+                                Intent i = new Intent(activity,HomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }
+                        else {
+                            LogApp.e(" no response from service :  ", " response from service : ");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        String statusCode="";
+                        String name="";
+                        for (int i=0;i<header.size();i++)
+                        {
+                            LogApp.e(" header size : "," response from service : "+header.size()+" name : "+header.get(i).getName()+" value : "+header.get(i).getValue());
+                            name=header.get(i).getName();
+                            if(!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")){
+                                statusCode=header.get(i).getValue();
+                            }
+                        }
+                        if(statusCode.equalsIgnoreCase("1004"))
+                        {
+                            GlobalClass.showToast(activity,"Email is wrong");
+                        }
+                        else if(statusCode.equalsIgnoreCase("1005"))
+                        {
+                            GlobalClass.showToast(activity,"Password is wrong");
+                        }
+                        progressDialog.dismiss();
+                    }
+                }
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" get proifle failed "," response from service : "+error.toString());
+                    progressDialog.dismiss();
+                }
+
+            });
+        }
+        catch (Exception e){
+            LogApp.e(" while get proifle service : "," in catch : "+e.toString());
+        }
+    }
+    public class getUserPRofile extends AsyncTask<String, Void, String>
+    {
+        String status = "";
+        ProgressDialog progressDialog;
+        @SuppressWarnings("deprecation")
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            @SuppressWarnings("deprecation")
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseText = null;
+            String finalUrl=preferences.getDomain()+"Get/Profiles";
+            HttpPost httppost = new HttpPost(finalUrl);
+            try {
+                @SuppressWarnings("deprecation")
+                HttpEntity entity;
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                try
+                {
+                    Log.e(" user id "," user id temp : "+preferences.getUserIdTemp());
+                    String userID = preferences.getUserIdTemp();
+                    builder.addPart("UserId", new StringBody(userIdTemp));
+                    builder.addPart("Lang", new StringBody("En"));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                entity = builder.build();
+
+                httppost.setEntity(entity);
+
+                String request;
+
+                // Execute HTTP Post Request
+                response = httpclient.execute(httppost);
+                Log.v("Post Status","Code: "+response.getStatusLine().getStatusCode());
+                HttpEntity entity2 = response.getEntity();
+                responseText = EntityUtils.toString(entity2);
+                Log.v(" get user profile "," response from service : "+responseText);
+                //Json Parsing
+                JSONObject objMain = (JSONObject) new JSONTokener(responseText).nextValue();
+
+                JSONArray jsonArray = objMain.getJSONArray("Payload");
+                status = objMain.getString("Status");
+                if(jsonArray.length() > 0){
+                    for (int i = 0; i < jsonArray.length(); i++)
+                    {
+                        JSONObject jsonobjectInner = jsonArray.getJSONObject(i);
+                        String ColumnsDetail = jsonobjectInner.getString("ColsDetail");
+                        String ProfileId = jsonobjectInner.getString("Id");
+                        String Name = jsonobjectInner.getString("Name");
+                        String UserId= jsonobjectInner.getString("UserId");
+                        String ExpandedId= jsonobjectInner.getString("ExpandedIds");
+                        preferences.saveProfileId(ProfileId);
+                        preferences.saveLanguage(strLangauge);
+                        /* adding default profile to database for table screen */
+                        dbHandler.addUserProfile(ProfileId,Name,ColumnsDetail,userIdPermenent,ExpandedId,userIdTemp,preferences.getLanguage(),getResources().getString(R.string.weekm));
+                    }
+                }
+
+
+            }
+            catch (final Exception e)
+            {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        GlobalClass.showToast(LoginActivity.this,"Try again please!");
+                    }
+                });
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            if(status.equalsIgnoreCase("0")){
+                preferences.saveUserID(userIdPermenent);
+                preferences.saveEmail(strEmail);
+                preferences.saveFullName(strFullname);
+                preferences.saveUserName(strUsername);
+                preferences.saveUserLogged(true);
+
+                progressDialog.dismiss();
+                Intent i = new Intent(activity,HomeActivity.class);
+                startActivity(i);
+                finish();
+            }
+            else
+            {
+
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+           progressDialog = ProgressDialog.show(LoginActivity.this,"Login","Please wait...",false,false);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+        }
+
+    }
+    @SuppressWarnings("deprecation")
+    public HttpEntity addToMultipart(HttpEntity reqEntity)
+    {
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        try
+        {
+            builder.addPart("UserId", new StringBody(preferences.getUserID()));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        reqEntity = builder.build();
+        return reqEntity;
+    }
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+    public class URLSpanNoUnderline extends URLSpan
+    {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(true);
+        }
+    }
+}

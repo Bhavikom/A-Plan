@@ -1,0 +1,710 @@
+<resources>
+    <!-- TODO: TutorialActivity -->
+    <string name="was_ist_aplan">Was ist A-Plan?</string>
+    <string name="datenbank">Datenbank, Sicherheit, Zugriffsrechte</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="gantt_chart">Gantt-Diagramm</string>
+    <string name="demo_beta_version">Demo-/Beta-Version</string>
+    <string name="konsten">Kosten</string>
+    <string name="ausblick">Ausblick</string>
+
+    <string name="dont_show_it_again">Don\'t show it again</string>
+    <string name="first_screen">A-Plan ist eine Projektmanagement-Software zur Verwaltung von Projekten und Ressourcen. Mit der App können die aktuellen Planungen auf einem Tablett bzw. Smartphone dargestellt werden. Die Planungen werden mit der Desktop-Version von A-Plan erstellt(siehe www.braintool.com) und auf einem SQL-Server innerhalb Ihres Firmennetzwerkes gespeichert.</string>
+    <string name="second_screen">Ihre Daten werden mit den höchsten aktuellen Sicherheitsstandards direkt von Ihrer firmeneigenen SQL-Datenbank zur App übertragen und werden zu keiner Zeit auf einem externen Server gespeichert oder gehostet. Hierdurch ist zudem gewährleistet, dass in der App immer der aktuelle Planungsstand angezeigt wird.
+        \n\nDie User der App melden sich mit ihrem Namen und Kennwort bei der App an und haben dann Zugriff auf die für sie freigegebenen Daten. Diese umfassen lediglich die Projekte, für die sie innerhalb der Desktop-Version von A-Plan freigeschaltet wurden.
+    </string>
+    <string name="third_screen">Die A-Plan-App zeigt auf einem Dashboard die aktuell zur Bearbeitung anstehenden Projekte / Vorgänge an, wobei diese durch das Setzen von Filtern beliebig eingeschränkt werden können. </string>
+    <string name="fourth_screen">In einem Ganttdiagramm wird der zeitliche Ablauf der betroffenen Projekte angezeigt. Auch hier werden nur die für den angemeldeten User freigegebenen Umfänge angezeigt und diese können ebenfalls durch umfangreiche Filter- und Einstellmöglichkeiten angepasst werden. </string>
+    <string name="fifth_screen">Bitte beachten Sie, dass diese Beta-Version nur eine begrenzte Laufzeit hat. Sie werden aber vor der Beendigung der Beta-Phase bzw. bei Vorliegen neuer Releases etc. automatisch benachrichtigt.\n\nHinweise auf Fehler bzw. Verbesserungsvorschläge können Sie uns über das Menü „Einstellungen“ / „Support“ zukommen lassen.
+    </string>
+    <string name="Sixth_screen">Für die offizielle App, die voraussichtlich Anfang 2017 zur Verfügung stehen wird, fallen pro User monatliche bzw. jährliche Kosten an, deren Höhe noch nicht exakt festgelegt wurde. Die User werden innerhalb der Desktop-Version von A-Plan verwaltet.</string>
+    <string name="seven_screen">In Kürze wird auch eine Android-Version der A-Plan App zur Verfügung stehen.
+        Als Erweiterung der aktuellen Version ist die Darstellung von Vorgängen pro Ressource und die Auslastung von Ressourcen vorgesehen (analog der Ressourcendarstellung der Desktop-Version).\n\n
+        Die nächste Version der App wird dann auch die Möglichkeit der Dateneingabe beinhalten. Hierbei wird es sich in erster Linie um Ablauf- bzw. Statusänderungen oder das Hinzufügen von Notizen etc. handeln. Das Ändern von Projektstrukturen oder das Anlegen neuer Projekte wird zunächst noch der Desktop-Version vorbehalten bleiben.
+    </string>
+    <string name="my_smsc_link"><a href="http://www.smacsoftwares.de/">Powered by: SMAC Software &amp; Services</a></string>
+    <!-- TODO: End TutorialActivity -->
+
+    <!-- TODO : LoginMobileActivity -->
+    <string name="login_header">A-Plan App - Sign In</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="user_name">User Name:</string>
+    <string name="password">Password:</string>
+    <string name="forgott_password">Forgot Password?</string>
+    <string name="Login">Login</string>
+    <!-- TODO : End LoginMobileActivity-->
+
+    <!-- TODO: AdminSplashActivity -->
+    <string name="admin_header">User Detail</string>
+    <string name="name_label">Name:</string>
+    <string name="email">E-Mail:</string>
+    <string name="companyname">Company Name:</string>
+    <string name="organizationId">Organisation-Id:</string>
+    <string name="newsletter">Newsletter:</string>
+    <string name="hasLicense">Has License?</string>
+    <string name="demo_user">DemoUser</string>
+    <string name="err_msg_name">Enter your full name</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="hint_name">Name</string>
+    <string name="sign_up">Sign Up</string>
+    <!-- TODO: End AdminSplashActivity -->
+
+    <!-- TODO : FragmentChangePassword -->
+    <string name="changepassword">Change Password?</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <!-- TODO : End FragmentChangePassword -->
+
+    <!-- TODO: FragmentDashBoard  -->
+    <string name="dashboard_header">Dashboard</string>
+    <string name="dashboard_footer">Dashboard</string>
+    <string name="project_footer">Project</string>
+    <string name="filter_footer">General Filter</string>
+    <string name="setting_footer">Setting</string>
+    <string name="search">Search</string>
+    <string name="load">Load</string>
+    <string name="sunday">Sun</string>
+    <string name="Monday">Mon</string>
+    <string name="tusday">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="finish_date">Finish Date</string>
+    <string name="selected_date">Select Date</string>
+    <!-- agreegate listview strings -->
+    <string name="task_assign_tree">Task Started</string>
+    <string name="task_completed_next_five_day">Task to complete in 1 week</string>
+    <string name="task_completed_today_tree">Task to complete today</string>
+    <string name="task_completed_tree">Task Complete</string>
+    <string name="task_pending_tree">Task Pending</string>
+
+    <string name="no_more_data_to_load">No more data to load</string>
+    <string name="no_more_data_to_load_0_0">0/0 No more data to load</string>
+    <string name="load_more_data">Load more</string>
+
+    <string name="no_more_data_to_load_static">No more data to load</string>
+    <string name="no_more_data_to_load_0_0_static">0/0 No more data to load</string>
+    <string name="load_more_data_static">Load more</string>
+
+
+    <!-- end agreegate listview strings -->
+    <!-- TODO: End FragmentDashBoard  -->
+
+    <!-- TODO: FragmentProject  -->
+    <string name="project_header">Project</string>
+    <string name="Status">Status</string>
+    <string name="TrafficLights">Traffic Lights</string>
+    <string name="Default_profile">Default Profile</string>
+    <string name="date">Date</string>
+    <string name="status">Status</string>
+    <!-- Resolution dilaog strings-->
+
+    <string name="weekm">Week M</string>
+    <string name="set_resolution">Set Resolution</string>
+    <string name="year">Year</string>
+    <string name="quarter">Quarter</string>
+    <string name="week_s">Week S</string>
+    <string name="week_m">Week M</string>
+    <string name="week_l">Week L</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
+    <string name="daynightshift">DayNightShift</string>
+
+    <!-- end Resolution dilaog strings-->
+    <string name="delete_profile">Delete Profile</string>
+    <string name="are_you_sure_to_delete_profile">Are you sure you want to Delete profile?</string>
+    <string name="add_new_profile">Add New Profile</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="filter_setted">Filter setted</string>
+    <string name="filter_setted_message">Do you want to proceed</string>
+    <string name="Delete_profile">Delete Profile</string>
+    <string name="today">Today</string>
+    <string name="text">Text</string>
+    <string name="Number">Number</string>
+
+    <!-- TODO: Project Fragment popup strings  -->
+
+    <!-- TODO: date dialog screen -->
+    <string name="completion_overrun">Completion Overrun</string>
+    <string name="started_project_task">Started tasks</string>
+    <string name="complete_project_task">Complete tasks</string>
+    <string name="complete_today">Complete today</string>
+    <string name="pending_project_task">Pending tasks</string>
+    <string name="passive_project_task">Passive Project/tasks</string>
+    <string name="completed_in1week">Completed in 1 week</string>
+    <string name="task_without_date">Task Without date[s]</string>
+    <string name="canceled_project_task">Canceled project/tasks</string>
+
+    <!-- TODO: Status dialog screen -->
+    <string name="notice_arrow">Notice arrow</string>
+    <string name="reshow">Reshow</string>
+    <string name="limit_overrun">Limit overrun</string>
+    <string name="critical">Critical</string>
+    <string name="requiring_clarification">Requiring clarification</string>
+
+    <string name="not_clear">Not Clear</string>
+    <string name="reminder">Reminder</string>
+    <string name="completed_task">Completed tasks</string>
+    <string name="limit">Limit</string>
+    <string name="capacity_too_high">Capacity too high</string>
+    <string name="capacity_too_low">Capacity too low</string>
+
+    <!-- TODO: Traffic light dialog screen -->
+    <string name="traffic_yellow">Yellow</string>
+    <string name="traffic_red">Red</string>
+    <string name="traffic_green">Green</string>
+
+    <!-- TODO: End FragmentProject  -->
+
+    <!-- TODO: Resource Fragment popup strings  -->
+    <string name="resource_header">Resource</string>
+    <!-- TODO: End Resource Fragment popup strings  -->
+
+    <!-- TODO: FragmentSelectFilter -->
+    <string name="filter_header">Filter</string>
+    <string name="general_filter_folder_text">General Filter - Folder</string>
+    <string name="general_filter_text_text">General Filter - Text</string>
+    <string name="general_filter_date_text">General Filter - Date</string>
+    <string name="general_filter_user_defined_text">General Filter - User def. Fields</string>
+    <!-- TODO: End FragmentSelectFilter -->
+
+    <!-- TODO: FragmentSetting -->
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+    <string name="default_string">Default</string>
+    <string name="edit">Edit</string>
+    <string name="send">Send</string>
+    <string name="support">Support</string>
+    <string name="profile">Profile</string>
+    <string name="set_profile">Set Profile</string>
+    <string name="table">Table</string>
+    <string name="submit_error_log">Submit error log</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_organization">Sign Out From Organization</string>
+    <string name="profile_default">Profile:Default</string>
+    <string name="sign_out_message">Are you sure?</string>
+    <string name="Table">Table</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_option">Options</string>
+    <string name="title_ganttchart">Gantt Chart</string>
+
+    <!--<string name="user_inactive">User Inactive.</string>
+    <string name="user_inactive_message">User Inactive.</string>-->
+    <!-- TODO: End FragmentSetting -->
+
+    <!-- TODO: FragmentFilterFolder -->
+    <string name="show_all_subtask">Show All Subtasks</string>
+    <string name="do_not_show_all_project">Do not show completed projects</string>
+    <string name="text_filter_title">Text Filter</string>
+    <string name="filterfolder_title">FolderFilter</string>
+    <!-- TODO: End FragmentFilterFolder -->
+
+    <!-- TODO: FragmentFilterText -->
+    <string name="filterText_header">Text Filter</string>
+    <string name="anytextfiled">Any Text Filed</string>
+    <string name="prio">Prio</string>
+    <string name="to">To</string>
+    <string name="leaveto">Leve To</string>
+    <string name="identno">Ident-No</string>
+    <string name="task">Task</string>
+    <string name="client">Client</string>
+    <string name="responsible">Responsible</string>
+    <string name="group">Group</string>
+    <string name="resources">Resource</string>
+    <!-- TODO: End FragmentFilterText -->
+
+    <!-- TODO: FragmentFilterDate -->
+    <string name="date_filter_title">Date Filter</string>
+    <string name="criteria1">Criterion 1</string>
+    <string name="criteria2">Criterion 2</string>
+    <string name="and">And</string>
+    <!-- Criteria arraylits string -->
+    <string name="empty">Empty</string>
+    <string name="planned_time_to_be_spent_on_task">Planned time to be spent on task</string>
+    <string name="begin_pid">Begin PI’d</string>
+    <string name="end_pid">End PI’d</string>
+    <string name="actual_time_to_be_spent_on_task">Actual time to be spent on task</string>
+    <string name="begin_act">Begin Act</string>Criterion1TimeUnit
+    <string name="end_act">End Act</string>
+    <string name="end_progn">End Progn</string>
+    <string name="entry_date">Entry Date</string>
+    <string name="reshow_date">Reshow Date</string>
+    <string name="complete_on">Complete on</string>
+    <string name="last_change">Last change</string>
+    <!-- end Criteria arraylits string -->
+
+    <!-- Duration arraylist string -->
+    <string name="before">Before</string>
+    <string name="on">On</string>
+    <string name="after">After</string>
+    <string name="between">Between</string>
+    <string name="time_range">Time Range</string>
+    <!-- end Duration arraylist string -->
+
+    <!-- TimePeriod arraylist strings -->
+    <string name="days">Days</string>
+    <string name="weeks">Weeks</string>
+    <string name="months">Months</string>
+    <string name="years">Years</string>
+    <!-- End TimePeriod arrylist strings -->
+
+    <string name="key_criterion1">Criterion1</string>
+    <string name="key_criterion1Type">Criterion1Type</string>
+    <string name="key_criterion1FromDate">Criterion1FromDate</string>
+    <string name="key_criterion1ToDate">Criterion1ToDate</string>
+    <string name="key_criterion1TimeFrom">Criterion1TimeFrom</string>
+    <string name="key_criterion1TimeTo">Criterion1TimeTo</string>Criterion1TimeUnit
+    <string name="key_criterion1TimeUnit">Criterion1TimeUnit</string>
+
+    <string name="key_criterion2">Criterion2</string>
+    <string name="key_criterion2FromDate">Criterion2FromDate</string>
+    <string name="key_criterion2ToDate">Criterion2ToDate</string>
+    <string name="key_criterion2Type">Criterion2Type</string>
+    <string name="key_criterion2TimeFrom">Criterion2TimeFrom</string>
+    <string name="key_criterion2TimeTo">Criterion2TimeTo</string>
+    <string name="key_criterion2TimeUnit">Criterion2TimeUnit</string>
+
+    <!-- TODO: End FragmentFilterDate -->
+
+    <!-- TODO: FragmentFilterUserDefined -->
+    <string name="user_defined_filter_title">User Define Filter</string>
+    <string name="general_filte_title">General Filter</string>
+    <string name="key_text1">Text1</string>
+    <string name="key_text2">Text2</string>
+    <string name="key_text3">Text3</string>
+    <string name="key_text4">Text4</string>
+    <string name="key_text5">Text5</string>
+    <string name="key_text6">Text6</string>
+    <string name="key_text7">Text7</string>
+    <string name="key_text8">Text8</string>
+    <string name="key_text9">Text9</string>
+    <string name="key_text10">Text10</string>
+    <string name="text_user_defined">Text</string>
+
+    <string name="number">Number</string>
+    <string name="key_number1">Number1</string>
+    <string name="key_number2">Number2</string>
+    <string name="key_number3">Number3</string>
+    <string name="key_number4">Number4</string>
+    <string name="key_number5">Number5</string>
+    <string name="key_number6">Number6</string>
+    <string name="key_number7">Number7</string>
+    <string name="key_number8">Number8</string>
+    <string name="key_number9">Number9</string>
+    <string name="key_number10">Number10</string>
+    <!-- TODO: End FragmentFilterUserDefined -->
+
+    <!-- TODO: FragmentTable -->
+    <string name="name">Name</string>
+    <string name="show">Show</string>
+    <string name="width">Width</string>
+    <!-- TODO: End FragmentTable -->
+
+    <!-- TODO: FragmentSupport  -->
+    <string name="aboutus">About</string>
+    <string name="help">Help</string>
+    <string name="faqs">FAQs</string>
+    <string name="contect">Contact</string>
+    <string name="support_email">Setting</string>
+    <string name="send_us_your_feedback">Send us your feedback/issues</string>
+    <!-- TODO: End FragmentSupport  -->
+
+    <!-- TODO: FragmentSupportAbout-->
+    <string name="releseNo">Release No:</string>
+    <string name="sqlversion">Sql-Version:</string>
+    <string name="licence">Licence:</string>
+    <string name="webviewer">Web viewer:</string>
+    <string name="licensedto">Licensed To:</string>
+    <string name="aplan">A-Plan 2017</string>
+    <string name="version">Version 1.1.6</string>
+    <string name="na">N/A</string>
+    <string name="demouser">Demo User</string>
+    <string name="copyright">CopyRight @ 1996 - 2017 barintool Software gmbh </string>
+    <!-- TODO: End FragmentSupportAbout -->
+
+    <string name="DateLightFilter">DateLightFilter</string>
+    <string name="StatusLightFilter">StatusLightFilter</string>
+    <string name="TrafficLightFilter">TrafficLightFilter</string>
+
+    <string name="UserDefindedFilterForNumber">UserDefinedFilterForNumber</string>
+    <string name="UserDefinedFilter">UserDefinedFilter</string>
+    <string name="DateFilter">DateFilter</string>
+    <string name="FolderFilter">FolderFilter</string>
+    <string name="TextFilter">TextFilter</string>
+
+    <!-- TODO: Srings use Multiple time commonly -->
+    <string name="please_wait">Please wait...</string>
+    <string name="fetching_data">Fetching your data...</string>
+    <string name="fetching_profile">Fetching your Profile...</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="submit">Submit</string>
+    <string name="ok">OK</string>
+    <string name="refresh">Refresh</string>
+    <string name="Cancel">Cancel</string>
+    <string name="control">Control</string>
+    <!-- TODO: End Srings use Multiple time commonly -->
+
+    <!-- TODO: all toast string -->
+
+            <!-- not using currently -->
+            <string name="password_change_successfully">Password Change successfully</string>
+            <string name="password_does_not_change">Password doesn\'t change</string>
+            <string name="please_fill_all_required_field">Please fill all the required fields</string>
+            <string name="password_change_successfully_check_email">Password Change successfully! Please check your mail</string>
+            <!-- end not using currently-->
+
+
+    <string name="profile_deleted">Your profile has been deleted successfully.</string>
+    <string name="you_can_not_delete_default_profile">"Default Profile" cannot be deleted.</string>
+    <string name="profile_created_successfully">Your profile has been created successfully</string>
+    <string name="please_enter_profile_name">Please enter profile name</string>
+    <string name="please_select_atleast_one_date">Please select atleast one date range</string>
+    <string name="no_error_log_available">No error log available on app.</string>
+
+    <string name="profile_delete_disable">Profile delete is disabled in demo mode</string>
+    <string name="profile_create_disable">Profile create is disabled in demo mode</string>
+    <string name="profile_update_disable">Profile update is disabled in demo mode</string>
+
+                     <!-- for field validation -->
+    <string name="enter_valid_email">Invalid E-mail</string>
+    <string name="please_enter_valid_email_address">The email you entered has no proper format. Please check your email address and try again.</string>
+    <string name="invalid_email_title">Invalid E-mail</string>
+    <string name="enter_valid_compony_name">Invalid Company Name</string>
+    <string name="enter_valid_name">Invalid Name</string>
+
+    <string name="enter_user_name_title">Invalid user name</string>
+    <string name="enter_valid_username">Please enter valid username.</string>
+
+    <string name="enter_password_title">Invalid password</string>
+    <string name="enter_valid_password">Please enter valid password.</string>
+
+    <string name="enter_organization_url_title">Invalid URL</string>
+    <string name="enter_valid_url">Please enter valid organisation URL.</string>
+
+    <string name="no_internet_title">No Internet</string>
+    <string name="please_check_internet_connection">Network not available</string>
+
+    <string name="select_date_title">Select Date</string>
+    <string name="please_select_date_first">Please select dates first</string>
+
+    <string name="error_title">Error</string>
+    <string name="no_response_from_server">No Response from server</string>
+    <string name="something_is_wrong">Server Not Found</string>
+
+    <string name="terms_condition_title">Terms and Conditions</string>
+    <string name="terms_condition_message">Please accept Terms and Conditions, Click agree to the A-Plan Terms and Conditions.</string>
+    <string name="agree">Agree</string>
+
+    <string name="access_denied_title">Access denied</string>
+    <string name="problem_while_deleting_profile">Problem while deleting profile</string>
+
+    <string name="sending_details">Sending details</string>
+                    <!-- end for field validation -->
+
+    <!-- to handle service response-->
+    <string name="contact_adminstrator">Please contact to your administrator about incorrect license, once the issue is solved from the administrator. Please try it again.</string>
+
+    <string name="role_not_found_title">Role not found</string>
+    <string name="app_right_has_been_revoked">App rights has been revoked, Please contact your administrator.</string>
+
+    <string name="server_timeout_exception">Server timeout exception</string>
+
+    <string name="organization_is_disable_by_sys_admin_title">Organisation Inactivated</string>
+    <string name="organization_is_disable_by_sys_admin_message">Your organisation has been disabled by the administrator. Please contact your administrator.</string>
+
+    <string name="organization_user_is_disabled_by_sys_admin_title">User Inactivated</string>
+    <string name="organization_user_is_disabled_by_sys_admin_message">You have been disabled by the administrator. Please contact your administrator.</string>
+
+    <string name="role_revoked_title">Insufficient Rights</string>
+    <string name="role_revoked_message">You do not have enough rights to access the application. Please contact your administrator.</string>
+
+    <string name="licence_file_missing_title">License file missing.</string>
+    <string name="licence_file_missing_message">Your license file is missing. Please contact your system administrator.</string>
+
+    <string name="licence_expired_title">License expired.</string>
+    <string name="licence_expired_message">Your license have been expired. Please contact your administrator.</string>
+
+    <string name="user_disabled_by_system_admin_title">User has been disabled by system  admin</string>
+    <string name="user_disabled_by_system_admin_message">Organization user has been disabled by system  admin,Please contact your administrator.</string>
+
+    <string name="organization_disalbed_title">Organization has been disabled</string>
+    <string name="organization_disalbed_message">Organization has been disabled by system admin, Please contact your administrator.</string>
+
+    <string name="invalid_login_title">Invalid user name or password</string>
+    <string name="invalid_login_message">The user name or password you entered doesn\'t appear to belong to an account. Please check your user name or password and try again</string>
+
+    <string name="max_user_login_exceed_title">Reached device limit</string>
+    <string name="max_user_login_exceed">Max user device login exceeded.</string>
+
+    <string name="invalide_organization">Organisation user not found</string>
+
+        <!-- for notification response string -->
+    <string name="organization_inactive_title">Organisation Inactive.</string>
+    <string name="organization_inactive_message">Your organisation have been disabled by System admin. please
+                contact your system admin.</string>
+
+    <string name="user_inactive_title">User Inactive.</string>
+    <string name="user_inactive_message">You have been disabled by System admin. please contact your
+                system admin.</string>
+
+    <string name="user_active_title">User Activated</string>
+    <string name="user_active_message">You have been enabled by the administrator.</string>
+
+    <string name="invalid_aplan_licence">License Issue</string>
+    <string name="invalid_aplan_licence_message">Invalid A-Plan License. Please contact your administrator.</string>
+
+    <string name="user_deleted">User Deleted</string>
+    <string name="user_deleted_message">You have been deleted by the administrator.</string>
+        <!-- end for notification string -->
+    <!-- end to handle service response -->
+
+    <!--TODO: end all toast strings-->
+
+    <!-- TODO: below string are common only use for english language so this will be not in GERMANY -->
+
+    <!-- TODO: for Comparison only for condition matching  -->
+
+    <!-- TODO: date dialog screen for control -->
+    <string name="completion_overrun_control_to_send_control">ShowOverdueFinished</string>
+    <string name="started_project_task_control_to_send_control">ShowStarted</string>
+    <string name="complete_project_task_control_to_send_control">ShowFinished</string>
+    <string name="complete_today_control_to_send_control">ShowFinishToday</string>
+    <string name="pending_project_task_control_to_send_control">ShowPending</string>
+    <string name="passive_project_task_control_to_send_control">ShowPassiv</string>
+    <string name="completed_in1week_control_to_send_control">ShowFinishWeek</string>
+    <string name="task_without_date_control_to_send_control">ShowNoTime</string>
+    <string name="canceled_project_task_control_to_send_control">ShowCanceled</string>
+
+    <!-- TODO: Status dialog screen -->
+    <string name="notice_arrow_control_to_send_control">ShowArrow</string>
+    <string name="reshow_control_to_send_control">ShowReminder</string>
+    <string name="limit_overrun_control_to_send_control">ShowOverdueLimit</string>
+    <string name="critical_control_to_send_control">ShowCritical</string>
+    <string name="requiring_clarification_control_to_send_control">ShowQuestion</string>
+
+    <!-- TODO: Traffic light dialog screen -->
+    <string name="traffic_yellow_control_to_send_control">TL_Yellow</string>
+    <string name="traffic_red_control_to_send_control">TL_Red</string>
+    <string name="traffic_green_control_to_send_control">TL_Green</string>
+
+    <!-- this is for comparision of date filter -->
+    <string name="empty_string">Empty</string>
+    <string name="planned_time_to_be_spent_on_task_string">Planned time to be spent on task</string>
+    <string name="begin_pid_string">Begin PI’d</string>
+    <string name="end_pid_string">End PI’d</string>
+    <string name="actual_time_to_be_spent_on_task_string">Actual time to be spent on task</string>
+    <string name="begin_act_string">Begin Act</string>Criterion1TimeUnit
+    <string name="end_act_string">End Act</string>
+    <string name="end_progn_string">End Progn</string>
+    <string name="entry_date_string">Entry Date</string>
+    <string name="reshow_date_string">Reshow Date</string>
+    <string name="complete_on_string">Complete on</string>
+    <string name="last_change_string">Last change</string>
+
+    <string name="before_string">Before</string>
+    <string name="on_string">On</string>
+    <string name="after_string">After</string>
+    <string name="between_string">Between</string>
+    <string name="time_range_string">Time Range</string>
+
+    <string name="days_string">Days</string>
+    <string name="weeks_string">Weeks</string>
+    <string name="months_string">Months</string>
+    <string name="years_string">Years</string>
+
+
+    <!-- START all four type of general filter string to comparison -->
+    <string name="folder_group_id">GroupId</string>
+    <!-- general filter - text filter strings-->
+
+    <string name="key_ResourceGroupId">ResourceGroups</string>
+    <string name="key_ResourceId">ResourceId</string>
+    <string name="key_anyText">AnyText</string>
+    <string name="key_priFrom">PrioFrom</string>
+    <string name="key_priTO">PrioTo</string>
+    <string name="key_level">Level</string>
+    <string name="key_indentyNo">IndentNo</string>
+    <string name="key_Task">TaskName</string>
+    <string name="key_Client">ClientId</string>
+    <string name="key_Responsible">ResponsibleId</string>
+
+    <string name="key_text1_string">Text1</string>
+    <string name="key_text2_string">Text2</string>
+    <string name="key_text3_string">Text3</string>
+    <string name="key_text4_string">Text4</string>
+    <string name="key_text5_string">Text5</string>
+    <string name="key_text6_string">Text6</string>
+    <string name="key_text7_string">Text7</string>
+    <string name="key_text8_string">Text8</string>
+    <string name="key_text9_string">Text9</string>
+    <string name="key_text10_string">Text10</string>
+
+    <string name="key_number1_string">Number1</string>
+    <string name="key_number2_string">Number2</string>
+    <string name="key_number3_string">Number3</string>
+    <string name="key_number4_string">Number4</string>
+    <string name="key_number5_string">Number5</string>
+    <string name="key_number6_string">Number6</string>
+    <string name="key_number7_string">Number7</string>
+    <string name="key_number8_string">Number8</string>
+    <string name="key_number9_string">Number9</string>
+    <string name="key_number10_string">Number10</string>
+
+    <string name="key_criterion1_string">Criterion1</string>
+    <string name="key_criterion1Type_string">Criterion1Type</string>
+    <string name="key_criterion1FromDate_string">Criterion1FromDate</string>
+    <string name="key_criterion1ToDate_string">Criterion1ToDate</string>
+    <string name="key_criterion1TimeFrom_string">Criterion1TimeFrom</string>
+    <string name="key_criterion1TimeTo_string">Criterion1TimeTo</string>Criterion1TimeUnit
+    <string name="key_criterion1TimeUnit_string">Criterion1TimeUnit</string>
+    <string name="key_criterion2_string">Criterion2</string>
+    <string name="key_criterion2FromDate_string">Criterion2FromDate</string>
+    <string name="key_criterion2ToDate_string">Criterion2ToDate</string>
+    <string name="key_criterion2Type_string">Criterion2Type</string>
+    <string name="key_criterion2TimeFrom_string">Criterion2TimeFrom</string>
+    <string name="key_criterion2TimeTo_string">Criterion2TimeTo</string>
+    <string name="key_criterion2TimeUnit_string">Criterion2TimeUnit</string>
+
+    <!-- END all four type of general filter string to comparison -->
+
+    <!-- filter type for check condition on database-->
+    <string name="FolderFilter_text">FolderFilter</string>
+    <string name="TextFilter_text">TextFilter</string>
+    <string name="DateFilter_text">DateFilter</string>
+    <string name="UserDefinedFilter_text">UserDefinedFilter</string>
+
+    <string name="task_click">task_click</string>
+    <string name="task_click_control_load">task_click_with_control</string>
+
+    <string name="task_click_and_genaral_filter">task_click_and_general_filter</string>
+    <string name="task_click_control_load_and_general_filter">task_click_with_control_and_general_filter</string>
+
+    <string name="agreegate_click">agreegate_click</string>
+    <string name="agreegate_click_control_load">agreegate_click_with_control</string>
+
+    <string name="agreegate_click_and_general_filter">agreegate_click_and_general_filter</string>
+    <string name="agreegate_click_control_load_and_general_filter">agreegate_click_with_control_and_general_filter</string>
+
+    <!-- TODO: End for Comparison only for condition matching  -->
+
+    <!-- TODO: will be only for english some static screen will not available in german string file  -->
+    <string name="app_name">A-Plan</string>
+    <string name="blank_value">-----</string>
+    <string name="beta_version">Beta Version</string>
+    <string name="x_status">x-status</string>
+    <string name="x_message">x-message</string>
+    <string name="language_germany">DE</string>
+    <string name="language_english">EN</string>
+
+    <!-- error code from service to handle situation -->
+    <string name="NO_GET_SERVER_CONNECTION">500</string>
+    <string name="USER_UNAUTHORIZED">1001</string>
+    <string name="USER_EXISTS">1002</string>
+    <string name="USER_NOTFOUND">1003</string>
+    <string name="USER_EMAIL_NOT_VALID">1004</string>
+    <string name="USER_PASSWORD_NOT_VALID">1005</string>
+    <string name="USER_DATABASE_DOES_NOT_EXIST">1006</string>
+    <string name="USER_ERROR_WHILE_CREATING_VIEW">1007</string>
+    <string name="USER_PROFILE_DOES_NOT_EXIST">1008</string>
+    <string name="ROLE_EXISTS">2001</string>
+    <string name="ROLE_NOTFOUND">2002</string>
+    <string name="PROJECT_EXISTS">4001</string>
+    <string name="PROJECT_NOTFOUND">4002</string>
+
+    <string name="PROJECT_ASSIGNED_TO_GROUP_EXISTS">4003</string>
+    <string name="GROUP_EXISTS">5001</string>
+    <string name="GROUP_NOTFOUND">5002</string>
+    <string name="TASK_EXISTS">6001</string>
+    <string name="TASK_NOTFOUND">6002</string>
+    <string name="TASK_ASSIGNED_TO_PROJECT_EXISTS">6003</string>
+    <string name="USERROLE_EXISTS">8001</string>
+    <string name="RESOURCE_EXIST">7001</string>
+    <string name="RESOURCE_NOT_FOUND">7002</string>
+    <string name="ASSIGNMENT_IS_NOT_POSSIBLE">7003</string>
+
+    <string name="MIGRATION_ERROR">8001</string>
+    <string name="RESOURCE_OR_TASK_NOT_EXIST">9001</string>
+    <string name="ORGANIZATION_REGISTRATION_MISSING_FIELDS">9003</string>
+    <string name="ORGANIZATION_REGISTRATION_FAILED">9004</string>
+    <string name="ORGANIZATION_USER_REGISTRATION_FAILED">9005</string>
+    <string name="ORGANIZATION_ID_MISSING">9006</string>
+    <string name="ORGANIZATION_USERID_OR_PASSWORD_MISSING">9007</string>
+    <string name="ORGANIZATION_MISSING_USERNAME_OR_PASSWORD">9008</string>
+    <string name="ORGANIZATION_AUTHENTICATION">9009</string>
+    <string name="ORGANIZATION_NOT_DELETED">9010</string>
+    <string name="ORGANIZATION_USER_ID_MISSING">9011</string>
+    <string name="ORGANIZATION_USER_NOT_DELETE">9012</string>
+
+
+
+        <!-- GENERAL CODE FOR ALL SERVICES-->
+        <string name="MISSING_FIELDS">506</string>
+        <string name="MAX_USER_LOGIN_EXEEDED">9013</string>
+        <string name="MAX_ALLOWED_USER_INCREASED">9002</string>
+        <string name="INVALID_REQUEST_CODE">400</string>
+        <string name="SERVER_NOT_FOUND_CODE">404</string>
+        <string name="TOKEN_EXPIRE">1009</string>
+        <string name="ORGANIZATION_USER_NOT_FOUND">9018</string>
+        <!-- START TO handle dashboard service response -->
+
+    <string name="USER_DOES_NOT_HAVE_ROLE">1011</string> <!-- disable app -->
+    <string name="ORGANIZATION_USER_IS_DISABLED_BY_SYS_ADMIN">9015</string> <!-- disabled app -->
+
+    <string name="LICENSE_EXPIRED">9016</string> <!-- sign out app-->
+    <string name="LICENSE_FILE_MISSING">9017</string> <!-- sing out app -->
+    <string name="ORGANIZATION_IS_DISABLED_BY_SYS_ADMIN">9014</string> <!-- sing out application -->
+
+        <!-- END TO handle dashboard service response -->
+
+    <!-- TODO: Custom Calendar strings  -->
+    <string name="done">Done</string>
+    <string name="Customized">Customized</string>
+    <string name="Decorator">Decorator</string>
+    <string name="Hebrew">Hebrew</string>
+    <string name="Arabic">Arabic</string>
+    <string name="CustomView">Custom View</string>
+    <string name="Dialog">Dialog</string>
+    <string name="DisplayOnly">DisplayOnly</string>
+    <string name="Range">Range</string>
+    <string name="Multi">Multi</string>
+    <string name="Single">Single</string>
+    <string name="day_name_format">EEE</string>
+    <string name="invalid_date">Date must be between %1$s and %2$s.</string>
+    <string name="month_name_format">MMMM yyyy</string>
+    <!-- TODO: End Custom Calendar strings  -->
+
+
+    <!-- for mobie give by darshan -->
+    <string name="counter">Counter</string>
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+    <string name="sorting">Sorting</string>
+    <string name="please_enter_your_dates">Please enter your dates</string>
+    <string name="you_have_selected">You have selected</string>
+    <string name="date_s">date(s)</string>
+    <string name="back">Back</string>
+
+    <string name="project_search">Project Search</string>
+    <string name="task_search">Task Search</string>
+    <string name="filter_popup">Filter</string>
+    <string name="save_setting">Save Settings</string>
+    <string name="static_organization">Braintool</string>>
+    <string name="login_as_licence_version">Login as licence user</string>
+    <string name="Continue">Continue</string>
+    <string name="url">Please enter valid organisation url.</string>
+
+    <string name="log_in">Log In</string>
+    <string name="try_demo">Try a Demo</string>
+    <string name="organization">Organisation url</string>
+
+    <string name="hint_username">Your Username</string>
+    <string name="hint_password">Your Password</string>
+    <string name="terms_condition">Terms &amp; Conditions</string>
+    <string name="terms_and_condition">Terms and Conditions</string>
+
+    <string name="terms_condition_json">{\"Terms\": [{\"Title\": \"General Terms and Conditions of Business of braintool software GmbH\",\"Detail\": \"General Terms and Conditions of Business of braintool software GmbH (as of February 10, 2015)\"}, {\"Title\": \"1 General Information / Scope of validity\",\"Detail\": \"(1) These general terms and conditions of trade are applicable to our agreements regarding the sale of software. In particular, the subject matter of these agreements is not the installation and maintenance of software or the supply of hardware, unless agreed otherwise.\n\n(2) The following general terms and conditions of trade are applicable to all agreements between us and the client. In each case, the version applicable at the time of concluding the agreement is authoritative.\n\n(3) Deviating, contradictory or supplementary general terms and conditions of trade shall not become a valid part of the agreement, even if we are aware of these, unless we expressly consent to their validity in writing.\"}, {\"Title\": \"2 Conclusion of the agreement/Delivery\",\"Detail\": \"(1) Our offers are subject to change without notice. The offer on our homepage is non-binding. We reserve the right to make changes. The agreement with the client shall be effected only by the declaration of acceptance by us (in electronic form or by email as well) or by the provision of services.\n\n(2) With the order, the client declares his binding offer of agreement. We will immediately confirm receipt of the client\'s order. The client must check to see that the software specifications meet his goals and requirements before the agreement is concluded. He is conversant with the functional characteristics and specifications of the software.\n\n(3) We are entitled to accept the offer of agreement contained in the order within three working days after receipt. We are entitled to decline the order without providing any reasons.\n\n(4) The client shall be immediately informed if the software is not available or only partially available.\n\n(5) We shall make every effort to provide delivery within two weeks of acceptance of the order at the latest. We are entitled to deliver in phases.\n\n(6) Delivery or service deadlines specified shall not be binding unless we provide written commitment for the same.\n\n(7) The software may be obtained via downloads, e-mail or by physical delivery (on CD-ROMs). Usage instructions and documentation are available for download on the corresponding product page on the website.\"}, {\"Title\": \"3 Retention of title/Utilization rights\",\"Detail\": \"(1) We shall retain the title to the software until complete payment of the purchase price. The client is obligated to handle the software with the utmost care in the meantime.\n\n(2) We are authorized to withdraw from the agreement and demand the return of the software if the client\'s conduct is contrary to the terms of the agreement, especially in the case of delay in payment. The client may also be obligated to delete the software and provide proof of having done so.\n\n(3) The software is legally protected. We are exclusively entitled to the copyright, patent rights, trademark rights and all other ancillary copyrights to the software. Any rights that a third party is entitled to have been procured by us. The client is authorized to permanently transfer the software to a third party, in the absence of good cause, if the third party agrees to the validity of these general terms and conditions of trade. Thereupon, the client must transfer all copies of the software to the third party and delete his own copies. The client\'s right to use the software expires with the transfer of the software to the third party. In addition, the client is obligated to provide us the full name and address of the third party without being asked.Other acts of utilization and exploitation by the client are not permitted. In particular, there shall be no assignment whatsoever of additional copyright-protected utilization and exploitation rights to the software (such as leasing, hiring out, distribution etc.) and/or to the source code beyond the non-exclusive license.\"}, {\"Title\": \"4 Price/Shipment/Delay\",\"Detail\": \"(1) The price includes statutory turnover tax if due. \n\n(2) The client can make payment by wire transfer or credit card.\n\n(3) The client can offset only against undisputed claims or claims that have been established by declaratory judgment. \n\n(4) Payments are in principle due upon delivery and at the most fourteen days after the date of invoice. \n\n(5) Physical deliveries can be made only after shipment modalities have been agreed to in advance. \n\n(6) In case of payment delays by the client, we shall be entitled to demand interest at the rate of 5 % p.a. over the base interest rate of the European Central Bank. We reserve the right to assert any further claims due to delay. \n\n(7) Delivery and service deadlines shall be extended to the extent of the payment delay on the part of the client.\"}, {\"Title\": \"5 Passage of risk\",\"Detail\": \"(1) The risk of accidental loss and accidental deterioration of the software sold shall pass to the client upon delivery of the software.\n\n(2) Default of acceptance on the part of the client shall be equivalent to delivery.\"}, {\"Title\": \"6 Warranty - Liability\",\"Detail\": \"(1) The warranty rights of the customer are exclusively defined in the license agreement included in the software or - if a separate license agreement is concluded - this separate license agreement. \n\n(2) The statutory liability covering damages other then the purchase and use of the software applies with the following stipulations: BRainTool Software’S LIABILITY IS LIMITED TO DAMAGES ARISING FROM GROSS NEGLIGENCE, WILLFUL ACTS, OR THE CULPABLE VIOLATION OF THE BASIC OBLIGATIONS STEMMING FROM THIS AGREEMENT. IN THE EVENT THAT BRainTool Software’S VIOLATION OF AN OBLIGATION ESSENTIAL TO THE AGREEMENT IS NOT DUE TO GROSS NEGLIGENCE OR IS UNINTENTIONAL, THEN BRainTool Software’S LIABILITY WILL BE LIMITED TO TYPICAL DAMAGES OR TO SUCH TYPICAL DAMAGES THAT WERE REASONABLY FORSEEABLE AT THE TIME THE AGREEMENT WAS MADE. \n\n(3) FURTHERMORE, BRainTool Software IS NOT LIABLE FOR ANY LOST WAGES OR OTHER IMPAIRMENT TO CUSTOMER ASSETS. \n\n(4) Any liability for damages arising from BRainTool Software’s negligence is limited to typical, foreseeable contractual damages that are usually equal to the license fee paid. \n\n(5) BRainTool Software assumes no responsibility or liability for software or systems that are not the subject of this contract.\"}, {\"Title\": \"7 Data protection\",\"Detail\": \"The client explicitly consents to the gathering, processing and use of personal data for the purpose of executing the order. The relevant statutory data protection regulations shall be complied with.\"}, {\"Title\": \"8 Final provisions\",\"Detail\": \"(1) Should a term be or become invalid, the remaining terms shall remain valid. The ineffective term shall be replaced by an effective term coming closest to the ineffective term in the economic sense. \n\n(2) Amendments and supplements to these general terms and conditions of trade are effective only if confirmed in writing by us. This applies to the amendment and revocation of this written form requirement as well. \n\n(3) German law shall apply exclusively to all legal relations between the client and us to the exclusion of the United Nations Convention on Contracts for the International Sale of Goods even if the client has his company headquarters abroad. \n\n(4) The place of jurisdiction is Ludwigsburg, Germany.\"}]}</string>
+</resources>

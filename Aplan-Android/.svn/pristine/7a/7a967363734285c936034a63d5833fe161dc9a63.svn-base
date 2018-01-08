@@ -1,0 +1,350 @@
+<resources>
+    <string name="app_name">AplanProject</string>
+    <string name="login_header">A-Plan App - Sign In</string>
+    <string name="dashboard_header">Dashboard</string>
+    <string name="project_header">Project</string>
+    <string name="admin_header">Admin Splace Screen</string>
+    <string name="filter_header">Filter</string>
+    <string name="forgott_password">Forgot Password?</string>
+    <string name="changepassword">Change Password?</string>
+    <string name="sing_in_button">Sing In</string>
+    <string name="submit_in_button">Send</string>
+    <string name="submit">Submit</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="selected_date_text">Selected Dates</string>
+    <string name="ok">Ok</string>
+    <string name="date">Date</string>
+    <string name="status">Status</string>
+    <string name="refresh">Refresh</string>
+    <string name="Cancel">Cancel</string>
+
+
+    <string name="title_profile">Profile</string>
+    <string name="title_option">Options</string>
+    <string name="title_ganttchart">Gantt Chart</string>
+
+
+    <!-- TODO: aboutus activity-->
+
+    <string name="releseNo">Release No:</string>
+    <string name="Sqlversion">Sql Version:</string>
+    <string name="Licence">Licence:</string>
+    <string name="WebViewer">Web Viewer:</string>
+    <string name="Licensedto">Licensed To:</string>
+    <string name="Aplan">A-Plan 2016</string>
+    <string name="version">Version 1.0(version Name)</string>
+    <string name="na">N/A</string>
+    <string name="Demouser">Demo User</string>
+    <string name="Copyright">CopyRight @ 1996 - 2016 barintool Software gmbh </string>
+
+
+
+    <!-- TODO: Tutorials activity screen -->
+    <!-- TODO: admin splace screen -->
+    <string name="Email">Email</string>
+    <string name="Name">Name</string>
+    <string name="Companyname">Company Name</string>
+    <string name="Newsletter">Newsletter</string>
+    <string name="demo_user">DemoUser</string>
+    <string name="infoSend">Send</string>
+    <string name="err_msg_name">Enter your full name</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_Companyname">Company Name</string>
+    <string name="hint_news">Newsletter</string>
+    <string name="btn_sign_up">Sign Up</string>
+
+
+    <!-- TODO: project_activity  -->
+
+    <string name="Status">Status</string>
+    <string name="TrafficLights">Traffic Lights</string>
+    <string name="Default_profile">Default Profile</string>
+    <string name="weekm">Week M</string>
+
+    <!-- TODO: Support_Faqs  -->
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
+
+    <string name="Done">Done</string>
+    <string name="Customized">Customized</string>
+    <string name="Decorator">Decorator</string>
+    <string name="Hebrew">Hebrew</string>
+    <string name="Arabic">Arabic</string>
+    <string name="CustomView">Custom View</string>
+    <string name="Dialog">Dialog</string>
+    <string name="DisplayOnly">DisplayOnly</string>
+    <string name="Range">Range</string>
+    <string name="Multi">Multi</string>
+    <string name="Single">Single</string>
+
+    <string name="day_name_format">EEE</string>
+    <string name="invalid_date">Date must be between %1$s and %2$s.</string>
+    <string name="month_name_format">MMMM yyyy</string>
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+
+    <!-- TODO: Filter screen -->
+    <string name="GenralFilter">General Filter-Folder Filter View</string>
+    <string name="Genral_text">General Filter-Text</string>
+    <string name="Genral_Date">General Filter-Date</string>
+    <string name="Genral_fileds">General User def.Fields View</string>
+
+
+    <!-- TODO: Help screen -->
+
+    <string name="ic_laptop">&#xe0d4;</string>
+    <string name="ic_drive_file">&#xe077;</string>
+    <string name="ic_photo_library">&#xe113;</string>
+    <string name="ic_photo">&#xe111;</string>
+
+
+    <!-- TODO: FilterFolderscreen -->
+    <string name="show_all_subtask">Show All Subtasks</string>
+    <string name="do_not_show_all_project">Do not show completed projects</string>
+    <string name="filtertext_header">Text Filter</string>
+    <string name="filterfolder_header">FolderFilter</string>
+
+    <!-- TODO: Filter Text Screen -->
+    <string name="filterText_header">Text Filter</string>
+    <string name="anytextfiled">Any Text Filed</string>
+    <string name="prio">Prio</string>
+    <string name="To">To</string>
+    <string name="Leaveto">Leve To</string>
+    <string name="identno">Ident-No</string>
+    <string name="Task">Task</string>
+    <string name="Client">Client</string>
+    <string name="Responsible">Responsible</string>
+    <string name="Group">Group</string>
+    <string name="Resources">Resource</string>
+
+    <!-- table screen text-->
+    <string name="name">Name</string>
+    <string name="show">Show</string>
+    <string name="width">Width</string>
+
+
+    <!-- TODO: Filter date Screen -->
+    <string name="Filterdate">Date Filter</string>
+
+    <string name="creartion1">Criterion 1</string>
+    <string name="creartion2">Criterion 2</string>
+
+    <!-- TODO: User Define Filter Screen -->
+    <string name="UserDefineFilter">User Defined Filter</string>
+    <string name="genralfilter">General Filter</string>
+    <!-- TODO: Filter_suppor  -->
+    <string name="aboutus">About</string>
+    <string name="help">Help</string>
+    <string name="faqs">FAQs</string>
+    <string name="contect">Contact</string>
+    <!-- TODO: Support_Faqs  -->
+    <string name="profile">Profile</string>
+    <string name="control">Control</string>
+
+    <string name="Default">Default</string>
+    <string name="Edit">Edit</string>
+    <string name="Send">Send</string>
+    <string name="Support">Support</string>
+    <string name="Profile">profile</string>
+
+    <string name="ic_keyboard_arrow_down">&#xe0c5;</string>
+    <string name="ic_keyboard_arrow_left">&#xe0c6;</string>
+    <string name="ic_keyboard_arrow_right">&#xe0c7;</string>
+    <string name="ic_email">&#xe087;</string>
+    <string name="ic_folder">&#xe09d;</string>
+    <string name="ic_add">&#xe006;</string>
+    <string name="ic_minus">&#x2212;</string>
+
+    <string name="ic_close">&#xe048;</string>
+
+    <!-- TODO: Home_activity  -->
+
+    <string name="Dashboard">Dashboard</string>
+    <string name="project">Project</string>
+    <string name="Filter">Filter</string>
+    <string name="Setting">Setting</string>
+
+
+    <string name="support_email">Setting</string>
+    <string name="support_crash_subj">Setting</string>
+    <string name="support_crash_body">Setting</string>
+
+    <string name="first_screen">A-Plan ist eine Projektmanagement-Software zur Verwaltung von Projekten und Ressourcen. Mit der App können die aktuellen Planungen auf einem Tablett bzw. Smartphone dargestellt werden. Die Planungen werden mit der Desktop-Version von A-Plan erstellt(siehe www.braintool.com) und auf einem SQL-Server innerhalb Ihres Firmennetzwerkes gespeichert.</string>
+    <string name="second_screen">Ihre Daten werden mit den höchsten aktuellen Sicherheitsstandards direkt von Ihrer firmeneigenen SQL-Datenbank zur App übertragen und werden zu keiner Zeit auf einem externen Server gespeichert oder gehostet. Hierdurch ist zudem gewährleistet, dass in der App immer der aktuelle Planungsstand angezeigt wird.
+     \n\nDie User der App melden sich mit ihrem Namen und Kennwort bei der App an und haben dann Zugriff auf die für sie freigegebenen Daten. Diese umfassen lediglich die Projekte, für die sie innerhalb der Desktop-Version von A-Plan freigeschaltet wurden.
+    </string>
+    <string name="third_screen">Die A-Plan-App zeigt auf einem Dashboard die aktuell zur Bearbeitung anstehenden Projekte / Vorgänge an, wobei diese durch das Setzen von Filtern beliebig eingeschränkt werden können. </string>
+    <string name="fourth_screen">In einem Ganttdiagramm wird der zeitliche Ablauf der betroffenen Projekte angezeigt. Auch hier werden nur die für den angemeldeten User freigegebenen Umfänge angezeigt und diese können ebenfalls durch umfangreiche Filter- und Einstellmöglichkeiten angepasst werden. </string>
+    <string name="fifth_screen">Bitte beachten Sie, dass diese Beta-Version nur eine begrenzte Laufzeit hat. Sie werden aber vor der Beendigung der Beta-Phase bzw. bei Vorliegen neuer Releases etc. automatisch benachrichtigt.\n\nHinweise auf Fehler bzw. Verbesserungsvorschläge können Sie uns über das Menü „Einstellungen“ / „Support“ zukommen lassen.
+    </string>
+    <string name="Sixth_screen">Für die offizielle App, die voraussichtlich Anfang 2017 zur Verfügung stehen wird, fallen pro User monatliche bzw. jährliche Kosten an, deren Höhe noch nicht exakt festgelegt wurde. Die User werden innerhalb der Desktop-Version von A-Plan verwaltet.</string>
+    <string name="seven_screen">In Kürze wird auch eine Android-Version der A-Plan App zur Verfügung stehen.
+Als Erweiterung der aktuellen Version ist die Darstellung von Vorgängen pro Ressource und die Auslastung von Ressourcen vorgesehen (analog der Ressourcendarstellung der Desktop-Version).\n\n
+Die nächste Version der App wird dann auch die Möglichkeit der Dateneingabe beinhalten. Hierbei wird es sich in erster Linie um Ablauf- bzw. Statusänderungen oder das Hinzufügen von Notizen etc. handeln. Das Ändern von Projektstrukturen oder das Anlegen neuer Projekte wird zunächst noch der Desktop-Version vorbehalten bleiben.
+</string>
+    <string name="my_smsc_link"><a href="http://www.smacsoftwares.de/">Powered by: SMAC Software service</a></string>
+
+    <!-- TODO: Project Fragment popup strings  -->
+
+    <!-- TODO: date dialog screen -->
+    <string name="completion_overrun">Completion Overrun</string>
+    <string name="started_project_task">Started project/tasks</string>
+    <string name="complete_project_task">Complete Project/tasks</string>
+    <string name="complete_today">Complete today</string>
+    <string name="pending_project_task">Pending projects/tasks</string>
+    <string name="passive_project_task">Passive Project/tasks</string>
+    <string name="completed_in1week">Completed in 1 week</string>
+    <string name="task_without_date">Task Without date</string>
+    <string name="canceled_project_task">Canceled project/tasks</string>
+
+    <!-- TODO: Status dialog screen -->
+    <string name="notice_arrow">Notice arrow</string>
+    <string name="reshow">Reshow</string>
+    <string name="limit_overrun">Limit overrun</string>
+    <string name="critical">Critical</string>
+    <string name="requiring_clarification">Requiring clarification</string>
+
+    <!-- TODO: Traffic light dialog screen -->
+    <string name="traffic_yellow">yellow</string>
+    <string name="traffic_red">Red</string>
+    <string name="traffic_green">Green</string>
+
+    <!-- TODO: date dialog screen for control -->
+    <string name="completion_overrun_control">ShowOverdueFinished</string>
+    <string name="started_project_task_control">ShowStarted</string>
+    <string name="complete_project_task_control">ShowFinished</string>
+    <string name="complete_today_control">ShowFinishToday</string>
+    <string name="pending_project_task_control">ShowPending</string>
+    <string name="passive_project_task_control">ShowPassiv</string>
+    <string name="completed_in1week_control">ShowFinishWeek</string>
+    <string name="task_without_date_control">ShowNoTime</string>
+    <string name="canceled_project_task_control">ShowCanceled</string>
+
+    <!-- TODO: Status dialog screen -->
+    <string name="notice_arrow_control">ShowArrow</string>
+    <string name="reshow_control">ShowReminder</string>
+    <string name="limit_overrun_control">ShowOverdueLimit</string>
+    <string name="critical_control">ShowCritical</string>
+    <string name="requiring_clarification_control">ShowQuestion</string>
+
+    <!-- TODO: Traffic light dialog screen -->
+    <string name="traffic_yellow_control">TL_Yellow</string>
+    <string name="traffic_red_control">TL_Red</string>
+    <string name="traffic_green_control">TL_Green</string>
+
+    <string name="task_click">task_click</string>
+    <string name="task_click_control_load">task_click_with_control</string>
+
+    <string name="task_click_and_genaral_filter">task_click_and_general_filter</string>
+    <string name="task_click_control_load_and_general_filter">task_click_with_control_and_general_filter</string>
+
+    <string name="agreegate_click">agreegate_click</string>
+    <string name="agreegate_click_control_load">agreegate_click_with_control</string>
+
+    <string name="agreegate_click_and_general_filter">agreegate_click_and_general_filter</string>
+    <string name="agreegate_click_control_load_and_general_filter">agreegate_click_with_control_and_general_filter</string>
+
+    <string name="DateLightFilter">DateLightFilter</string>
+    <string name="StatusLightFilter">StatusLightFilter</string>
+    <string name="TrafficLightFilter">TrafficLightFilter</string>
+
+    <string name="UserDefindedFilterForNumber">UserDefinedFilterForNumber</string>
+    <string name="UserDefinedFilter">UserDefinedFilter</string>
+    <string name="DateFilter">DateFilter</string>
+    <string name="FolderFilter">FolderFilter</string>
+    <string name="TextFilter">TextFilter</string>
+
+    <string name="blank_value">-----</string>
+
+    <!-- general filter - text filter strings-->
+    <string name="key_ResourceId">ResourceGroupId</string>
+    <string name="key_ResourceGroupId">ResourceId</string>
+    <string name="key_anyText">AnyText</string>
+    <string name="key_priFrom">PrioFrom</string>
+    <string name="key_priTO">PrioTo</string>
+    <string name="key_level">Level</string>
+    <string name="key_indentyNo">IndentNo</string>
+    <string name="key_Task">TaskName</string>
+    <string name="key_Client">ClientId</string>
+    <string name="key_Responsible">ResponsibleId</string>
+
+    <!-- general filter - user defined filter -->
+    <string name="key_text1">Text1</string>
+    <string name="key_text2">Text2</string>
+    <string name="key_text3">Text3</string>
+    <string name="key_text4">Text4</string>
+    <string name="key_text5">Text5</string>
+    <string name="key_text6">Text6</string>
+    <string name="key_text7">Text7</string>
+    <string name="key_text8">Text8</string>
+    <string name="key_text9">Text9</string>
+    <string name="key_text10">Text10</string>
+
+    <string name="key_number1">Number1</string>
+    <string name="key_number2">Number2</string>
+    <string name="key_number3">Number3</string>
+    <string name="key_number4">Number4</string>
+    <string name="key_number5">Number5</string>
+    <string name="key_number6">Number6</string>
+    <string name="key_number7">Number7</string>
+    <string name="key_number8">Number8</string>
+    <string name="key_number9">Number9</string>
+    <string name="key_number10">Number10</string>
+
+    <!-- general filter date filter-->
+
+    <string name="key_criterion1">Criterion1</string>
+    <string name="key_criterion1Type">Criterion1Type</string>
+    <string name="key_criterion1FromDate">Criterion1FromDate</string>
+    <string name="key_criterion1ToDate">Criterion1ToDate</string>
+    <string name="key_criterion1TimeFrom">Criterion1TimeFrom</string>
+    <string name="key_criterion1TimeTo">Criterion1TimeTo</string>Criterion1TimeUnit
+    <string name="key_criterion1TimeUnit">Criterion1TimeUnit</string>
+
+    <string name="key_criterion2">Criterion2</string>
+    <string name="key_criterion2FromDate">Criterion2FromDate</string>
+    <string name="key_criterion2ToDate">Criterion2ToDate</string>
+    <string name="key_criterion2Type">Criterion2Type</string>
+    <string name="key_criterion2TimeFrom">Criterion2TimeFrom</string>
+    <string name="key_criterion2TimeTo">Criterion2TimeTo</string>
+    <string name="key_criterion2TimeUnit">Criterion2TimeUnit</string>
+
+    <!-- general date filter arraylist strings -->
+
+    <string name="empty">Empty</string>
+    <string name="planned_time_to_be_spent_on_task">Planned time to be spent on task</string>
+    <string name="begin_pid">Begin PI’d</string>
+    <string name="end_pid">End PI’d</string>
+    <string name="actual_time_to_be_spent_on_task">Actual time to be spent on task</string>
+    <string name="begin_act">Begin Act</string>Criterion1TimeUnit
+    <string name="end_act">End Act</string>
+
+    <string name="end_progn">End Progn</string>
+    <string name="entry_date">Entry Date</string>
+    <string name="reshow_date">Reshow Date</string>
+    <string name="complete_on">Complete on</string>
+    <string name="last_change">Last change</string>
+    <string name="before">Before</string>
+    <string name="on">On</string>
+
+    <string name="after">After</string>
+    <string name="between">Between</string>
+    <string name="time_range">Time range</string>
+    <string name="days">Days</string>
+    <string name="weeks">Weeks</string>
+    <string name="months">Months</string>
+    <string name="years">Years</string>
+
+    <string name="task_filter">TaskFilter</string>
+    <string name="agreegate_filter">AgreegateFilter</string>
+
+    <string name="language_germany">De</string>
+    <string name="language_english">En</string>
+
+
+</resources>

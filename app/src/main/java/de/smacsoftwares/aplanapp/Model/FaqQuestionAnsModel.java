@@ -1,0 +1,43 @@
+package de.smacsoftwares.aplanapp.Model;
+
+/**
+ * Created by SSoft-13 on 06-08-2016.
+ */
+
+public class FaqQuestionAnsModel
+{
+    String Question="";
+    String header="";
+
+    public String getHeader()
+    {
+        return header;
+    }
+
+    public void setHeader(String header)
+    {
+        this.header = header;
+    }
+
+    public String getQuestion()
+    {
+        return Question;
+    }
+
+    public void setQuestion(String question)
+    {
+        Question = question;
+    }
+
+    public String getAns()
+    {
+        return Ans;
+    }
+
+    public void setAns(String ans)
+    {
+        Ans = ans;
+    }
+
+    String Ans="";
+}

@@ -1,0 +1,173 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relative_aboutus"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/eightee_sp"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/hundred_sp"
+        android:background="@drawable/rounded_rectangle_white"
+        >
+
+        <ImageView
+            android:id="@+id/imageview_aboutus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:src="@drawable/support_about_us"/>
+
+        <TextView
+            android:id="@+id/textview_aboutus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:layout_toRightOf="@+id/imageview_aboutus"
+            android:text="@string/aboutus"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/twentee_sp"/>
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/next"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/fiftee_sp"
+        android:background="@drawable/rounded_rectangle_white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relative_help"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/eightee_sp"
+            android:background="@drawable/rounded_rectangle_white"
+            >
+
+            <ImageView
+                android:id="@+id/imageview_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:src="@drawable/support_help"/>
+
+            <TextView
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_toRightOf="@+id/imageview_help"
+                android:layout_centerVertical="true"
+                android:id="@+id/textview_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help"
+                android:textColor="@color/black"
+                android:textSize="@dimen/twentee_sp"/>
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/next"/>
+        </RelativeLayout>
+        <View
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="2sp"
+            android:background="#cccccc"/>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/relative_faqs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/eightee_sp"
+            >
+            <ImageView
+                android:id="@+id/imageview_faq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:src="@drawable/support_faq"/>
+            <TextView
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:layout_toRightOf="@+id/imageview_faq"
+                android:layout_centerVertical="true"
+                android:id="@+id/textview_faq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/faqs"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/twentee_sp"/>
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/next"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/relative_contact"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/eightee_sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/fiftee_sp"
+        android:background="@drawable/rounded_rectangle_white"
+        >
+
+        <ImageView
+            android:id="@+id/imageview_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:src="@drawable/support_contact"/>
+
+        <TextView
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:layout_toRightOf="@+id/imageview_contact"
+            android:layout_centerVertical="true"
+            android:id="@+id/textview_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contect"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/twentee_sp"/>
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/next"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

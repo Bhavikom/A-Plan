@@ -1,0 +1,283 @@
+package com.ssoft.aplanproject.activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.ActionBarActivity;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.fragment.FragmentProfile;
+import com.ssoft.aplanproject.fragment.FragmentSelectFilter;
+import com.ssoft.aplanproject.fragment.FragmentSetting;
+import com.ssoft.aplanproject.fragment.FragmentDashBoard;
+import com.ssoft.aplanproject.fragment.FragmentProject;
+
+import com.ssoft.aplanproject.util.InterfaceClick;
+import com.ssoft.aplanproject.util.InterfaceLoadWebview;
+import com.ssoft.aplanproject.util.InterfaceforSelectFilter;
+import com.ssoft.aplanproject.util.NonSwipeableViewPager;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+/**
+ * Created by SSOFT4 on 10/26/2016.
+ */
+
+public class HomeActivity extends ActionBarActivity implements View.OnClickListener,InterfaceClick,FragmentDashBoard.Taskclicked,
+        FragmentProfile.InterfaceProfileChanged
+{
+    private InterfaceClick clickInterface;
+    public InterfaceLoadWebview interfaceLoadWebview;
+    public InterfaceforSelectFilter interfaceforSelectFilter;
+    LinearLayout linearDashboard, linerProject, linearFilter, linearSetting;
+    NonSwipeableViewPager mViewPager;
+    ImageView imgDashboard,imgProject,imgFilter,imgSetting;
+    TextView txtDashboard,txtProject,txtFilter,txtSetting;
+    PreferencesClass preferenes;
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_home);
+        preferenes = new PreferencesClass(this);
+
+        AttributeSet atr = null;
+        //MonthView m = new MonthView(HomeActivity.this);
+        //ClipArt c = new ClipArt(HomeActivity.this);
+        if (preferenes.isUserLooged())
+        {
+            initControl();
+        }
+        else
+        {
+            if(preferenes.isAdminShow()){
+                startActivity(new Intent(this, AdminSplashActivity.class));
+                finish();
+            }
+            else {
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+
+            //getActivity().finish();
+        }
+
+    }
+    public void initControl(){
+
+        mViewPager = (NonSwipeableViewPager) findViewById(R.id.pager);
+        /** set the adapter for ViewPager */
+        mViewPager.setAdapter(new SamplePagerAdapter(
+                getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(4);
+        linearDashboard = (LinearLayout) findViewById(R.id.linear_dashboard);
+        linerProject = (LinearLayout) findViewById(R.id.linear_project);
+        linearFilter = (LinearLayout) findViewById(R.id.linear_filter);
+        linearSetting = (LinearLayout) findViewById(R.id.linear_setting);
+
+        linearDashboard.setOnClickListener(this);
+        linerProject.setOnClickListener(this);
+        linearFilter.setOnClickListener(this);
+        linearSetting.setOnClickListener(this);
+
+        imgDashboard=(ImageView)findViewById(R.id.img_dashboard);
+        imgFilter=(ImageView)findViewById(R.id.img_filter);
+        imgProject=(ImageView)findViewById(R.id.img_project);
+        imgSetting=(ImageView)findViewById(R.id.img_setting);
+
+        txtDashboard=(TextView)findViewById(R.id.textview_dashboard);
+        txtProject=(TextView)findViewById(R.id.textview_project);
+        txtSetting=(TextView)findViewById(R.id.textview_setting);
+        txtFilter=(TextView)findViewById(R.id.textview_filter);
+
+        imgDashboard.setBackgroundResource(R.drawable.dashboard);
+        imgSetting.setBackgroundResource(R.drawable.setting_unselect);
+        imgProject.setBackgroundResource(R.drawable.project_unselect);
+        imgFilter.setBackgroundResource(R.drawable.filter_unselect);
+
+        txtDashboard.setTextColor(this.getResources().getColor(R.color.blue_color));
+        txtProject.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+        txtSetting.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+        txtFilter.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+    }
+    public class SamplePagerAdapter extends FragmentPagerAdapter
+    {
+        public SamplePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        @Override
+        public Fragment getItem(int position)
+        {
+            /** Show a Fragment based on the position of the current screen */
+            if (position == 0) {
+                return new FragmentDashBoard();
+            }
+            else if (position == 1) {
+                return new FragmentProject();
+            }
+            else if (position == 2) {
+                return new FragmentSelectFilter();
+            }
+            if (position == 3) {
+                return new FragmentSetting();
+            }
+            else
+                return new FragmentDashBoard();
+        }
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 4;
+        }
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if (v== linearDashboard)
+        {
+            mViewPager.setCurrentItem(0,false);
+            //fragment = new FragmentDashBoard();
+            imgDashboard.setBackgroundResource(R.drawable.dashboard);
+            imgSetting.setBackgroundResource(R.drawable.setting_unselect);
+            imgProject.setBackgroundResource(R.drawable.project_unselect);
+            imgFilter.setBackgroundResource(R.drawable.filter_unselect);
+
+            txtDashboard.setTextColor(this.getResources().getColor(R.color.blue_color));
+            txtProject.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtSetting.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtFilter.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+
+
+        }
+        else if (v== linerProject)
+        {
+            /*if(preferenes.getIsControlFirstTime().equalsIgnoreCase("")){
+                preferenes.isContolFirstTime("yes");
+                preferenes.saveCurrentFiredFilter(getResources().getString(R.string.footer_click));
+            }
+            else if(preferenes.getIsControlFirstTime().equalsIgnoreCase("yes")){
+                preferenes.isContolFirstTime("no");
+                preferenes.saveCurrentFiredFilter(getResources().getString(R.string.footer_click));
+            }*/
+
+            interfaceLoadWebview.callWebviewFromFooter();
+            mViewPager.setCurrentItem(1,false);
+            //fragment = new FragmentProject();
+            imgDashboard.setBackgroundResource(R.drawable.dashboard_unselect);
+            imgProject.setBackgroundResource(R.drawable.project);
+            imgFilter.setBackgroundResource(R.drawable.filter_unselect);
+            imgSetting.setBackgroundResource(R.drawable.setting_unselect);
+
+
+            txtDashboard.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtProject.setTextColor(this.getResources().getColor(R.color.blue_color));
+            txtFilter.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtSetting.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+        }
+        else if (v== linearFilter)
+        {
+            interfaceforSelectFilter.callSelectFilterFragment();
+            interfaceforSelectFilter.callUpdateFilter();
+            mViewPager.setCurrentItem(2,false);
+            //fragment = new FragmentSelectFilter();
+            imgDashboard.setBackgroundResource(R.drawable.dashboard_unselect);
+            imgSetting.setBackgroundResource(R.drawable.setting_unselect);
+            imgFilter.setBackgroundResource(R.drawable.filtere);
+            imgProject.setBackgroundResource(R.drawable.project_unselect);
+            txtDashboard.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtProject.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtFilter.setTextColor(this.getResources().getColor(R.color.blue_color));
+            txtSetting.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+
+
+        }
+        else if (v== linearSetting)
+        {
+            mViewPager.setCurrentItem(3,false);
+            //fragment = new FragmentSetting();
+            imgDashboard.setBackgroundResource(R.drawable.dashboard_unselect);
+            imgProject.setBackgroundResource(R.drawable.project_unselect);
+            imgFilter.setBackgroundResource(R.drawable.filter_unselect);
+            imgSetting.setBackgroundResource(R.drawable.setting);
+
+
+            txtDashboard.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtProject.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtFilter.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtSetting.setTextColor(this.getResources().getColor(R.color.blue_color));
+
+        }
+        else {
+            mViewPager.setCurrentItem(0,false);
+            //fragment = new FragmentDashBoard();
+            imgDashboard.setBackgroundResource(R.drawable.dashboard);
+            imgSetting.setBackgroundResource(R.drawable.setting_unselect);
+            imgProject.setBackgroundResource(R.drawable.project_unselect);
+            imgFilter.setBackgroundResource(R.drawable.filter_unselect);
+
+            txtDashboard.setTextColor(this.getResources().getColor(R.color.blue_color));
+            txtProject.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtSetting.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+            txtFilter.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+    @Override
+    public void onMonthClick()
+    {
+        FragmentDashBoard fm = new FragmentDashBoard();
+        fm.showDatePickerDialog(this);
+    }
+    @Override
+    public void ontaskClicked(String json,String id,String comefrom)
+    {
+        interfaceLoadWebview.callWebviewFromDashboard(json,id,comefrom);
+        setViewPagerPage(1);
+    }
+    @Override
+    public void onAgreegateClicked(String strjson, String taskId,String comefrom)
+    {
+        interfaceLoadWebview.callWebviewFromDashboard(strjson,taskId,comefrom);
+        setViewPagerPage(1);
+    }
+    public void setViewPagerPage(int pageNo){
+
+        mViewPager.setCurrentItem(pageNo);
+        imgDashboard.setBackgroundResource(R.drawable.dashboard_unselect);
+        imgProject.setBackgroundResource(R.drawable.project);
+        imgFilter.setBackgroundResource(R.drawable.filter_unselect);
+        imgSetting.setBackgroundResource(R.drawable.setting_unselect);
+
+        txtDashboard.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+        txtProject.setTextColor(this.getResources().getColor(R.color.blue_color));
+        txtFilter.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+        txtSetting.setTextColor(this.getResources().getColor(R.color.textview_color_grey));
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        preferenes.isContolFirstTime("");
+        preferenes.saveTaskPosition(0);
+        preferenes.saveAgreegatePosition(0);
+    }
+    @Override
+    public void profileChanged()
+    {
+        interfaceLoadWebview.changeLanguage();
+    }
+}

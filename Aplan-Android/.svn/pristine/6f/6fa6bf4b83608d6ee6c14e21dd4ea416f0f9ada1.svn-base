@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/seventee_sp"
+        android:layout_alignParentTop="true"
+        android:background="@color/header_color">
+
+        <TextView
+            android:id="@+id/txt_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/project_header"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/header_textsize" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txt_project"
+            android:layout_alignStart="@+id/txt_project"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/hundred_eightee_sp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/fiftee_sp"
+                android:src="@drawable/refresh_today"
+                android:id="@+id/imageview_refresh" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textColor="@color/textview_presseffect"
+                android:textSize="@dimen/eighteen_sp"
+                android:layout_alignTop="@+id/imageview_refresh"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/textviewToday" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/relative_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/project_heder"
+        android:orientation="vertical">
+
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/project_heder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/eightee_sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/header"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/linear_default_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/eighteen_sp"
+            android:background="@drawable/rounded_rectangle_white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:padding="@dimen/ten_sp"
+                android:id="@+id/txt_default_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/ten_sp"
+                android:gravity="center"
+                android:minWidth="@dimen/two_hundred"
+                android:text="@string/Default_profile"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/eighteen_sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixtee_sp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linear_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    android:textColor="@color/textview_presseffect"
+                    android:textSize="@dimen/eighteen_sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Status"
+                    android:textColor="@color/textview_presseffect"
+                    android:textSize="@dimen/eighteen_sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_traffic_lights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_traffic_lights"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/TrafficLights"
+                    android:textColor="@color/textview_presseffect"
+                    android:textSize="@dimen/eighteen_sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_week_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weekm"
+                    android:textColor="@color/textview_presseffect"
+                    android:textSize="@dimen/eighteen_sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

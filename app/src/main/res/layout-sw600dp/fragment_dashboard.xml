@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearMain"
+    android:weightSum="1"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--start for header-->
+    <RelativeLayout
+        android:layout_weight="0.06"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_alignParentTop="true"
+        android:background="@color/header_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/dashboard_header"
+            android:textColor="@color/red"
+            android:id="@+id/txt_header"
+            android:textSize="@dimen/header_textsize"/>
+        <ImageView
+            android:id="@+id/imgrefresh"
+            android:layout_width="@dimen/thirtee_sp"
+            android:layout_height="@dimen/thirtee_sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/twentee_sp"
+            android:src="@drawable/refresh_button"/>
+    </RelativeLayout>
+    <!--end for header-->
+    <View
+        android:background="@color/textview_color_grey"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"/>
+
+    <View
+        android:layout_weight="0.01"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"/>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/ten_sp"
+        android:id="@+id/linearCalendar"
+        android:background="@color/white_color"
+        android:layout_weight="0.25"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:weightSum="1">
+
+        <View
+            android:layout_weight="0.02"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+
+            android:id="@+id/relativeCalendar"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+
+            android:layout_weight="0.46"
+            android:background="@drawable/rounded_black_border"
+            android:padding="@dimen/five_sp">
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/img_date_picker"
+                android:layout_marginTop="@dimen/five_sp"
+                android:layout_marginLeft="@dimen/five_sp"
+                android:layout_width="@dimen/thirtee_sp"
+                android:layout_height="@dimen/thirtee_sp"
+                android:src="@drawable/date_picker_button"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/textviewDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/five_sp"
+                android:layout_marginRight="@dimen/twentee_sp"
+                android:background="@drawable/load_button_background"
+                android:padding="@dimen/five_sp"
+                android:text="@string/load"
+                android:textColor="@color/white_color"
+                android:textSize="@dimen/fifteen_sp"/>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
+            <LinearLayout
+                android:id="@+id/calendar1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+            </ScrollView>
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewblank"
+            android:layout_weight="0.04"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"/>
+        <!-- listview-->
+        <LinearLayout
+            android:id="@+id/linearagreegate"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/seconddpanel"
+            android:layout_toRightOf="@+id/relativeCalendar"
+            android:layout_weight="0.46"
+            android:background="@drawable/rounded_black_border"
+            android:orientation="vertical">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/textviewcurrentdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/ten_sp"
+                android:layout_marginTop="@dimen/five_sp"
+                android:gravity="center"
+                android:text="21.06.2016"
+                android:textColor="@color/indigo_color"
+                android:textSize="@dimen/twentee_sp"
+                android:textStyle="bold"/>
+            <!--end secnd panel-->
+            <ListView
+                android:layout_marginTop="@dimen/ten_sp"
+                android:listSelector="@drawable/list_selector"
+                android:id="@+id/listviewtaskstatuslist"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/seconddpanel"
+                android:layout_margin="@dimen/ten_sp"
+                android:divider="@android:color/transparent">
+
+            </ListView>
+        </LinearLayout>
+        <View
+            android:layout_weight="0.02"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <!--start textview show date-->
+    <LinearLayout
+        android:background="@color/white_color"
+        android:layout_weight="0.05"
+        android:weightSum="1"
+        android:id="@+id/datepanel"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        >
+        <View
+            android:layout_weight="0.02"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_weight="0.48"
+            android:id="@+id/textviewcurrentdate2"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="21.06.2016"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/red"
+            android:textSize="@dimen/twentee_sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_weight="0.48"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="left"
+            android:textColor="@color/indigo_color"
+            android:textSize="@dimen/twentee_sp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_weight="0.02"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearListview"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="0.64"
+        android:background="@color/white_color"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+
+
+        <LinearLayout
+            android:id="@+id/linearmiddlepanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <View
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.96"
+                android:background="@drawable/rounded_black_border"
+                android:weightSum="1">
+                <!-- start project search -->
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/five_sp"
+                    android:layout_weight="0.26"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="30sp">
+
+                        <TextView
+                            android:id="@+id/txt_lbl_project"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/project_footer"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/sixteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/twentee_sp">
+
+                            <ImageView
+                                android:id="@+id/imgsortproject"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="right" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <SearchView
+                            android:id="@+id/search_viewproject"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_rectangle_grey"
+                            android:iconifiedByDefault="false"
+                            android:imeOptions="actionSearch"
+                            android:padding="2dp"
+                            android:queryBackground="@android:color/transparent"
+                            android:queryHint="Search...." />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- start task search -->
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/five_sp"
+                    android:layout_weight="0.26"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="30sp">
+
+                        <TextView
+
+                            android:id="@+id/txt_lbl_task"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/task"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/sixteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/twentee_sp">
+
+                            <ImageView
+                                android:id="@+id/imgsorttask"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerVertical="true" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <SearchView
+                            android:id="@+id/search_viewtask"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_rectangle_grey"
+                            android:iconifiedByDefault="false"
+                            android:imeOptions="actionSearch"
+                            android:padding="2dp"
+                            android:queryBackground="@android:color/transparent"
+                            android:queryHint="Search...." />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- start date search -->
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/five_sp"
+                    android:layout_weight="0.10"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_lbl_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:gravity="center"
+                        android:text="@string/date"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/sixteen_sp" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/imgsortdateicon"
+                            android:layout_width="@dimen/thirtee_sp"
+                            android:layout_height="@dimen/thirtee_sp"
+                            android:layout_margin="@dimen/three_sp"
+                            android:contentDescription="@string/app_name"
+                            android:gravity="left|center_vertical"
+                            android:scaleType="fitCenter"
+                            android:textColor="@color/black_color" />
+                        <ImageView
+                            android:layout_marginBottom="@dimen/five_sp"
+                            android:id="@+id/imgplus_date"
+                            android:layout_width="@dimen/fifteen_sp"
+                            android:layout_height="@dimen/fifteen_sp"
+                            android:layout_gravity="right|bottom"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/plus" />
+                    </FrameLayout>
+                </LinearLayout>
+                <!-- start traffic light -->
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/five_sp"
+                    android:layout_weight="0.12"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/txt_lbl_trafficlight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:gravity="center"
+                        android:text="@string/TrafficLights"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/sixteen_sp" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imgtrafficsorticon"
+                            android:layout_width="@dimen/thirtee_sp"
+                            android:layout_height="@dimen/thirtee_sp"
+                            android:layout_margin="@dimen/three_sp"
+                            android:gravity="left|center_vertical"
+                            android:scaleType="fitCenter"
+                            android:textColor="@color/black_color" />
+
+                        <ImageView
+                            android:layout_marginBottom="@dimen/five_sp"
+                            android:id="@+id/imgplus_traffic"
+                            android:layout_width="@dimen/fifteen_sp"
+                            android:layout_height="@dimen/fifteen_sp"
+                            android:layout_gravity="right|bottom"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/plus" />
+                    </FrameLayout>
+                </LinearLayout>
+                <!-- start status -->
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/five_sp"
+                    android:layout_weight="0.10"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/txt_lbl_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:gravity="center"
+                        android:text="@string/status"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/sixteen_sp" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imgstatussorticon"
+                            android:layout_width="@dimen/thirtee_sp"
+                            android:layout_height="@dimen/thirtee_sp"
+                            android:layout_margin="@dimen/three_sp"
+                            android:gravity="left|center_vertical"
+                            android:scaleType="fitCenter"
+                            android:textColor="@color/black_color" />
+
+                        <ImageView
+                            android:layout_marginBottom="@dimen/five_sp"
+                            android:id="@+id/imgplus_status"
+                            android:layout_width="@dimen/fifteen_sp"
+                            android:layout_height="@dimen/fifteen_sp"
+                            android:layout_gravity="right|bottom"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/plus" />
+                    </FrameLayout>
+                </LinearLayout>
+                <!-- start finish date-->
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/five_sp"
+                    android:layout_weight="0.16"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/txt_lbl_Finishdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fourtee_sp"
+                        android:gravity="center"
+                        android:text="@string/finish_date"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/sixteen_sp" />
+
+                    <TextView
+                        android:id="@+id/textviewSelectedDates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/ten_sp"
+                        android:text="@string/selected_date"
+                        android:textColor="@color/textview_presseffect"
+                        android:textSize="@dimen/eighteen_sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="0sp"
+                android:layout_height="1sp"
+                android:layout_weight="0.02" />
+        </LinearLayout>
+
+        <!--<ScrollView
+            android:layout_weight="1"
+            android:id="@+id/scroll"
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            >-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+            <!--<View
+                android:layout_weight="0.02"
+                android:layout_width="0sp"
+                android:layout_height="1sp"/>-->
+            <RelativeLayout
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/listviewProject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/linearloadmore"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_weight="1"
+                    android:divider="@color/textview_color_grey"
+                    android:dividerHeight="1px"
+                    android:listSelector="@drawable/list_selector" />
+
+                <LinearLayout
+                    android:id="@+id/linearloadmore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height=".5sp"
+                        android:background="@color/textview_color_grey" />
+
+                    <Button
+                        android:id="@+id/buttonLoadMore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="loadmore"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1sp"
+                        android:background="@color/textview_color_grey"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <!-- <View
+                android:layout_weight="0.02"
+                android:layout_width="0sp"
+                android:layout_height="1sp"/>-->
+        </LinearLayout>
+
+        <!--</ScrollView>-->
+    </LinearLayout>
+
+
+    <!--end textview show date-->
+    <!-- start for project listview-->
+
+</LinearLayout>

@@ -1,0 +1,531 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.Model.TableDataModelClass;
+import com.ssoft.aplanproject.Model.ProfileModelClass;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.adapter.RecyclerListAdapter;
+import com.ssoft.aplanproject.adapter.TableAdapter;
+import com.ssoft.aplanproject.helper.OnStartDragListener;
+import com.ssoft.aplanproject.helper.SimpleItemTouchHelperCallback;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+
+
+public class FragmentTable extends Fragment implements AdapterView.OnItemClickListener,OnStartDragListener
+{
+    String profileId="";
+    String columnValueToSend="";
+    String expandedIdToSend ="";
+    String profileNameToSend ="";
+    PreferencesClass preferences;
+    DatabaseHandler dbHandler;
+    RecyclerListAdapter adapterRecyclerview;
+    TableAdapter adapterSimple;
+    private ItemTouchHelper mItemTouchHelper;
+    private RecyclerView recyclerView;
+    private Menu menu;
+    FragmentActivity activity;
+    FragmentTable context;
+    Toolbar toolbar;
+    //TableAdapter adapterRecyclerview;
+
+    //DynamicListView listviewTable;
+    //ListView listviewTable;
+    ArrayList<TableDataModelClass> arraylistTable;
+    ArrayList<ProfileModelClass> arrayListUserPfofile;
+    ArrayList<ProfileModelClass> arrayListUserPfofileTemp;
+    View view;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.setHasOptionsMenu(true);
+        view = inflater.inflate(R.layout.fragment_table, container, false);
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+        initControl();
+        return view;
+    }
+    public void initControl()
+    {
+        /* activity = (SettingActivity) getActivity();*/
+        arraylistTable = new ArrayList<TableDataModelClass>();
+        GlobalClass.isEditMode=false;
+        dbHandler = new DatabaseHandler(getActivity());
+        preferences = new PreferencesClass(getActivity());
+        dbHandler.deleteProfile(preferences.getUserID());
+        recyclerView = (RecyclerView) view.findViewById(R.id.listviewTable);
+        LinearLayoutManager layoutManager= new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        context = this;
+
+        callingServiceAndShowdata();
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+    }
+    void callingServiceAndShowdata()
+    {
+        /* first time getting data from database of login time*/
+        arrayListUserPfofile = dbHandler.getSingleUserProfileForTableScreen(preferences.getUserID(),preferences.getProfileId(),preferences.getLanguage());
+        if(arrayListUserPfofile.size()>0)
+        {
+            /* calling service here from pfofile id */
+            profileId = arrayListUserPfofile.get(0).getProfileId();
+            expandedIdToSend = arrayListUserPfofile.get(0).getExpandedId();
+            profileNameToSend = arrayListUserPfofile.get(0).getProfileName();
+            new getUserProfilefromId().execute();
+            /*try
+            {
+                JSONArray jsonArray = new JSONArray(arrayListUserPfofile.get(0).getColDeTail().toString());
+                LogApp.e(""," json array ; "+jsonArray);
+                if(jsonArray.length() > 0)
+                {
+                    for (int i = 0; i < jsonArray.length(); i++)
+                    {
+                        JSONObject jsonobjectInner = jsonArray.getJSONObject(i);
+                        String name = jsonobjectInner.getString("Name");
+                        String width = jsonobjectInner.getString("Width");
+                        String show = jsonobjectInner.getString("Show");
+                        String id= jsonobjectInner.getString("Id");
+                        boolean isShow;
+                        if(show.equalsIgnoreCase("1")){
+                            isShow=true;
+                        }
+                        else {
+                            isShow=false;
+                        }
+
+                        arraylistTable.add(new TableDataModelClass(name,width,0,isShow));
+
+
+                    }
+                }
+
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }*/
+        }
+        /*for (int i=0;i<arraylistTable.size();i++){
+            String isshow="";
+            if(arraylistTable.get(i).selected == true){
+                isshow="1";
+            }
+            else {
+                isshow="0";
+            }
+            dbHandler.addProfileInfo(arraylistTable.get(i).name,isshow,arraylistTable.get(i).width,preferences.getUserID(),"Default Profile");
+        }*/
+    }
+    public void getUpdateDatafromListview()
+    {
+        if(adapterRecyclerview.getSelectedData().size() > 0){
+
+            JSONArray jsonArray = new JSONArray();
+            for (TableDataModelClass taskModel : adapterRecyclerview.getSelectedData())
+            {
+                String isshow="";
+                if(taskModel.selected){
+                    isshow="1";
+                }
+                else {
+                    isshow="0";
+                }
+                JSONObject jsonObject = new JSONObject();
+                try
+                {
+                    jsonObject.put("Name",taskModel.name);
+                    jsonObject.put("Width",taskModel.width);
+                    jsonObject.put("Show",isshow);
+                    jsonObject.put("Id",taskModel.Id);
+                    jsonArray.put(jsonObject);
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+                //dbHandler.addProfileInfo(taskModel.name,isshow,taskModel.width,preferences.getUserID(),"DefaultProfile");
+                if (taskModel.selected)
+                {
+                    LogApp.e(" ###### "," get selected result : "+taskModel.name);
+                }
+            }
+            columnValueToSend = jsonArray.toString();
+            new updateUserProfile().execute();
+        }
+
+    }
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id)
+    {
+
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.toolbar_menu_item, menu);
+        this.menu = menu;
+        menu.findItem(R.id.actionEdit).setVisible(true);
+        menu.findItem(R.id.actionDefault).setVisible(true);
+        menu.findItem(R.id.actionSupport).setVisible(false);
+        menu.findItem(R.id.actionSend).setVisible(false);
+        menu.findItem(R.id.actionprofile).setVisible(false);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId())
+        {
+            case R.id.actionEdit:
+                if(!GlobalClass.isEditMode){
+                    GlobalClass.isEditMode=true;
+                    menu.findItem(R.id.actionEdit).setTitle(getResources().getString(R.string.Done));
+                    adapterRecyclerview.notifyDataSetChanged();
+
+                }
+                else {
+                    dbHandler.deleteProfile(preferences.getUserID());
+                    getUpdateDatafromListview();
+                    GlobalClass.isEditMode=false;
+                    menu.findItem(R.id.actionEdit).setTitle(getResources().getString(R.string.Edit));
+                    adapterRecyclerview.notifyDataSetChanged();
+
+                }
+
+                return true;
+            case R.id.actionDefault:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    public class getUserProfilefromId extends AsyncTask<String, Void, String>
+    {
+        ProgressDialog progressDialog;
+        @SuppressWarnings("deprecation")
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            @SuppressWarnings("deprecation")
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseText = null;
+            String finalUrl= preferences.getDomain()+"Get/Profile";
+            HttpPost httppost = new HttpPost(finalUrl);
+            try {
+                @SuppressWarnings("deprecation")
+                HttpEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null, Charset.forName("UTF-8"));
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                try
+                {
+                    builder.addPart("Id", new StringBody(profileId));
+                    builder.addPart("UserId", new StringBody(preferences.getUserIdTemp()));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                entity = builder.build();
+
+                httppost.setEntity(entity);
+
+                String request;
+
+                // Execute HTTP Post Request
+                response = httpclient.execute(httppost);
+                Log.v("Post Status","Code: "+response.getStatusLine().getStatusCode());
+                HttpEntity entity2 = response.getEntity();
+                responseText = EntityUtils.toString(entity2);
+                Log.v(" table screen profile "," response from service : "+responseText);
+                //Json Parsing
+                JSONObject objMain = (JSONObject) new JSONTokener(responseText).nextValue();
+
+                JSONObject jsonobj = objMain.getJSONObject("Payload");
+                String ColumnsDetail = jsonobj.getString("ColsDetail");
+                String Id = jsonobj.getString("Id");
+                String Name = jsonobj.getString("Name");
+                String UserId= jsonobj.getString("UserId");
+
+                ProfileModelClass userProfile = new ProfileModelClass();
+                userProfile.setProfileName(Name);
+                userProfile.setColDeTail(ColumnsDetail);
+                userProfile.setProfileId(Id);
+                userProfile.setProfileUserId(UserId);
+
+                arrayListUserPfofileTemp = new ArrayList<>();
+                arrayListUserPfofileTemp.add(userProfile);
+            }
+            catch (final Exception e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            progressDialog.dismiss();
+            if(arrayListUserPfofileTemp != null){
+                if(arrayListUserPfofileTemp.size() > 0){
+                    try
+                    {
+                        arraylistTable.clear();
+                        JSONArray jsonArray = new JSONArray(arrayListUserPfofileTemp.get(0).getColDeTail().toString());
+                        LogApp.e(""," json array ; "+jsonArray);
+                        if(jsonArray.length() > 0)
+                        {
+                            for (int i = 0; i < jsonArray.length(); i++)
+                            {
+                                JSONObject jsonobjectInner = jsonArray.getJSONObject(i);
+                                String name = jsonobjectInner.getString("Name");
+                                String width = jsonobjectInner.getString("Width");
+                                String show = jsonobjectInner.getString("Show");
+                                String id= jsonobjectInner.getString("Id");
+                                boolean isShow;
+                                if(show.equalsIgnoreCase("1")){
+                                    isShow=true;
+                                }
+                                else {
+                                    isShow=false;
+                                }
+
+                                arraylistTable.add(new TableDataModelClass(name,width,0,isShow,id));
+                            }
+                        }
+
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+            }
+
+            }
+            LogApp.e(""," arraylist table size : 0"+arraylistTable.size());
+            if(arraylistTable.size() > 0)
+            {
+                adapterRecyclerview = new RecyclerListAdapter(getActivity(), context,arraylistTable);
+                recyclerView.setAdapter(adapterRecyclerview);
+                ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapterRecyclerview);
+                mItemTouchHelper = new ItemTouchHelper(callback);
+                mItemTouchHelper.attachToRecyclerView(recyclerView);
+            }
+
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(getActivity(),"Login","Please wait...",false,false);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+        }
+
+    }
+    public class updateUserProfile extends AsyncTask<String, Void, String>
+    {
+        ProgressDialog progressDialog;
+        @SuppressWarnings("deprecation")
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            @SuppressWarnings("deprecation")
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseText = null;
+            String finalUrl= preferences.getDomain()+"Update/Profile";
+            HttpPost httppost = new HttpPost(finalUrl);
+            try {
+                @SuppressWarnings("deprecation")
+                HttpEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null, Charset.forName("UTF-8"));
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                try
+                {
+                    builder.addPart("UserId", new StringBody(preferences.getUserID()));
+                    builder.addPart("Id", new StringBody(profileId));
+                    builder.addPart("Name", new StringBody(profileNameToSend));
+                    builder.addPart("ColsDetail", new StringBody(columnValueToSend));
+                    builder.addPart("ExpandedIds", new StringBody(expandedIdToSend));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                entity = builder.build();
+
+                httppost.setEntity(entity);
+
+                String request;
+
+                // Execute HTTP Post Request
+                response = httpclient.execute(httppost);
+                Log.v("Post Status","Code: "+response.getStatusLine().getStatusCode());
+                HttpEntity entity2 = response.getEntity();
+                responseText = EntityUtils.toString(entity2);
+                Log.v(" update profile "," response from service : "+responseText);
+                //Json Parsing
+                JSONObject objMain = (JSONObject) new JSONTokener(responseText).nextValue();
+
+                JSONObject jsonobj = objMain.getJSONObject("Payload");
+                String ColumnsDetail = jsonobj.getString("ColsDetail");
+                String Id = jsonobj.getString("Id");
+                String Name = jsonobj.getString("Name");
+                String UserId= jsonobj.getString("UserId");
+
+                ProfileModelClass userProfile = new ProfileModelClass();
+                userProfile.setProfileName(Name);
+                userProfile.setColDeTail(ColumnsDetail);
+                userProfile.setProfileId(Id);
+                userProfile.setProfileUserId(UserId);
+
+                arrayListUserPfofileTemp = new ArrayList<>();
+                arrayListUserPfofileTemp.add(userProfile);
+            }
+            catch (final Exception e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            progressDialog.dismiss();
+            if(arrayListUserPfofileTemp.size() > 0){
+                try
+                {
+                    arraylistTable.clear();
+                    JSONArray jsonArray = new JSONArray(arrayListUserPfofileTemp.get(0).getColDeTail().toString());
+                    LogApp.e(""," json array ; "+jsonArray);
+                    if(jsonArray.length() > 0)
+                    {
+                        for (int i = 0; i < jsonArray.length(); i++)
+                        {
+                            JSONObject jsonobjectInner = jsonArray.getJSONObject(i);
+                            String name = jsonobjectInner.getString("Name");
+                            String width = jsonobjectInner.getString("Width");
+                            String show = jsonobjectInner.getString("Show");
+                            String id= jsonobjectInner.getString("Id");
+                            boolean isShow;
+                            if(show.equalsIgnoreCase("1")){
+                                isShow=true;
+                            }
+                            else {
+                                isShow=false;
+                            }
+
+                            arraylistTable.add(new TableDataModelClass(name,width,0,isShow,id));
+                        }
+                    }
+
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            LogApp.e(""," arraylist table size : 0"+arraylistTable.size());
+            if(arraylistTable.size() > 0)
+            {
+                //adapterRecyclerview = new RecyclerListAdapter(getActivity(), context,arraylistTable);
+                //recyclerView.setAdapter(adapterRecyclerview);
+                adapterRecyclerview.notifyDataSetChanged();
+                ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapterRecyclerview);
+                mItemTouchHelper = new ItemTouchHelper(callback);
+                mItemTouchHelper.attachToRecyclerView(recyclerView);
+            }
+
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(getActivity(),"Login","Please wait...",false,false);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+        }
+
+    }
+
+
+}

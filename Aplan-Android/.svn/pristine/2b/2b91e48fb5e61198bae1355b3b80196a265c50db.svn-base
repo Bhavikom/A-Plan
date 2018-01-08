@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="@dimen/fiftee_sp"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:gravity="center_vertical"
+                  android:id="@+id/linearitem">
+
+
+        <TextView
+            android:id="@+id/textviewtableitem"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:gravity="left|center"
+            android:textSize="@dimen/twentee_sp"/>
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.75"
+            android:gravity="left|center_vertical">
+
+
+            <Switch
+                android:layout_width="@dimen/seventee_sp"
+                android:layout_height="@dimen/twentee_five_sp"
+                android:id="@+id/switchnumber"
+                android:track="@drawable/switch_track_selector"
+                android:switchMinWidth="50dp"
+                android:thumb="@drawable/switch_thumb_selector"
+                />
+
+        </LinearLayout>
+
+
+        <EditText
+            android:layout_marginTop="@dimen/five_sp"
+            android:layout_marginBottom="@dimen/five_sp"
+            android:id="@+id/edittexttableitem"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.75"
+            android:background="@drawable/rounded_rectangle_white"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/ten_sp"
+            android:textSize="@dimen/twentee_sp"/>
+
+
+    </LinearLayout>
+</LinearLayout>

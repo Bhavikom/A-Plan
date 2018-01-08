@@ -1,0 +1,45 @@
+
+package de.smacsoftwares.aplanapp.ClientResponsibleModel;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+public class Resource {
+
+    @SerializedName("Childs")
+    @Expose
+    private List<Child> childs = null;
+    @SerializedName("Id")
+    @Expose
+    private Integer id;
+    @SerializedName("Name")
+    @Expose
+    private String name;
+
+    public List<Child> getChilds() {
+        return childs;
+    }
+
+    public void setChilds(List<Child> childs) {
+        this.childs = childs;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+}

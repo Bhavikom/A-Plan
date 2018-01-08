@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/custom_dialog_date_icon_background">
+    <RelativeLayout
+        android:layout_marginTop="@dimen/ten_sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/ten_sp"
+        android:layout_marginRight="@dimen/ten_sp">
+        <TextView
+            android:layout_margin="@dimen/ten_sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/thirteen_sp"
+            android:textColor="@color/white_color"
+            android:text=""/>
+        <TextView
+            android:paddingTop="@dimen/five_sp"
+            android:paddingBottom="@dimen/five_sp"
+            android:paddingLeft="@dimen/fifteen_sp"
+            android:paddingRight="@dimen/fifteen_sp"
+            android:background="@drawable/load_button_background"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/five_sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fifteen_sp"
+            android:textColor="@color/white_color"
+            android:text="@string/ok"
+            android:id="@+id/ok"/>
+    </RelativeLayout>
+    <View
+        android:layout_marginTop="@dimen/five_sp"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="@color/white_color"/>
+        <ListView
+            android:choiceMode="singleChoice"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/ok"
+            android:id="@+id/listviewdates"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/ten_sp"
+            android:layout_marginRight="@dimen/ten_sp">
+
+        </ListView>
+
+</LinearLayout>

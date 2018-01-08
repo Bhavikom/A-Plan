@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="@dimen/fiftee_sp"
+        android:layout_height="@dimen/fiftee_sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:layout_marginRight="@dimen/ten_sp"
+        android:id="@+id/imgaboutus"
+        android:visibility="gone"
+        android:src="@drawable/information"/>
+
+    <LinearLayout
+        android:id="@+id/activity_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context="com.ssoft.aplanproject.activity.LoginActivity"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <!--start for header-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/seventee_sp"
+            android:background="@color/header_color">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/login_header"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/header_textsize"/>
+
+        </RelativeLayout>
+        <!--end for header-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:layout_marginRight="@dimen/twentee_three_sp">
+            <ImageView
+
+                android:layout_marginLeft="@dimen/five_hundred"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_england"/>
+
+            <ImageView
+
+                android:layout_marginLeft="@dimen/seven_hundred"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_germany"/>
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/two_hundred_twentee"
+            android:layout_height="@dimen/two_hundred_twentee"
+            android:layout_marginBottom="@dimen/ten_sp"
+            android:layout_marginTop="@dimen/ten_sp"
+            android:src="@drawable/app_logo"/>
+
+
+        <!-- startt HOSTING SERVER UI-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:orientation="vertical">
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/textviewHost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:text="Hosting Server"
+                android:textStyle="bold"
+                android:textColor="@color/textview_color_blue"
+                android:textSize="@dimen/thirtee_sp"/>
+
+            <!-- servername-->
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_marginTop="10sp"
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textviewserver"
+                    android:layout_width="@dimen/ninetee_sp"
+                    android:layout_height="wrap_content"
+                    android:text="Server:"
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:id="@+id/editservername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:lines="1"
+                    android:inputType="textPersonName"
+                    android:layout_marginLeft="@dimen/fourtee_sp"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:text="http://project.ssoft.in:8090/management"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+            </LinearLayout>
+
+            <!--databasename-->
+            <LinearLayout
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textviewdatabas"
+                    android:layout_width="@dimen/hundred_ten_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:visibility="gone"
+                    android:text="Database:"
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/editdatabase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:text="TestForXPlan4"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+            </LinearLayout>
+
+            <!--username-->
+            <LinearLayout
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textviewusername"
+                    android:layout_width="@dimen/hundred_ten_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:text="Username:"
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/edit_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="Demo"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+            </LinearLayout>
+
+            <!--password-->
+            <LinearLayout
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textvewipasssword"
+                    android:layout_width="@dimen/hundred_ten_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:text="Password:"
+
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/editpassword"
+                    android:layout_width="420sp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="Demo@braintool.com"
+                    android:layout_marginLeft="@dimen/twentee_sp"
+                    android:inputType="textPassword"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+                <ImageView
+                    android:id="@+id/imgvisibility"
+                    android:layout_marginLeft="@dimen/eight_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/visibility_off"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_marginTop="@dimen/ten_sp"
+                android:id="@+id/textviewSQL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:visibility="gone"
+                android:text="SQL Server"
+                android:textStyle="bold"
+                android:textColor="@color/textview_color_blue"
+                android:textSize="@dimen/thirtee_sp"/>
+            <!--databasename-->
+            <LinearLayout
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textviewserversql"
+                    android:layout_width="125sp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:text="Server Name:"
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/editservernamesql"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:visibility="gone"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:layout_marginLeft="@dimen/ten_sp"
+                    android:text="192.168.1.42"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+            </LinearLayout>
+
+            <!--username-->
+            <LinearLayout
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textviewsqllogin"
+                    android:layout_width="@dimen/hundred_fourtee_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:text="SQL Login:"
+                    android:visibility="gone"
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/editsqllogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:visibility="gone"
+                    android:text="sa"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+            </LinearLayout>
+
+            <!--password-->
+            <LinearLayout
+                android:layout_width="600sp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textvewsqlpassword"
+                    android:layout_width="@dimen/hundred_fourtee_sp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:text="SQL Password"
+                    android:visibility="gone"
+                    android:textColor="@color/textview_color_grey"
+                    android:textSize="@dimen/twentee_sp"/>
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/editsqlpassword"
+                    android:layout_width="420sp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="admin@123"
+                    android:visibility="gone"
+                    android:inputType="textPassword"
+                    android:paddingLeft="@dimen/five_sp"
+                    android:paddingRight="@dimen/five_sp"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/edittext_textsize"/>
+                <ImageView
+                    android:id="@+id/imgvisibility2"
+                    android:layout_marginLeft="@dimen/eight_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:src="@drawable/visibility_off"/>
+
+            </LinearLayout>
+
+            <Button
+                android:textAllCaps="false"
+                android:textColor="@color/white_color"
+                android:id="@+id/btnsignin"
+                android:textSize="@dimen/twentee_five_sp"
+                android:layout_width="@dimen/two_hundred"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/twentee_sp"
+                android:background="@drawable/button_background"
+                android:text="@string/sing_in_button"/>
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/twentee_sp"
+                android:id="@+id/textview_forgottpass"
+                android:text="@string/forgott_password"
+                android:textSize="@dimen/header_textsize"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/txt_ssoft_link"
+        android:layout_marginLeft="@dimen/fiftee_sp"
+        android:text="@string/my_smsc_link"
+        android:textSize="@dimen/header_textsize"/>
+</RelativeLayout>

@@ -1,0 +1,2284 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.ssoft.aplanproject.Model.CreateProfilePojo;
+import com.ssoft.aplanproject.Model.DeleteProfilePojo;
+import com.ssoft.aplanproject.Model.FilterModelClass;
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.Model.ProfileModelClass;
+import com.ssoft.aplanproject.Model.TextFilterKeyValueDataset;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.HomeActivity;
+import com.ssoft.aplanproject.adapter.ProfileAdapter;
+import com.ssoft.aplanproject.adapter.ProjectWeekAdapter;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceLoadWebview;
+import com.ssoft.aplanproject.util.InterfaceServiceClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Header;
+import retrofit.client.Response;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.ssoft.aplanproject.R.id.webView;
+
+public class FragmentProject extends Fragment implements View.OnClickListener,InterfaceLoadWebview{
+
+    Boolean isGeneralFilterDialogshow=false;
+    String strJsonforTask="",strJsonforAgreegate="",strTaskId="",strSelectedResolution="";
+    String webviewUrl="", profileIdToSendControl = "";
+    Context context;
+    SwipeGestureListener gestureListener;
+    DatabaseHandler dbHandler;
+    TextView textviewDateDialog, textviewStatusDialog, textviewTrafficLightDialog, textviewWeekDialog;
+    ImageView imgCompilationOverrun,imgStartedProject,imgCompeletedProject,imgCompleteToday,imgPendingProject,imgPassiveProject,
+            imgCompletedWeek,imgTaskWithoutDate,imgCanceledProject;
+    String strCompilationOverrun="",strStartedProject="",strCompletedProject="",strCompletedToday="",strPendingProject="",strPassiveProject="",
+            strCompletedWeek="",strTaskWithoutDate="",strCanceledProject="";
+    boolean isComplitionOverrun,isStartedProject,isCompletedProject,isCompletedToday,isPendingProject,isPassiveProject,isCompletedWeek,
+            isTaskWithoutDate,isCanceledProject;
+
+    ImageView imgNoticeArrow,imgReshow,imgLimitoverrun,imgCritical,imgRequiringClarification;
+    String strNoticeArrow="",strReshow="",strLimitoverrun="",strCritical="",strRequiringClarification="";
+    boolean isNoticeArrow,isReshow,isLimitOverrun,isCritical,isRequiringClarification;
+
+    ImageView imgTrafficRed,imgTrafficYello,imgTrafficGreen;
+    String strTrafficRed="",strTrafficYello="",strTrafficGreen="";
+    boolean isTrafficRed,isTrafficYello,isTrafficGreen;
+
+    TextView textviewDefaultProfile;
+    ListView listviewProfile;
+    TextView textviewToday;
+    ImageView imageViewRefresh;
+
+    PreferencesClass preferences;
+    Button buttonOk, buttonStatusOk, buttonTrafficOk;
+    ImageView imgCancel,imgStatusCancel,imgTrafficCancel;
+    ArrayList<ProfileModelClass> arraylistProfile = new ArrayList<>();
+    ArrayList<ProfileModelClass> arraylistProfileTemp = new ArrayList<>();
+    WebView webview;
+    ProjectWeekAdapter adapterWeek;
+    ProfileAdapter adapterProfile;
+    private ArrayList<FilterModelClass> arraylistPopupViewforWeek = new ArrayList<>();
+    ArrayList<String> arraylistRibbonFilterValue = new ArrayList<>();
+    String jsonTree = "";
+    String taskId = "";
+    View rootView;
+    String strAssigment = "";
+    String strResource = "";
+    String strComeFrom = "";
+    String strProfileName="";
+    String clickedProfileId="";
+    PopupWindow popupWindowWeek,popupWindowProfile;
+    Dialog dialogCreateProfile;
+    boolean isPopupDate = false, isPopupDefaultProfile = false;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_project, container, false);
+        GlobalClass.showToast(getActivity()," oncreateview ");
+        initControl();
+        return rootView;
+    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void initControl() {
+        dbHandler = new DatabaseHandler(getActivity());
+        preferences = new PreferencesClass(getActivity());
+
+        textviewDefaultProfile = (TextView) rootView.findViewById(R.id.txt_default_profile);
+        textviewDateDialog = (TextView) rootView.findViewById(R.id.txt_date);
+        textviewStatusDialog = (TextView) rootView.findViewById(R.id.txt_status);
+        textviewTrafficLightDialog = (TextView) rootView.findViewById(R.id.txt_traffic_lights);
+        textviewWeekDialog = (TextView) rootView.findViewById(R.id.txt_week_m);
+        textviewToday = (TextView)rootView.findViewById(R.id.textviewToday);
+        imageViewRefresh = (ImageView)rootView.findViewById(R.id.imageview_refresh);
+
+        textviewToday.setOnClickListener(this);
+        imageViewRefresh.setOnClickListener(this);
+        textviewDefaultProfile.setOnClickListener(this);
+        textviewDateDialog.setOnClickListener(this);
+        textviewStatusDialog.setOnClickListener(this);
+        textviewTrafficLightDialog.setOnClickListener(this);
+        textviewWeekDialog.setOnClickListener(this);
+        webview = (WebView) rootView.findViewById(webView);
+
+        setTextviewBold(textviewDateDialog,getString(R.string.DateLightFilter));
+        setTextviewBold(textviewStatusDialog,getString(R.string.StatusLightFilter));
+        setTextviewBold(textviewTrafficLightDialog,getString(R.string.TrafficLightFilter));
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            taskId = bundle.getString("task_id");
+            jsonTree = bundle.getString("json_tree");
+            strAssigment = bundle.getString("jsonarray_asignment");
+            strResource = bundle.getString("jsonarray_resources");
+            strComeFrom = bundle.getString("comefrom");
+        }
+
+        WebSettings settings = webview.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setDomStorageEnabled(true);
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+
+        //webview.setWebViewClient(new MyWebViewClient());
+        //WebChromeClient webChromeClient = new WebChromeClient();
+        //webview.setWebChromeClient(webChromeClient);
+
+
+
+        // gettin all profile from database stored
+        arraylistProfile = dbHandler.getAllUserProfile(preferences.getUserID(),preferences.getProfileId(),preferences.getLanguage());
+
+        /* this is condition check that any profile is set or not for default */
+        if(preferences.getUserProfile() != null && !preferences.getUserProfile().equalsIgnoreCase("")){
+
+            /* return current profile */
+            ProfileModelClass model = new Gson().fromJson(preferences.getUserProfile(),ProfileModelClass.class);
+            arraylistProfileTemp = new ArrayList<>();
+            arraylistProfileTemp.add(model);
+            profileIdToSendControl = arraylistProfileTemp.get(0).getProfileId();
+            textviewDefaultProfile.setText(arraylistProfileTemp.get(0).getProfileName());
+            textviewWeekDialog.setText(arraylistProfileTemp.get(0).getResolution());
+        }else {
+            /* if current profile not setted set defaulit as current */
+            if (arraylistProfile.size() > 0) {
+                for (int i=0;i<arraylistProfile.size();i++){
+                    if(arraylistProfile.get(i).getProfileName().equalsIgnoreCase("Default Profile")){
+                        //profileIdToSendControl = arraylistProfile.get(0).getProfileId();
+                        //textviewDefaultProfile.setText(arraylistProfile.get(0).getProfileName());
+                        ProfileModelClass model = new ProfileModelClass();
+                        model = arraylistProfile.get(i);
+                        String json = new Gson().toJson(model);
+                        preferences.saveUserProfile(json);
+                        arraylistProfileTemp = new ArrayList<>();
+                        arraylistProfileTemp.add(model);
+                        preferences.saveProfileId(model.getProfileId());
+                    }
+                }
+            }
+            if(arraylistProfileTemp.size() > 0){
+                profileIdToSendControl = arraylistProfileTemp.get(0).getProfileId();
+                textviewDefaultProfile.setText(arraylistProfileTemp.get(0).getProfileName());
+                textviewWeekDialog.setText(arraylistProfileTemp.get(0).getResolution());
+            }
+        }
+        //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://project.ssoft.in:8090/management/";
+        //String finalurl = "file:///android_asset/index.html?profile="+ profileIdToSendControl +"&userId="+preferences.getUserIdTemp()+"&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+        //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+        //Log.e(" ###### "," final url for control : "+finalurl);
+        //webview.loadUrl(finalurl);
+    }
+    @Override
+    public void onClick(View v) {
+        if(v== imageViewRefresh){
+            refreshControl();
+        }
+        if(v== textviewToday){
+            fireToday();
+        }
+        if (v== textviewDateDialog) {
+            showFilteredDialog(1,R.style.DialogAnimation);
+        }
+        if (v== textviewStatusDialog) {
+            showFilteredDialog(2,R.style.DialogAnimation);
+        }
+        if(v== textviewTrafficLightDialog) {
+            showFilteredDialog(3,R.style.DialogAnimation);
+        }
+        if(v== textviewWeekDialog){
+            if(popupWindowWeek != null){
+                if (popupWindowWeek.isShowing()) {
+                    if (popupWindowWeek != null) {
+                        popupWindowWeek.dismiss();
+                        isPopupDate = false;
+                    }
+                } else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                    addingDataInPopup(1);
+                /* this will show popup */
+                    showPopupWindow(1);
+                    isPopupDate = true;
+                }
+            }
+            else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                addingDataInPopup(1);
+                /* this will show popup */
+                showPopupWindow(1);
+                isPopupDate = true;
+            }
+        }
+        if(v== textviewDefaultProfile){
+            if(popupWindowProfile != null){
+                if (popupWindowProfile.isShowing()) {
+                    if (popupWindowProfile != null) {
+                        popupWindowProfile.dismiss();
+                        isPopupDefaultProfile = false;
+                    }
+                } else {
+                /* this function will store data in arraylist to show in popup basen on condition */
+                    //addingDataInPopup(2);
+                /* this will show popup */
+                    showPopupWindow(2);
+                    isPopupDefaultProfile = true;
+                }
+            }
+            else {
+                showPopupWindow(2);
+                isPopupDefaultProfile = true;
+            }
+
+        }
+    }
+    public void showFilteredDialog(int pos, int animationSource)
+    {
+        if(pos == 1){
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.custom_dialog_date);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            imgCancel = (ImageView) dialog.findViewById(R.id.imgclose);
+            buttonOk = (Button) dialog.findViewById(R.id.btn_date);
+            dialog.getWindow().getAttributes().windowAnimations = animationSource;
+            dialog.show();
+            initializeDateDialogControl(dialog);
+            getDateValuefromDataaseToShow();
+            imgCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v== imgCancel) {
+                        // Close dialog
+                        dialog.dismiss();
+                        setTextviewBold(textviewDateDialog,getString(R.string.DateLightFilter));
+                    }
+
+                }
+            });
+            buttonOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v== buttonOk) {
+                        if(strCompilationOverrun.equalsIgnoreCase("") || strCompilationOverrun.equalsIgnoreCase("0")){
+                            strCompilationOverrun="0";
+                        }
+                        else {
+                            strCompilationOverrun="1";
+                        }
+
+                        if(strStartedProject.equalsIgnoreCase("") || strStartedProject.equalsIgnoreCase("0")){
+                            strStartedProject="0";
+                        }
+                        else {
+                            strStartedProject="1";
+                        }
+
+                        if(strCompletedProject.equalsIgnoreCase("") || strCompletedProject.equalsIgnoreCase("0")){
+                            strCompletedProject="0";
+                        }
+                        else {
+                            strCompletedProject="1";
+                        }
+
+                        if(strCompletedToday.equalsIgnoreCase("") || strCompletedToday.equalsIgnoreCase("0")){
+                            strCompletedToday="0";
+                        }
+                        else {
+                            strCompletedToday="1";
+                        }
+
+                        if(strPendingProject.equalsIgnoreCase("") || strPendingProject.equalsIgnoreCase("0")){
+                            strPendingProject="0";
+                        }
+                        else {
+                            strPendingProject="1";
+                        }
+                        if(strPassiveProject.equalsIgnoreCase("") || strPassiveProject.equalsIgnoreCase("0")){
+                            strPassiveProject="0";
+                        }
+                        else {
+                            strPassiveProject="1";
+                        }
+
+                        if(strCompletedWeek.equalsIgnoreCase("") || strCompletedWeek.equalsIgnoreCase("0")){
+                            strCompletedWeek="0";
+                        }
+                        else {
+                            strCompletedWeek="1";
+                        }
+
+                        if(strTaskWithoutDate.equalsIgnoreCase("") || strTaskWithoutDate.equalsIgnoreCase("0")){
+                            strTaskWithoutDate="0";
+                        }
+                        else {
+                            strTaskWithoutDate="1";
+                        }
+
+                        if(strCanceledProject.equalsIgnoreCase("") || strCanceledProject.equalsIgnoreCase("0")){
+                            strCanceledProject="0";
+                        }
+                        else {
+                            strCanceledProject="1";
+                        }
+
+                        String finalCommaseperated = strCompilationOverrun+","+strStartedProject+","+strCompletedProject+","
+                                +strCompletedToday+","+strPendingProject
+                                +","+strPassiveProject+","+strCompletedWeek+","+strTaskWithoutDate+","+strCanceledProject;
+
+                        dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.DateLightFilter));
+                        dbHandler.addGeneralFilterInfo(getString(R.string.DateLightFilter),finalCommaseperated,"","",preferences.getUserID(),preferences.getProfileId());
+                        dialog.dismiss();
+
+                        setTextviewBold(textviewDateDialog,getString(R.string.DateLightFilter));
+
+                        fireGeneralAndRibbonFilter();
+
+                    }
+                }
+            });
+        }
+        else  if(pos == 2){
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.custom_dialog_status);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            imgStatusCancel = (ImageView) dialog.findViewById(R.id.imgclose);
+            buttonStatusOk = (Button) dialog.findViewById(R.id.btn_status);
+            dialog.getWindow().getAttributes().windowAnimations = animationSource;
+            dialog.show();
+
+            initializeStatusDialogControl(dialog);
+            getStatusValuefromDataaseToShow();
+            imgStatusCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (v == imgStatusCancel) {
+                        // Close dialog
+                        dialog.dismiss();
+                        setTextviewBold(textviewStatusDialog,getString(R.string.StatusLightFilter));
+                    }
+
+                }
+            });
+            buttonStatusOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view == buttonStatusOk) {
+                        if(strNoticeArrow.equalsIgnoreCase("") || strNoticeArrow.equalsIgnoreCase("0")){
+                            strNoticeArrow="0";
+                        }
+                        else {
+                            strNoticeArrow="1";
+                        }
+                        if(strReshow.equalsIgnoreCase("") || strReshow.equalsIgnoreCase("0")){
+                            strReshow="0";
+                        }
+                        else {
+                            strReshow="1";
+                        }
+                        if(strLimitoverrun.equalsIgnoreCase("") || strLimitoverrun.equalsIgnoreCase("0")){
+                            strLimitoverrun="0";
+                        }
+                        else {
+                            strLimitoverrun="1";
+                        }
+                        if(strCritical.equalsIgnoreCase("") || strCritical.equalsIgnoreCase("0")){
+                            strCritical="0";
+                        }
+                        else {
+                            strCritical="1";
+                        }
+                        if(strRequiringClarification.equalsIgnoreCase("") || strRequiringClarification.equalsIgnoreCase("0")){
+                            strRequiringClarification="0";
+                        }
+                        else {
+                            strRequiringClarification="1";
+                        }
+                        String finalCommaseperated = strNoticeArrow+","+strReshow+","+strLimitoverrun+","+strCritical+","+strRequiringClarification;
+
+                        dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.StatusLightFilter));
+                        dbHandler.addGeneralFilterInfo(getString(R.string.StatusLightFilter),finalCommaseperated,"","",preferences.getUserID(),preferences.getProfileId());
+                        dialog.dismiss();
+                        setTextviewBold(textviewStatusDialog,getString(R.string.StatusLightFilter));
+
+                        fireGeneralAndRibbonFilter();
+                    }
+                }
+            });
+        }
+        else if(pos == 3)
+        {
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.custom_dialog_trafficlights);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            imgTrafficCancel = (ImageView) dialog.findViewById(R.id.imgclose);
+            buttonTrafficOk = (Button) dialog.findViewById(R.id.btn_traffic);
+            dialog.getWindow().getAttributes().windowAnimations = animationSource;
+            dialog.show();
+
+            initializeTrafficDialogControl(dialog);
+            getTrafficValuefromDataaseToShow();
+            imgTrafficCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v == imgTrafficCancel) {
+                        // Close dialog
+                        dialog.dismiss();
+                        setTextviewBold(textviewTrafficLightDialog,getString(R.string.TrafficLightFilter));
+                    }
+
+                }
+            });
+            buttonTrafficOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view == buttonTrafficOk) {
+                        if(strTrafficRed.equalsIgnoreCase("") || strTrafficRed.equalsIgnoreCase("0")){
+                            strTrafficRed="0";
+                        }
+                        else {
+                            strTrafficRed="1";
+                        }
+                        if(strTrafficGreen.equalsIgnoreCase("") || strTrafficGreen.equalsIgnoreCase("0")){
+                            strTrafficGreen="0";
+                        }
+                        else {
+                            strTrafficGreen="1";
+                        }
+                        if(strTrafficYello.equalsIgnoreCase("") || strTrafficYello.equalsIgnoreCase("0")){
+                            strTrafficYello="0";
+                        }
+                        else {
+                            strTrafficYello="1";
+                        }
+                        String finalCommaseperated = strTrafficRed+","+strTrafficGreen+","+strTrafficYello;
+
+                        dbHandler.deleteFilter(preferences.getUserID(),preferences.getProfileId(),getString(R.string.TrafficLightFilter));
+                        dbHandler.addGeneralFilterInfo(getString(R.string.TrafficLightFilter),finalCommaseperated,"","",preferences.getUserID(),preferences.getProfileId());
+                        dialog.dismiss();
+                        setTextviewBold(textviewTrafficLightDialog,getString(R.string.TrafficLightFilter));
+
+                        fireGeneralAndRibbonFilter();
+                    }
+                }
+            });
+        }
+        if(pos == 4){
+            dialogCreateProfile = new Dialog(getActivity());
+            dialogCreateProfile.setContentView(R.layout.custom_dialog_addprofile);
+            dialogCreateProfile.setCanceledOnTouchOutside(true);
+            dialogCreateProfile.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Button btnOk = (Button)dialogCreateProfile.findViewById(R.id.btnOk);
+            Button btnCancel = (Button)dialogCreateProfile.findViewById(R.id.btnCancel);
+            final EditText editTextProfile = (EditText)dialogCreateProfile.findViewById(R.id.edittext_profile_name);
+            editTextProfile.setMaxWidth(editTextProfile.getWidth());
+
+            btnOk.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    // call add profile service here
+                    strProfileName = editTextProfile.getText().toString();
+                    callCreateProfileService();
+
+                }
+            });
+            btnCancel.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    dialogCreateProfile.dismiss();
+                }
+            });
+            dialogCreateProfile.getWindow().getAttributes().windowAnimations = animationSource;
+            dialogCreateProfile.show();
+        }
+    }
+    private void getDateValuefromDataaseToShow()
+    {
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.DateLightFilter)) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.DateLightFilter),preferences.getUserID(),preferences.getProfileId());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i=0;i<split.length;i++)
+            {
+                arraylistValue.add(split[i]);
+                if(i==0 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.completion_overrun_control));
+                }
+                if(i==1 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.started_project_task_control));
+                }
+                if(i==2 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.complete_project_task_control));
+                }
+                if(i==3 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.complete_today_control));
+                }
+                if(i==4 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.pending_project_task_control));
+                }
+                if(i==5 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.passive_project_task_control));
+                }
+                if(i==6 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.completed_in1week_control));
+                }
+                if(i==7 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.task_without_date));
+                }
+                if(i==8 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.canceled_project_task_control));
+                }
+            }
+
+        }
+        if(arraylistValue.size() >= 9)
+        {
+            if(arraylistValue.get(0).equalsIgnoreCase("1")) {
+                imgCompilationOverrun.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isComplitionOverrun=true;
+                strCompilationOverrun=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgCompilationOverrun.setBackgroundColor(Color.TRANSPARENT);
+                isComplitionOverrun=false;
+                strCompilationOverrun="";
+            }
+
+            if(arraylistValue.get(1).equalsIgnoreCase("1")) {
+                imgStartedProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isStartedProject=true;
+                strStartedProject=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgStartedProject.setBackgroundColor(Color.TRANSPARENT);
+                isStartedProject=false;
+                strStartedProject="";
+            }
+
+            if(arraylistValue.get(2).equalsIgnoreCase("1")) {
+                imgCompeletedProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isCompletedProject=true;
+                strCompletedProject=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgCompeletedProject.setBackgroundColor(Color.TRANSPARENT);
+                isCompletedProject=false;
+                strCompletedProject="";
+            }
+
+            if(arraylistValue.get(3).equalsIgnoreCase("1")) {
+                imgCompleteToday.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isCompletedToday=true;
+                strCompletedToday=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgCompleteToday.setBackgroundColor(Color.TRANSPARENT);
+                isCompletedToday=false;
+                strCompletedToday="";
+            }
+
+            if(arraylistValue.get(4).equalsIgnoreCase("1")) {
+                imgPendingProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isPendingProject=true;
+                strPendingProject=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgPendingProject.setBackgroundColor(Color.TRANSPARENT);
+                isPendingProject=false;
+                strPendingProject="";
+            }
+
+            if(arraylistValue.get(5).equalsIgnoreCase("1")) {
+                imgPassiveProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isPassiveProject=true;
+                strPassiveProject=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgPassiveProject.setBackgroundColor(Color.TRANSPARENT);
+                isPassiveProject=false;
+                strPassiveProject="";
+            }
+
+            if(arraylistValue.get(6).equalsIgnoreCase("1")) {
+                imgCompletedWeek.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isCompletedWeek=true;
+                strCompletedWeek=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgCompletedWeek.setBackgroundColor(Color.TRANSPARENT);
+                isCompletedWeek=false;
+                strCompletedWeek="";
+            }
+
+            if(arraylistValue.get(7).equalsIgnoreCase("1")) {
+                imgTaskWithoutDate.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isTaskWithoutDate=true;
+                strTaskWithoutDate=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgTaskWithoutDate.setBackgroundColor(Color.TRANSPARENT);
+                isTaskWithoutDate=false;
+                strTaskWithoutDate="";
+            }
+            if(arraylistValue.get(8).equalsIgnoreCase("1")) {
+                imgCanceledProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isCanceledProject=true;
+                strCanceledProject=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgCanceledProject.setBackgroundColor(Color.TRANSPARENT);
+                isCanceledProject=false;
+                strCanceledProject="";
+            }
+        }
+    }
+    private void getDateSelectedValue()
+    {
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.DateLightFilter)) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.DateLightFilter),preferences.getUserID(),preferences.getProfileId());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+            for (int i=0;i<split.length;i++)
+            {
+                arraylistValue.add(split[i]);
+                if(i==0 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.completion_overrun_control));
+                }
+                if(i==1 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.started_project_task_control));
+                }
+                if(i==2 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.complete_project_task_control));
+                }
+                if(i==3 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.complete_today_control));
+                }
+                if(i==4 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.pending_project_task_control));
+                }
+                if(i==5 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.passive_project_task_control));
+                }
+                if(i==6 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.completed_in1week_control));
+                }
+                if(i==7 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.task_without_date));
+                }
+                if(i==8 && split[i].equalsIgnoreCase("1")){
+                    arraylistRibbonFilterValue.add(getString(R.string.canceled_project_task_control));
+                }
+            }
+
+        }
+    }
+    private void getTrafficValuefromDataaseToShow()
+    {
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.TrafficLightFilter)) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.TrafficLightFilter),preferences.getUserID(),preferences.getProfileId());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i=0;i<split.length;i++)
+            {
+                ////String[] spliteInner = split[i].split("-");
+                arraylistValue.add(split[i]);
+            }
+
+        }
+        if(arraylistValue.size() >= 3)
+        {
+            if(arraylistValue.get(0).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.traffic_red_control));
+                imgTrafficRed.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isTrafficRed=true;
+                strTrafficRed=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgTrafficRed.setBackgroundColor(Color.TRANSPARENT);
+                isTrafficRed=false;
+                strTrafficRed="";
+            }
+
+            if(arraylistValue.get(1).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.traffic_green_control));
+                imgTrafficGreen.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isTrafficGreen=true;
+                strTrafficGreen=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgTrafficGreen.setBackgroundColor(Color.TRANSPARENT);
+                isTrafficGreen=false;
+                strTrafficGreen="";
+            }
+
+            if(arraylistValue.get(2).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.traffic_yellow_control));
+                imgTrafficYello.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isTrafficYello=true;
+                strTrafficYello=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgTrafficYello.setBackgroundColor(Color.TRANSPARENT);
+                isTrafficYello=false;
+                strTrafficYello="";
+            }
+        }
+    }
+    private void getTrafficSelectedValue()
+    {
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.TrafficLightFilter)) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.TrafficLightFilter),preferences.getUserID(),preferences.getProfileId());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i=0;i<split.length;i++)
+            {
+                ////String[] spliteInner = split[i].split("-");
+                arraylistValue.add(split[i]);
+            }
+
+        }
+        if(arraylistValue.size() >= 3)
+        {
+            if(arraylistValue.get(0).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.traffic_red_control));
+
+            }
+            if(arraylistValue.get(1).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.traffic_green_control));
+            }
+            if(arraylistValue.get(2).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.traffic_yellow_control));
+            }
+        }
+    }
+    private void getStatusValuefromDataaseToShow()
+    {
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.StatusLightFilter)) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.StatusLightFilter),preferences.getUserID(),preferences.getProfileId());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i=0;i<split.length;i++)
+            {
+                arraylistValue.add(split[i]);
+            }
+
+        }
+        if(arraylistValue.size() >= 5)
+        {
+            if(arraylistValue.get(0).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.notice_arrow_control));
+                imgNoticeArrow.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isNoticeArrow=true;
+                strNoticeArrow=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgNoticeArrow.setBackgroundColor(Color.TRANSPARENT);
+                isNoticeArrow=false;
+                strNoticeArrow="";
+            }
+
+            if(arraylistValue.get(1).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.reshow_control));
+                imgReshow.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isReshow=true;
+                strReshow=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgReshow.setBackgroundColor(Color.TRANSPARENT);
+                isReshow=false;
+                strReshow="";
+            }
+
+            if(arraylistValue.get(2).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.limit_overrun_control));
+                imgLimitoverrun.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isLimitOverrun=true;
+                strLimitoverrun=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgLimitoverrun.setBackgroundColor(Color.TRANSPARENT);
+                isLimitOverrun=false;
+                strLimitoverrun="";
+            }
+
+            if(arraylistValue.get(3).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.critical_control));
+                imgCritical.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isCritical=true;
+                strCritical=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgCritical.setBackgroundColor(Color.TRANSPARENT);
+                isCritical=false;
+                strCritical="";
+            }
+
+            if(arraylistValue.get(4).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.requiring_clarification_control));
+                imgRequiringClarification.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                isRequiringClarification=true;
+                strRequiringClarification=getResources().getString(R.string.traffic_red);
+            }
+            else {
+                imgRequiringClarification.setBackgroundColor(Color.TRANSPARENT);
+                isRequiringClarification=false;
+                strRequiringClarification="";
+            }
+        }
+    }
+    private void getStatusSelectedValue()
+    {
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+
+        if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),getString(R.string.StatusLightFilter)) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(getString(R.string.StatusLightFilter),preferences.getUserID(),preferences.getProfileId());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i=0;i<split.length;i++)
+            {
+                arraylistValue.add(split[i]);
+            }
+
+        }
+        if(arraylistValue.size() >= 5)
+        {
+            if(arraylistValue.get(0).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.notice_arrow_control));
+            }
+            if(arraylistValue.get(1).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.reshow_control));
+            }
+            if(arraylistValue.get(2).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.limit_overrun_control));
+            }
+            if(arraylistValue.get(3).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.critical_control));
+            }
+            if(arraylistValue.get(4).equalsIgnoreCase("1")) {
+                arraylistRibbonFilterValue.add(getString(R.string.requiring_clarification_control));
+            }
+        }
+    }
+
+    public void initializeDateDialogControl(Dialog dialog){
+        imgCompilationOverrun =(ImageView)dialog.findViewById(R.id.img_completion_overrun);
+        imgStartedProject=(ImageView)dialog.findViewById(R.id.img_started_project);
+        imgCompeletedProject=(ImageView)dialog.findViewById(R.id.img_complete_project);
+        imgCompleteToday=(ImageView)dialog.findViewById(R.id.img_complete_today);
+        imgPendingProject=(ImageView)dialog.findViewById(R.id.img_pending_project);
+        imgPassiveProject=(ImageView)dialog.findViewById(R.id.img_passive_project);
+        imgCompletedWeek=(ImageView)dialog.findViewById(R.id.img_complete_in_week);
+        imgTaskWithoutDate=(ImageView)dialog.findViewById(R.id.img_task_without_date);
+        imgCanceledProject=(ImageView)dialog.findViewById(R.id.img_cancel_task);
+
+        imgCompilationOverrun.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isComplitionOverrun){
+                    imgCompilationOverrun.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isComplitionOverrun=true;
+                    strCompilationOverrun=getResources().getString(R.string.completion_overrun);
+                }
+                else {
+                    imgCompilationOverrun.setBackgroundColor(Color.TRANSPARENT);
+                    isComplitionOverrun=false;
+                    strCompilationOverrun="";
+                }
+
+            }
+        });
+        imgStartedProject.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isStartedProject){
+                    imgStartedProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isStartedProject=true;
+                    strStartedProject=getResources().getString(R.string.started_project_task);
+                }
+                else {
+                    imgStartedProject.setBackgroundColor(Color.TRANSPARENT);
+                    isStartedProject=false;
+                    strStartedProject="";
+                }
+            }
+        });
+        imgCompeletedProject.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isCompletedProject){
+                    imgCompeletedProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isCompletedProject=true;
+                    strCompletedProject=getResources().getString(R.string.complete_project_task);
+                }
+                else {
+                    imgCompeletedProject.setBackgroundColor(Color.TRANSPARENT);
+                    isCompletedProject=false;
+                    strCompletedProject="";
+                }
+            }
+        });
+        imgCompleteToday.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isCompletedToday){
+                    imgCompleteToday.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isCompletedToday=true;
+                    strCompletedToday=getResources().getString(R.string.complete_today);
+                }
+                else {
+                    imgCompleteToday.setBackgroundColor(Color.TRANSPARENT);
+                    isCompletedToday=false;
+                    strCompletedToday="";
+
+                }
+            }
+        });
+        imgPendingProject.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isPendingProject){
+                    imgPendingProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isPendingProject=true;
+                    strPendingProject=getResources().getString(R.string.pending_project_task);
+                }
+                else {
+                    imgPendingProject.setBackgroundColor(Color.TRANSPARENT);
+                    strPendingProject="";
+                }
+            }
+        });
+        imgPassiveProject.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isPassiveProject){
+                    imgPassiveProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isPassiveProject=true;
+                    strPassiveProject=getResources().getString(R.string.passive_project_task);
+                }
+                else {
+                    imgPassiveProject.setBackgroundColor(Color.TRANSPARENT);
+                    isPassiveProject=false;
+                    strPassiveProject="";
+                }
+            }
+        });
+        imgCompletedWeek.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isCompletedWeek){
+                    imgCompletedWeek.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isCompletedWeek=true;
+                    strCompletedWeek=getResources().getString(R.string.completed_in1week);
+                }
+                else {
+                    imgCompletedWeek.setBackgroundColor(Color.TRANSPARENT);
+                    isCompletedWeek=false;
+                    strCompletedWeek="";
+                }
+            }
+        });
+        imgTaskWithoutDate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isTaskWithoutDate){
+                    imgTaskWithoutDate.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isTaskWithoutDate=true;
+                    strTaskWithoutDate=getResources().getString(R.string.task_without_date);
+                }
+                else {
+                    imgTaskWithoutDate.setBackgroundColor(Color.TRANSPARENT);
+                    isTaskWithoutDate=false;
+                    strTaskWithoutDate="";
+                }
+            }
+        });
+        imgCanceledProject.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isCanceledProject){
+                    imgCanceledProject.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isCanceledProject=true;
+                    strCanceledProject=getResources().getString(R.string.canceled_project_task);
+                }
+                else {
+                    imgCanceledProject.setBackgroundColor(Color.TRANSPARENT);
+                    isCanceledProject=false;
+                    strCanceledProject="";
+
+                }
+            }
+        });
+    }
+    public void initializeStatusDialogControl(Dialog dialog){
+        imgNoticeArrow=(ImageView)dialog.findViewById(R.id.img_notice_arrow);
+        imgReshow=(ImageView)dialog.findViewById(R.id.img_started_status);
+        imgLimitoverrun=(ImageView)dialog.findViewById(R.id.img_complate_project_status);
+        imgCritical=(ImageView)dialog.findViewById(R.id.img_critical);
+        imgRequiringClarification=(ImageView)dialog.findViewById(R.id.img_require);
+
+        imgNoticeArrow.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isNoticeArrow){
+                    imgNoticeArrow.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isNoticeArrow=true;
+                    strNoticeArrow=getResources().getString(R.string.notice_arrow);
+                }
+                else {
+                    imgNoticeArrow.setBackgroundColor(Color.TRANSPARENT);
+                    isNoticeArrow=false;
+                    strNoticeArrow="";
+                }
+
+            }
+        });
+        imgReshow.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isReshow){
+                    imgReshow.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isReshow=true;
+                    strReshow=getResources().getString(R.string.reshow);
+                }
+                else {
+                    imgReshow.setBackgroundColor(Color.TRANSPARENT);
+                    isReshow=false;
+                    strReshow="";
+                }
+            }
+        });
+        imgLimitoverrun.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isLimitOverrun){
+                    imgLimitoverrun.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isLimitOverrun=true;
+                    strLimitoverrun=getResources().getString(R.string.limit_overrun);
+                }
+                else {
+                    imgLimitoverrun.setBackgroundColor(Color.TRANSPARENT);
+                    isLimitOverrun=false;
+                    strLimitoverrun="";
+                }
+            }
+        });
+        imgCritical.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isCritical){
+                    imgCritical.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isCritical=true;
+                    strCritical=getResources().getString(R.string.critical);
+                }
+                else {
+                    imgCritical.setBackgroundColor(Color.TRANSPARENT);
+                    isCritical=false;
+                    strCritical="";
+                }
+            }
+        });
+        imgRequiringClarification.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isRequiringClarification){
+                    imgRequiringClarification.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isRequiringClarification=true;
+                    strRequiringClarification=getResources().getString(R.string.requiring_clarification);
+                }
+                else {
+                    imgRequiringClarification.setBackgroundColor(Color.TRANSPARENT);
+                    isRequiringClarification=false;
+                    strRequiringClarification="";
+                }
+            }
+        });
+    }
+    public void initializeTrafficDialogControl(Dialog dialog){
+        imgTrafficRed=(ImageView)dialog.findViewById(R.id.img_traffic_red);
+        imgTrafficGreen=(ImageView)dialog.findViewById(R.id.img_traffic_green);
+        imgTrafficYello=(ImageView)dialog.findViewById(R.id.img_traffic_yellow);
+        imgTrafficRed.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isTrafficRed){
+                    imgTrafficRed.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isTrafficRed=true;
+                    strTrafficRed=getResources().getString(R.string.traffic_red);
+                }
+                else {
+                    imgTrafficRed.setBackgroundColor(Color.TRANSPARENT);
+                    isTrafficRed=false;
+                    strTrafficRed="";
+                }
+
+            }
+        });
+        imgTrafficGreen.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isTrafficGreen){
+                    imgTrafficGreen.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isTrafficGreen=true;
+                    strTrafficGreen=getResources().getString(R.string.traffic_green);
+                }
+                else {
+                    imgTrafficGreen.setBackgroundColor(Color.TRANSPARENT);
+                    isTrafficGreen=false;
+                    strTrafficGreen="";
+                }
+            }
+        });
+        imgTrafficYello.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!isTrafficYello){
+                    imgTrafficYello.setBackgroundColor(getResources().getColor(R.color.textview_color_blue));
+                    isTrafficYello=true;
+                    strTrafficYello=getResources().getString(R.string.traffic_yellow);
+                }
+                else {
+                    imgTrafficYello.setBackgroundColor(Color.TRANSPARENT);
+                    isTrafficYello=false;
+                    strTrafficYello="";
+                }
+            }
+        });
+    }
+
+    public void addingDataInPopup(int pos) {
+        if(pos == 1){
+            String[] arraylistWeek = {"Year", "Quarter", "Months", "Week S", "Week M","Week L","Days","Hours","Minutes","Seconds","DayNightShift"};
+            String[] arrayprojectDateOriginalvalue = {"ShowYear", "ShowQuarter", "ShowMonths", "ShowWeeks", "ShowWeekM","ShowWeekL","ShowDays","ShowHours","ShowMinutes","ShowSeconds","ShowDayNightShift"};
+
+            arraylistPopupViewforWeek.clear();
+            for (int i = 0; i < arraylistWeek.length; i++) {
+                FilterModelClass filter = new FilterModelClass();
+                filter.setName(arraylistWeek[i]);
+                filter.setStrOriginalValue(arrayprojectDateOriginalvalue[i]);
+                // filter.setDrawable(imgDate[i]);
+                filter.setSelected(false);
+                /*for (int k = 0; k < selectedString.size(); k++) {
+                    if (selectedString.get(k).equalsIgnoreCase(arraylistWeek[i])) {
+                        filter.setSelected(true);
+                    }
+
+                }*/
+                arraylistPopupViewforWeek.add(filter);
+            }
+        }
+        if(pos == 2){
+            if (arraylistProfile.size() > 0)
+            {
+            }
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void showPopupWindow(final int popupNo) {
+        if(popupNo == 1)
+        {
+            LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View popupView = layoutInflater.inflate(R.layout.popupview_project_week, null);
+            popupWindowWeek = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            popupWindowWeek.setWidth((GlobalClass.screenWidth(getContext()) * 30) / 100);
+            popupWindowWeek.setHeight((GlobalClass.screenHeight(getContext()) * 65) / 100);
+            popupWindowWeek.setOutsideTouchable(false);
+            popupWindowWeek.showAsDropDown(textviewWeekDialog, -100, 0, Gravity.CENTER | Gravity.BOTTOM);
+            ListView listviewWeeklist = (ListView) popupView.findViewById(R.id.listviewprojectdate);
+
+            adapterWeek = new ProjectWeekAdapter(getActivity(), arraylistPopupViewforWeek);
+            listviewWeeklist.setAdapter(adapterWeek);
+            listviewWeeklist.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    if(arraylistProfileTemp != null && arraylistProfileTemp.size() > 0){
+                        arraylistProfileTemp.get(0).setResolution(arraylistPopupViewforWeek.get(position).getName());
+                        ProfileModelClass model = new ProfileModelClass();
+                        model = arraylistProfileTemp.get(0);
+                        preferences.clearUserProfile();
+                        preferences.saveUserProfile(new Gson().toJson(model));
+                        preferences.saveProfileId(model.getProfileId());
+                        if(arraylistProfile != null && arraylistProfile.size() > 0){
+                            for (int i=0;i<arraylistProfile.size();i++)
+                            {
+                                if(arraylistProfile.get(i).getProfileId().equalsIgnoreCase(arraylistProfileTemp.get(0).getProfileId())){
+                                    arraylistProfile.get(i).setResolution(arraylistProfileTemp.get(0).getResolution());
+                                }
+                            }
+                        }
+                        dbHandler.updateProfile(arraylistPopupViewforWeek.get(position).getName(),arraylistProfileTemp.get(0).getProfileId());
+                    }
+                    if(adapterProfile != null){
+                        adapterProfile.notifyDataSetChanged();
+                    }
+                    isPopupDate=false;
+                    popupWindowWeek.dismiss();
+                    textviewWeekDialog.setText(arraylistPopupViewforWeek.get(position).getName());
+                    fireResolution(arraylistPopupViewforWeek.get(position).getName());
+
+                }
+            });
+        }
+        else  if(popupNo == 2)
+        {
+            LayoutInflater layoutInflater2 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View popupViewProfile = layoutInflater2.inflate(R.layout.popupview_profile, null);
+            popupWindowProfile = new PopupWindow(popupViewProfile, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            ///popupWindowProfile.setWidth((GlobalClass.screenWidth(getContext()) * 30) / 100);
+           // popupWindowProfile.setHeight((GlobalClass.screenHeight(getContext()) * 40) / 100);
+            popupWindowProfile.setOutsideTouchable(false);
+            popupWindowProfile.showAsDropDown(textviewDefaultProfile, -15, 10, Gravity.CENTER | Gravity.BOTTOM);
+
+            LinearLayout linearAddProfile = (LinearLayout) popupViewProfile.findViewById(R.id.linear_add_profile);
+            listviewProfile = (ListView) popupViewProfile.findViewById(R.id.listview_profile);
+            arraylistProfile.clear();
+            arraylistProfile = dbHandler.getAllUserProfile(preferences.getUserID(), preferences.getProfileId(), preferences.getLanguage());
+            adapterProfile = new ProfileAdapter(getActivity(), arraylistProfile);
+            listviewProfile.setAdapter(adapterProfile);
+            listviewProfile.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    if(arraylistProfileTemp != null && arraylistProfileTemp.size() > 0){
+                        arraylistProfileTemp = new ArrayList<ProfileModelClass>();
+
+                        ProfileModelClass model = new ProfileModelClass();
+                        model = arraylistProfile.get(position);
+                        arraylistProfileTemp.add(model);
+                        textviewDefaultProfile.setText(arraylistProfileTemp.get(0).getProfileName());
+                        textviewWeekDialog.setText(arraylistProfileTemp.get(0).getResolution());
+                        preferences.clearUserProfile();
+                        preferences.saveUserProfile(new Gson().toJson(model));
+                        preferences.saveProfileId(model.getProfileId());
+
+                        setTextviewBold(textviewDateDialog,getString(R.string.DateLightFilter));
+                        setTextviewBold(textviewStatusDialog,getString(R.string.StatusLightFilter));
+                        setTextviewBold(textviewTrafficLightDialog,getString(R.string.TrafficLightFilter));
+                        /* here profile is changed that's why refresh and load control here */
+                        refreshControl();
+                    }
+                    popupWindowProfile.dismiss();
+                    isPopupDefaultProfile = false;
+                }
+            });
+            linearAddProfile.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    popupWindowProfile.dismiss();
+                    isPopupDefaultProfile = false;
+                    showFilteredDialog(4, R.style.DialogAnimation);
+                }
+            });
+            gestureListener = new SwipeGestureListener(getActivity());
+            listviewProfile.setOnTouchListener(gestureListener);
+        }
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+    public void changeText(String someText) {
+        Log.v("mylog", "changeText is called");
+        //webview.loadUrl("javascript:document.getElementById('test1').innerHTML = '<strong>" + someText + "</strong>'");
+    }
+    public void callJavaScriptFunctionAndGetResultBack(int val1, int val2) {
+        Log.v("mylog", "MyActivity.callJavascriptFunction is called");
+        //myWebView.loadUrl("javascript:window.MyHandler.setResult( addSomething("+val1+","+val2+") )");
+        //webview.loadUrl("javascript:window.MyHandler.setResult( minusSomething(" + val1 + "," + val2 + ") )");
+    }
+    private void callCreateProfileService()
+    {
+        try
+        {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(),"Creating Profile","Please wait...",false,false);
+            String url = preferences.getDomain()+"Create";
+            String userIdTemp = preferences.getUserIdTemp();
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+            interfaceObject.callCrateProfile(userIdTemp,strProfileName,"","0","De",new Callback<CreateProfilePojo>()
+            {
+                @Override
+                public void success(CreateProfilePojo createProfilePojo, Response response)
+                {
+                    List<Header> header = null;
+                    try
+                    {
+                        header = response.getHeaders();
+                        if(response != null)
+                        {
+                            if (createProfilePojo.getStatus() == 0)
+                            {
+                                LogApp.e(" create profile success ", " response from service : " + createProfilePojo.getStatus() + " id : " + createProfilePojo.getPayloadCreateProfile().getId());
+                                String profileId = String.valueOf(createProfilePojo.getPayloadCreateProfile().getId());
+                                String profileName = createProfilePojo.getPayloadCreateProfile().getName();
+                                String colDetail = createProfilePojo.getPayloadCreateProfile().getColsDetail();
+                                String expandId = createProfilePojo.getPayloadCreateProfile().getExpandedIds();
+                                dbHandler.addUserProfile(profileId,profileName,colDetail,preferences.getUserID(),expandId,preferences.getUserIdTemp(),preferences.getLanguage(),"Week M");
+                                progressDialog.dismiss();
+                                dialogCreateProfile.dismiss();
+                                if(arraylistProfileTemp != null && arraylistProfileTemp.size() > 0){
+                                    arraylistProfileTemp = new ArrayList<ProfileModelClass>();
+                                    ProfileModelClass model = new ProfileModelClass();
+                                    model.setProfileId(profileId);
+                                    model.setProfileName(profileName);
+                                    model.setColDeTail(colDetail);
+                                    model.setProfileUserId(preferences.getUserID());
+                                    model.setResolution(getResources().getString(R.string.weekm));
+                                    model.setLanguage("De");
+                                    arraylistProfileTemp.add(model);
+                                    textviewDefaultProfile.setText(arraylistProfileTemp.get(0).getProfileName());
+                                    textviewWeekDialog.setText(arraylistProfileTemp.get(0).getResolution());
+                                    preferences.clearUserProfile();
+                                    preferences.saveUserProfile(new Gson().toJson(model));
+                                    preferences.saveProfileId(profileId);
+                                }
+                                GlobalClass.showToast(getActivity(),"Profile created successfully!");
+                                /* here profile is created that's why refresh and load control here */
+                                refreshControl();
+
+
+                            }
+                        }
+                        else {
+                            progressDialog.dismiss();
+                            dialogCreateProfile.dismiss();
+                            GlobalClass.showToast(getActivity(),"No Response from server");
+                            LogApp.e(" no response from service :  ", " response from service : ");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        String statusCode="";
+                        String name="";
+                        for (int i=0;i<header.size();i++)
+                        {
+                            LogApp.e(" header size : "," response from service : "+header.size()+" name : "+header.get(i).getName()+" value : "+header.get(i).getValue());
+                            name=header.get(i).getName();
+                            if(!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")){
+                                statusCode=header.get(i).getValue();
+                            }
+                        }
+                        if(statusCode.equalsIgnoreCase("1004"))
+                        {
+                            // GlobalClass.showToast(activity,"Email is wrong");
+                        }
+                        else if(statusCode.equalsIgnoreCase("1005"))
+                        {
+                            //GlobalClass.showToast(activity,"Password is wrong");
+                        }
+
+                        progressDialog.dismiss();
+                        dialogCreateProfile.dismiss();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" login failed "," response from service : "+error.toString());
+                    progressDialog.dismiss();
+                    dialogCreateProfile.dismiss();
+                    GlobalClass.showToast(getActivity(),"No Response from server");
+                }
+
+            });
+
+        }
+        catch (Exception e){
+            LogApp.e(" while login service : "," in catch : "+e.toString());
+        }
+
+    }
+    private void callDeleteProfileService()
+    {
+        try
+        {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(),"Deleting Profile","Please wait...",false,false);
+            String url = preferences.getDomain()+"Delete";
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+
+            interfaceObject.callDeleteProfile(preferences.getUserIdTemp(),clickedProfileId,new Callback<DeleteProfilePojo>()
+            {
+                @Override
+                public void success(DeleteProfilePojo deleteProfilePojo, Response response)
+                {
+                    List<Header> header = null;
+                    try
+                    {
+                        header = response.getHeaders();
+                        if(response != null)
+                        {
+                            if (deleteProfilePojo.getStatus() == 0)
+                            {
+                                LogApp.e(" delete profile success ", " response from service : " + deleteProfilePojo.getStatus());
+                                progressDialog.dismiss();
+                                dbHandler.deleteSingleUserProfile(preferences.getUserIdTemp(),clickedProfileId);
+                                for (int i=0;i<arraylistProfile.size();i++){
+                                    if(clickedProfileId.equalsIgnoreCase(arraylistProfile.get(i).getProfileId())){
+                                        arraylistProfile.remove(i);
+                                    }
+                                }
+                                adapterProfile.notifyDataSetChanged();
+                                GlobalClass.showToast(getActivity(),"Profile deleted successfully!");
+                            }
+                        }
+                        else {
+                            progressDialog.dismiss();
+                            dialogCreateProfile.dismiss();
+                            GlobalClass.showToast(getActivity(),"No Response from server");
+                            LogApp.e(" no response from service :  ", " response from service : ");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        String statusCode="";
+                        String name="";
+                        for (int i=0;i<header.size();i++)
+                        {
+                            LogApp.e(" header size : "," response from service : "+header.size()+" name : "+header.get(i).getName()+" value : "+header.get(i).getValue());
+                            name=header.get(i).getName();
+                            if(!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")){
+                                statusCode=header.get(i).getValue();
+                            }
+                        }
+                        if(statusCode.equalsIgnoreCase("1004"))
+                        {
+                            // GlobalClass.showToast(activity,"Email is wrong");
+                        }
+                        else if(statusCode.equalsIgnoreCase("1005"))
+                        {
+                            //GlobalClass.showToast(activity,"Password is wrong");
+                        }
+
+                        progressDialog.dismiss();
+
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" login failed "," response from service : "+error.toString());
+                    progressDialog.dismiss();
+                    GlobalClass.showToast(getActivity(),"Problem while deleting profile");
+                }
+
+            });
+
+        }
+        catch (Exception e){
+            LogApp.e(" while login service : "," in catch : "+e.toString());
+        }
+    }
+    public void showAlertDialogDelete(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setTitle("Delete Profile");
+        alertDialog.setMessage("Are you sure you want to Delete profile?");
+        alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        callDeleteProfileService();
+                    }
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+
+        alertDialog.show();
+    }
+    class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
+        Context context;
+        GestureDetector gDetector;
+        static final int SWIPE_MIN_DISTANCE = 120;
+        static final int SWIPE_MAX_OFF_PATH = 250;
+        static final int SWIPE_THRESHOLD_VELOCITY = 200;
+        public SwipeGestureListener() {
+            super();
+        }
+        public SwipeGestureListener(Context context) {
+            this(context, null);
+        }
+        public SwipeGestureListener(Context context, GestureDetector gDetector)
+        {
+            if (gDetector == null)
+                gDetector = new GestureDetector(context, this);
+            this.context = context;
+            this.gDetector = gDetector;
+        }
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            final int position = listviewProfile.pointToPosition(
+                    Math.round(e1.getX()), Math.round(e1.getY()));
+            clickedProfileId = arraylistProfile.get(position).getProfileId();
+            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+            {
+                if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH || Math.abs(velocityY) < SWIPE_THRESHOLD_VELOCITY) {
+                    return false;
+                }
+                if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE) {
+                }
+                else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE) {
+                }
+            }
+            else
+            {
+                if (Math.abs(velocityX) < SWIPE_THRESHOLD_VELOCITY) {
+                    return false;
+                }
+                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE) {
+                    if(position == 0){
+                        GlobalClass.showToast(getActivity(),"You can't delete default profile");
+                    }
+                    else {
+                        showAlertDialogDelete();
+                    }
+                }
+                else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE) {
+                    if(position == 0){
+                        GlobalClass.showToast(getActivity(),"You can't delete default profile");
+                    }
+                    else {
+                        showAlertDialogDelete();
+                    }
+                }
+            }
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+        public GestureDetector getDetector()
+        {
+            return gDetector;
+        }
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            return gDetector.onTouchEvent(event);
+        }
+    }
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        context = activity;
+        ((HomeActivity)context).interfaceLoadWebview = this;
+    }
+
+    public String getGeneralFilterJson(){
+
+        String jsonStrFolder="",jsonStrText="",jsonStrUserDefined="",jsonStrDate="";
+        JSONObject jsonObjectFolder=null;//,jsonObjectText=null,jsonObjectUserDefined=null,jsonObjectDate=null;
+        jsonObjectFolder = new JSONObject();
+        /* getting folder filter string */
+        //ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<FolderDataset> arraylistFolderlist = new ArrayList<>();
+
+        if (dbHandler.getCursorCountFilterForAllFilter(preferences.getUserID(),preferences.getProfileId()) > 0) {
+            arraylistFolderlist = dbHandler.getGeneralFilterData(getString(R.string.FolderFilter), preferences.getUserID(),preferences.getProfileId());
+        }
+        if (arraylistFolderlist.size() > 0) {
+            String[] split = arraylistFolderlist.get(0).getId().split(",");
+            String joined = GlobalClass.arrayToCommaSeparated(split);
+            //jsonObjectFolder = new JSONObject();
+            try {
+                jsonObjectFolder.put("GroupId",joined);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            jsonStrFolder = jsonObjectFolder.toString();
+
+        }
+        /* getting text filter string */
+        //ArrayList<TextFilterKeyValueDataset> arraylistValue = new ArrayList<>();
+        ArrayList<TextFilterKeyValueDataset> arraylistTextfilter = new ArrayList<>();
+        arraylistTextfilter = dbHandler.getTextFilterData(preferences.getUserID(),preferences.getProfileId());
+        if(arraylistTextfilter.size() > 0){
+            //jsonObjectText = new JSONObject();
+            for (int i=0;i<arraylistTextfilter.size();i++){
+                try {
+                    jsonObjectFolder.put(arraylistTextfilter.get(i).getKey(),arraylistTextfilter.get(i).getValue());
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+            jsonStrText = jsonStrFolder.toString();
+        }
+
+        /* getting user defined filter */
+        //ArrayList<FolderDataset> arraylistgetedFromDatabase2 = new ArrayList<>();
+        ArrayList<FolderDataset> arraylisUserDefinedText = new ArrayList<>();
+        ArrayList<FolderDataset> arraylisUserDefinedNumber = new ArrayList<>();
+        if (dbHandler.getCursorCountFilterForAllFilter(preferences.getUserID(),preferences.getProfileId()) > 0) {
+            arraylisUserDefinedText.addAll(dbHandler.getGeneralFilterData(getString(R.string.UserDefinedFilter), preferences.getUserID(),preferences.getProfileId()));
+            arraylisUserDefinedNumber.addAll(dbHandler.getGeneralFilterData(getString(R.string.UserDefindedFilterForNumber), preferences.getUserID(),preferences.getProfileId()));
+        }
+        ArrayList<String> arraylistUserDefined = new ArrayList<>();
+        ArrayList<TextFilterKeyValueDataset> arrayList = new ArrayList<>();
+        if (arraylisUserDefinedText.size() > 0) {
+            String[] split = arraylisUserDefinedText.get(0).getName().split(",");
+            if(arraylisUserDefinedNumber.size() > 0){
+                String[] split2 = arraylisUserDefinedNumber.get(0).getName().split(",");
+                for (int i = 0; i < split2.length; i++) {
+                    String[] spliteInner = split2[i].split("-");
+
+                    if(spliteInner[1].equalsIgnoreCase("null")){
+
+                    }else {
+                        TextFilterKeyValueDataset filter = new TextFilterKeyValueDataset();
+                        filter.setKey(spliteInner[0]);
+                        filter.setValue(spliteInner[1]);
+                        arrayList.add(filter);
+                    }
+                }
+            }
+            for (int i = 0; i < split.length; i++) {
+                String[] spliteInner = split[i].split("-");
+
+                if(spliteInner[1].equalsIgnoreCase("null")){
+
+                }else {
+                    TextFilterKeyValueDataset filter = new TextFilterKeyValueDataset();
+                    filter.setKey(spliteInner[0]);
+                    filter.setValue(spliteInner[1]);
+                    arrayList.add(filter);
+                }
+            }
+            if(arrayList.size() > 0){
+                //jsonObjectUserDefined = new JSONObject();
+                for (int i=0;i<arrayList.size();i++){
+                    try {
+                        jsonObjectFolder.put(arrayList.get(i).getKey(),arrayList.get(i).getValue());
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                jsonStrUserDefined = jsonObjectFolder.toString();
+            }
+
+        }
+        /* for date filter string */
+        ArrayList<TextFilterKeyValueDataset> arraylistValueDate = new ArrayList<>();
+        arraylistValueDate = dbHandler.getDateFilterData(preferences.getUserID(),preferences.getProfileId());
+        if(arraylistValueDate.size() > 0){
+            //jsonObjectDate = new JSONObject();
+            for (int i=0;i<arraylistValueDate.size();i++){
+                try {
+                    jsonObjectFolder.put(arraylistValueDate.get(i).getKey(),arraylistValueDate.get(i).getValue());
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+            jsonStrDate = jsonObjectFolder.toString();
+        }
+        String finalStr = jsonObjectFolder.toString();
+        return finalStr;
+    }
+    /*private void startWebView(String url)
+    {
+        webview.setWebViewClient(new WebViewClient()
+        {
+            ProgressDialog progressDialog;
+            //If you will not use this method url links are opeen in new brower not in webview
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+            //Show loader on url load
+            public void onLoadResource (WebView view, String url)
+            {
+                if (progressDialog == null) {
+                    // in standard case YourActivity.this
+                    progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.show();
+                }
+            }
+            public void onPageFinished(WebView view, String url) {
+                try{
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
+                }catch(Exception exception){
+                    exception.printStackTrace();
+                }
+            }
+
+        });
+
+        // Javascript inabled on webview
+        webview.getSettings().setJavaScriptEnabled(true);
+
+        // Other webview options
+	    *//*
+	    webView.getSettings().setLoadWithOverviewMode(true);
+	    webView.getSettings().setUseWideViewPort(true);
+	    webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+	    webView.setScrollbarFadingEnabled(false);
+	    webView.getSettings().setBuiltInZoomControls(true);
+	    *//*
+
+	    *//*
+	     String summary = "<html><body>You scored <b>192</b> points.</body></html>";
+         webview.loadData(summary, "text/html", null);
+	     *//*
+
+        //Load url in webview
+        //webview.loadUrl(url);
+
+
+    }*/
+    /*public void loadWebview(String url){
+        webview.stopLoading();
+        webview.loadUrl(url);
+        WebClientClass webViewClient = new WebClientClass();
+        webview.setWebViewClient(webViewClient);
+
+        //Create new webview Client to show progress dialog
+        //When opening a url or click on link
+
+        webView.setWebViewClient(new WebViewClient()
+        {
+            ProgressDialog progressDialog;
+
+            //If you will not use this method url links are opeen in new brower not in webview
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+                view.loadUrl(url);
+                return true;
+            }
+
+            //Show loader on url load
+            public void onLoadResource(WebView view, String url)
+            {
+                if (progressDialog == null)
+                {
+                    // in standard case YourActivity.this
+                    progressDialog = new ProgressDialog(ShowWebView.this);
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.show();
+                }
+            }
+
+            public void onPageFinished(WebView view, String url)
+            {
+                try
+                {
+                    if (progressDialog.isShowing())
+                    {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
+        }
+    }
+    }*/
+
+    public void setTextviewBold(TextView textview,String filterType){
+        ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+        ArrayList<String> arraylistValue = new ArrayList<>();
+        //if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),filterType) > 0){
+            if(dbHandler.getCursorCountFilterDataForProfile(preferences.getUserID(),preferences.getProfileId(),filterType) > 0)
+            {
+                arraylistgetedFromDatabase=dbHandler.getGeneralFilterData(filterType,preferences.getUserID(),preferences.getProfileId());
+            }
+            arraylistValue = new ArrayList<>();
+            if(arraylistgetedFromDatabase.size() > 0){
+                String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+                for (int i=0;i<split.length;i++)
+                {
+                    if(split[i].equalsIgnoreCase("1")){
+                        textview.setTypeface(null, Typeface.BOLD);
+                        break;
+                    }
+                    else {
+                        textview.setTypeface(null, Typeface.NORMAL);
+                    }
+
+                }
+
+            }
+            else {
+                textview.setTypeface(null, Typeface.NORMAL);
+            }
+
+            //}
+    }
+    @Override
+    public void callWebviewFromFooter()
+    {
+        if(preferences.getCurrentFiredFilter().equalsIgnoreCase("1")
+                || preferences.getCurrentFiredFilter().equalsIgnoreCase("2")
+                  || preferences.getCurrentFiredFilter().equalsIgnoreCase("3")
+                   || preferences.getCurrentFiredFilter().equalsIgnoreCase("4")){
+            preferences.saveCurrentFiredFilter("5");
+        }
+        else if(preferences.getCurrentFiredFilter().equalsIgnoreCase("5")){
+            preferences.saveCurrentFiredFilter("6");
+        }
+        else if(preferences.getCurrentFiredFilter().equalsIgnoreCase("6")){
+            preferences.saveCurrentFiredFilter("6");
+        }
+        fireGeneralAndRibbonFilter();
+        //if(!isControlLoaded){
+            //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://project.ssoft.in:8090/management/";
+            //String finalurl = "file:///android_asset/index.html?profile="+ profileIdToSendControl +"&userId="+preferences.getUserIdTemp()+"&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+            //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+            //Log.e(" ###### "," final url for control : "+finalurl);
+            //webview.loadUrl(finalurl);
+            //isControlLoaded=true;
+        /*}
+        else {
+
+        }*/
+
+
+
+
+        //GlobalClass.showToast(getActivity()," webview called : ");
+        /*if(preferences.getIsControlFirstTime().equalsIgnoreCase("yes")){
+            //webviewUrl ="file:///android_asset/index.html?profile=" + arraylistProfileTemp.get(0).getProfileId() + "&userId=" + preferences.getUserIdTemp() + "HOST_URL=http://project.ssoft.in:8090/management/";
+            //startWebView(webviewUrl);
+            //GlobalClass.showToast(getActivity()," load control filrst time");
+        }else {
+            //GlobalClass.showToast(getActivity()," don't reload control its done ");
+            //webviewUrl ="file:///android_asset/index.html?profile=" + arraylistProfileTemp.get(0).getProfileId() + "&userId=" + preferences.getUserIdTemp() + "HOST_URL=http://project.ssoft.in:8090/management/";
+        }*/
+
+
+    }
+    @Override
+    public void callWebviewFromDashboard(String json, String id,String comefrom)
+    {
+        if (dbHandler.getCursorCountFilterForAllFilter(preferences.getUserID(),preferences.getProfileId()) > 0) {
+            if(preferences.getIsGeneralFilterDialogshow().equalsIgnoreCase("yes")){
+                alertDialogFilterNotify(json,id,comefrom);
+
+            }
+            else {
+                callWebviewFromDashboardShortcut(json,id,comefrom);
+            }
+        }
+        else {
+            callWebviewFromDashboardShortcut(json,id,comefrom);
+        }
+    }
+    public void callWebviewFromDashboardShortcut(String json, String id,String comefrom){
+        //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://project.ssoft.in:8090/management/";
+        //String finalurl = "file:///android_asset/index.html?profile="+ profileIdToSendControl +"&userId="+preferences.getUserIdTemp()+"&HOST_URL=http://78.46.120.30/BerndTesting/management/&from=dashboard";
+        //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+        //Log.e(" ###### "," final url for control : "+finalurl);
+        //webview.loadUrl(finalurl);
+        strJsonforTask=json;
+        strTaskId=id;
+        if(comefrom.equalsIgnoreCase("task")){
+
+            if(preferences.getCurrentFiredFilter().equalsIgnoreCase("1")){
+                //// refresh control here
+                GlobalClass.showToast(getActivity()," 11111 ");
+                refreshControlForDashboard();
+                //String url = "javascript:(function() { LoadDashBoradDataOnControl("+json+","+id+");})()";
+                //webview.loadUrl(url);
+            }
+            else if(preferences.getCurrentFiredFilter().equalsIgnoreCase("2")){
+                //// don't refresh control here just call JS method
+                GlobalClass.showToast(getActivity()," 22222 ");
+                //String url = "javascript:(function() { LoadDashBoradDataOnControl(void 0,"+id+");})()";
+                String url = "javascript:(function() { AddSelectionToNode('"+id+"');})()";
+                webview.loadUrl(url);
+            }
+            /*else  if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getString(R.string.footer_click))){
+                GlobalClass.showToast(getActivity()," 11111 ");
+                refreshControlForDashboard();
+            }*/
+            /*if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getString(R.string.agreegate_filter))){
+                /////// refresh control here
+                preferences.saveCurrentFiredFilter(getString(R.string.task_filter));
+            }
+            else if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getString(R.string.task_filter))){
+                /////// don't refresh control here
+                preferences.saveCurrentFiredFilter(getString(R.string.task_filter));
+            }*/
+            /*if((preferences.getCurrentFiredFilter().equalsIgnoreCase(getResources().getString(R.string.task_click_and_genaral_filter))
+                    || preferences.getCurrentFiredFilter().equalsIgnoreCase(getResources().getString(R.string.task_click_control_load_and_general_filter)))){
+                GlobalClass.showToast(getActivity(),"on task clicked and general filter is fired ");
+            }
+            else {
+                //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+                //Log.e(" ###### "," final url for control : "+finalurl);
+                //webview.loadUrl(finalurl);
+                String url = "javascript:(function() { LoadDashBoradDataOnControl("+json+","+id+");})()";
+                webview.loadUrl(url);
+
+                if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getResources().getString(R.string.task_click_control_load))){
+                    GlobalClass.showToast(getActivity(),"clicked on task and load control");
+                }else {
+                    GlobalClass.showToast(getActivity(),"clicked on task and don't load control");
+                }
+            }*/
+        }
+        ///// come from agreegate
+        else {
+            if(preferences.getCurrentFiredFilter().equalsIgnoreCase("3")){
+                //// refresh control here
+                GlobalClass.showToast(getActivity()," 33333 ");
+
+                refreshControlForDashboard();
+                //String url = "javascript:(function() { LoadDashBoradDataOnControl("+json+","+id+");})()";
+                //webview.loadUrl(url);
+            }
+            else if(preferences.getCurrentFiredFilter().equalsIgnoreCase("4")){
+                ////// don't refresh control here just call JS function here
+                GlobalClass.showToast(getActivity()," 44444 ");
+                String url = "javascript:(function() { LoadDashBoradDataOnControl("+json+","+id+");})()";
+                webview.loadUrl(url);
+            }
+            /*else  if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getString(R.string.footer_click))){
+                GlobalClass.showToast(getActivity()," 33333 ");
+                refreshControlForDashboard();
+            }*/
+
+            /*if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getString(R.string.task_filter))){
+                    /////// refresh control here
+                preferences.saveCurrentFiredFilter(getString(R.string.agreegate_filter));
+            }
+            else if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getString(R.string.agreegate_filter))){
+                    /////// don't refresh control here
+                preferences.saveCurrentFiredFilter(getString(R.string.agreegate_filter));
+            }*/
+
+           /* if((preferences.getCurrentFiredFilter().equalsIgnoreCase(getResources().getString(R.string.agreegate_click_control_load_and_general_filter))
+                    || (preferences.getCurrentFiredFilter().equalsIgnoreCase(getResources().getString(R.string.agreegate_click_and_general_filter))))){
+                GlobalClass.showToast(getActivity()," on agreegate clicked and general filter is fired ");
+            }
+            else {
+                if(preferences.getCurrentFiredFilter().equalsIgnoreCase(getResources().getString(R.string.agreegate_click_control_load))){
+                    GlobalClass.showToast(getActivity(),"clicked on agreegate and load control");
+                }else {
+                    GlobalClass.showToast(getActivity(),"clicked on agreegate and don't load control");
+                }
+            }*/
+        }
+    }
+    public void fireGeneralAndRibbonFilter(){
+        if(preferences.getCurrentFiredFilter().equalsIgnoreCase("6")){
+            ///// don't refresh control here just call JS function
+            preferences.saveIsGeneralFilterDialogshow("yes");
+            fireGeneralAndRibbonFilterShortCut();
+        }
+        else if(preferences.getCurrentFiredFilter().equalsIgnoreCase("5")){
+            ////// refresh control and then call JS function
+            preferences.saveIsGeneralFilterDialogshow("yes");
+            refreshControl();
+        }
+
+
+    }
+    public void fireGeneralAndRibbonFilterShortCut(){
+        String strGeneralFilterJson = getGeneralFilterJson();
+        arraylistRibbonFilterValue = new ArrayList<>();
+        getDateSelectedValue();
+        getStatusSelectedValue();
+        getTrafficSelectedValue();
+        String strRibbonFilter="";
+        String url="";
+        if(arraylistRibbonFilterValue.size() > 0){
+            strRibbonFilter = TextUtils.join(",",arraylistRibbonFilterValue);
+            LogApp.e(""," arraylist ribbon filter : "+strRibbonFilter);
+        }
+        if(strGeneralFilterJson!= null && !strGeneralFilterJson.equalsIgnoreCase("") && !strGeneralFilterJson.equalsIgnoreCase("{}")){
+            if(!strRibbonFilter.equalsIgnoreCase("") && strRibbonFilter != null){
+                url = "javascript:(function() { SetFiltersDataFromApp('"+strRibbonFilter+"',"+strGeneralFilterJson+");})()";
+                //url = "javascript:(function() { SetFiltersDataFromApp(void 0,"+finalJson+");})()";
+            }
+            else {
+                url = "javascript:(function() { SetFiltersDataFromApp(void 0,"+strGeneralFilterJson+");})()";
+            }
+            webview.loadUrl(url);
+        }
+        else {
+            webview.setWebViewClient(new MyWebViewClient2());
+            //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://project.ssoft.in:8090/management/";
+            String finalurl = "file:///android_asset/index.html?profile="+ profileIdToSendControl +"&userId="+preferences.getUserIdTemp()+"&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+            //String finalurl = "file:///android_asset/index.html?profile=1&userId=3&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+            //Log.e(" ###### "," final url for control : "+finalurl);
+            webview.loadUrl(finalurl);
+        }
+    }
+
+    public class MyWebViewClient extends  WebViewClient{
+        ProgressDialog pd = null;
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            pd = new ProgressDialog(getActivity());
+            pd.setTitle("");
+            pd.setMessage("Please wait");
+            pd.show();
+        }
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            pd.dismiss();
+            String urlOffunction = "javascript:(function() { LoadDashBoradDataOnControl("+strJsonforTask.trim()+",'"+strTaskId.trim()+"');})()";
+            fireDashboardFilter(urlOffunction);
+            //startWebView(webviewUrl);
+        }
+    }
+    public class MyWebViewClient2 extends  WebViewClient{
+        ProgressDialog pd = null;
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            pd = new ProgressDialog(getActivity());
+            pd.setTitle("");
+            pd.setMessage("Please wait");
+            pd.show();
+        }
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            pd.dismiss();
+            //String urlOffunction = "javascript:(function() { LoadDashBoradDataOnControl("+strJsonforTask+","+strTaskId+");})()";
+            //fireDashboardFilter(urlOffunction);
+            //startWebView(webviewUrl);
+        }
+    }
+    public class MyWebViewClientForGeneralFilter extends  WebViewClient{
+        ProgressDialog pd = null;
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            pd = new ProgressDialog(getActivity());
+            pd.setTitle("");
+            pd.setMessage("Please wait");
+            pd.show();
+        }
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            pd.dismiss();
+            fireGeneralAndRibbonFilterShortCut();
+            preferences.saveCurrentFiredFilter("6");
+        }
+    }
+    public void refreshControl(){
+        webview.setWebViewClient(new MyWebViewClientForGeneralFilter());
+        String finalurl = "file:///android_asset/index.html?profile="+ profileIdToSendControl +"&userId="+preferences.getUserIdTemp()+"&HOST_URL=http://78.46.120.30/BerndTesting/management/";
+        webview.loadUrl(finalurl);
+        //// fire general and ribbon filter after load url
+    }
+    public void refreshControlForDashboard(){
+        webview.setWebViewClient(new MyWebViewClient());
+        String finalurl = "file:///android_asset/index.html?profile="+ profileIdToSendControl +"&userId="+preferences.getUserIdTemp()+"&HOST_URL=http://78.46.120.30/BerndTesting/management/&from=dashboard";
+        webview.loadUrl(finalurl);
+    }
+    public void fireDashboardFilter(String url){
+        webview.loadUrl(url);
+    }
+
+    public void fireToday(){
+        String url = "javascript:(function() { ScrollToToday();})()";
+        webview.loadUrl(url);
+    }
+    public void fireResolution(String resolution){
+        String url = "javascript:(function() { changeResolution('"+resolution+"');})()";
+        webview.loadUrl(url);
+    }
+
+    public void alertDialogFilterNotify(final String json, final String id, final String comefrom)
+    {
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(getActivity());
+        alertDialog.setTitle("");
+        alertDialog.setMessage("General filter is already fired.Would you like to contineu?");
+        alertDialog.setIcon(R.drawable.sign_out);
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        preferences.saveIsGeneralFilterDialogshow("no");
+                        callWebviewFromDashboardShortcut(json,id,comefrom);
+                    }
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+                    }
+                });
+
+
+        alertDialog.show();
+
+    }
+    @Override
+    public void changeLanguage()
+    {
+        GlobalClass.showToast(getActivity(),"Language has been changed ");
+        preferences.clearUserProfile();
+        initControl();
+    }
+}
+

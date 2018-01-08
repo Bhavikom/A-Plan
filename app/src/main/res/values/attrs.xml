@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="CalendarPickerView">
+    <attr name="android:background"/>
+    <attr name="tsquare_dividerColor" format="color"/>
+    <attr name="tsquare_dayBackground" format="reference"/>
+    <attr name="tsquare_dayTextColor" format="color"/>
+    <attr name="tsquare_titleTextColor" format="color"/>
+    <attr name="tsquare_displayHeader" format="boolean"/>
+    <attr name="tsquare_headerTextColor" format="color"/>
+  </declare-styleable>
+
+  <declare-styleable name="calendar_cell">
+    <attr name="tsquare_state_selectable" format="boolean" />
+    <attr name="tsquare_state_current_month" format="boolean" />
+    <attr name="tsquare_state_today" format="boolean" />
+    <attr name="tsquare_state_range_first" format="boolean" />
+    <attr name="tsquare_state_range_middle" format="boolean" />
+    <attr name="tsquare_state_range_last" format="boolean" />
+    <attr name="tsquare_state_highlighted" format="boolean" />
+  </declare-styleable>
+  <!-- for caldroid libs-->
+  <!-- Styles -->
+  <attr name="styleCaldroidViewLayout" format="reference"/>
+  <attr name="styleCaldroidLeftArrow" format="reference"/>
+  <attr name="styleCaldroidRightArrow" format="reference"/>
+  <attr name="styleCaldroidMonthName" format="reference"/>
+  <attr name="styleCaldroidNormalCell" format="reference"/>
+  <attr name="styleCaldroidSquareCell" format="reference"/>
+  <attr name="styleCaldroidGridView" format="reference"/>
+  <attr name="styleCaldroidWeekdayView" format="reference"/>
+
+  <!-- Custom states -->
+  <declare-styleable name="DateState">
+    <attr name="state_date_today" format="boolean"/>
+    <attr name="state_date_selected" format="boolean"/>
+    <attr name="state_date_disabled" format="boolean"/>
+    <attr name="state_date_prev_next_month" format="boolean"/>
+  </declare-styleable>
+
+  <!-- Declare stylable attribute for a cell -->
+  <declare-styleable name="Cell" >
+    <attr name="android:textColor" />
+    <attr name="android:background" />
+  </declare-styleable>
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/two_hundred_twentee"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/twentee_sp"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textviewquestion"
+            android:layout_marginBottom="@dimen/five_sp"
+            android:backgroundTint="@android:color/holo_green_light"/>
+
+        <TextView
+            android:id="@+id/textviewquestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/grey"
+            android:text="Have You Read Our FAQ Yet?"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/twentee_five_sp"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/twentee_sp"
+        >
+
+        <TextView
+            android:id="@+id/txtscreenshoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_sp"
+            android:text="Add Screenshots(Optional):"
+            android:textColor="@color/black_color"
+            android:textSize="25dp"/>
+
+        <LinearLayout
+
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:scaleType="fitCenter"
+                android:id="@+id/imageviewscreenshot1"
+                android:layout_width="@dimen/hundred_eightee_sp"
+                android:layout_height="@dimen/two_hundred_fourtee"
+                android:src="@drawable/add_screenshot">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:id="@+id/imageviewscreenshot2"
+                android:layout_width="@dimen/hundred_eightee_sp"
+                android:layout_height="@dimen/two_hundred_fourtee"
+                android:src="@drawable/add_screenshot"></ImageView>
+
+            <ImageView
+
+                android:layout_marginLeft="@dimen/twentee_sp"
+                android:id="@+id/imageviewscreenshot3"
+                android:layout_width="@dimen/hundred_eightee_sp"
+                android:layout_height="@dimen/two_hundred_fourtee"
+                android:src="@drawable/add_screenshot"></ImageView>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

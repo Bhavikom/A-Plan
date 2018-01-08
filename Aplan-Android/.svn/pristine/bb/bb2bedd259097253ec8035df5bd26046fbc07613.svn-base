@@ -1,0 +1,288 @@
+package com.ssoft.aplanproject.activity;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+
+/**
+ * Created by SSOFT4 on 10/8/2016.
+ */
+public class AdminSplashActivity extends Activity implements View.OnClickListener
+{
+    private EditText editEmail, editName, editCompony;
+    Button btnSend;
+    Switch toggleButtonNewsletter;
+    ToggleButton toggleButtonisDemoUser;
+    Activity activity;
+    PreferencesClass preferences;
+    ProgressDialog progressDialog = null;
+    String strNewletter="0",strdemoUser="0";
+    TextView txtlink;
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_admin_splacescreen);
+        activity = this;
+        preferences = new PreferencesClass(this);
+        showAdminSplashDialog(R.style.DialogAnimation);
+    }
+    @Override
+    public void onBackPressed()
+    {
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if (v == btnSend)
+        {
+            if (GlobalClass.isNetworkAvailable(activity))
+            {
+                if (checkValidation())
+                {
+                    /// call login service here
+                    new adminSplashscreen().execute();
+                }
+
+
+            }
+            else
+            {
+                GlobalClass.showToastInternet(activity);
+            }
+        }
+    }
+
+    public boolean checkValidation()
+    {
+        boolean flag = true;
+        if (TextUtils.isEmpty(editName.getText().toString()) ||
+                TextUtils.isEmpty(editEmail.getText().toString()) ||
+                TextUtils.isEmpty(editCompony.getText().toString()))
+        {
+            GlobalClass.showToastField(activity);
+            flag = false;
+        }
+        else
+        {
+            if (!GlobalClass.isEmailValid(editEmail.getText().toString()))
+            {
+                //GlobalClass.showToastEmail(activity);
+                flag = true;
+            }
+            else
+            {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+    public class adminSplashscreen extends AsyncTask<String, Void, String>
+    {
+        String status="";
+        String strEmail = editEmail.getText().toString();
+        String strCompony = editCompony.getText().toString();
+        String strName = editName.getText().toString();
+        ProgressDialog progressDialog;
+        @SuppressWarnings("deprecation")
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            @SuppressWarnings("deprecation")
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseText = null;
+            String finalUrl= "http://project.ssoft.in:8090/management/Add/DemoUserDetail";
+            HttpPost httppost = new HttpPost(finalUrl);
+            try {
+                @SuppressWarnings("deprecation")
+                HttpEntity entity;
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                try
+                {
+                    builder.addPart("Email", new StringBody(strEmail));
+                    builder.addPart("Name", new StringBody(strName));
+                    builder.addPart("Company", new StringBody(strCompony));
+                    builder.addPart("IsNewsletter", new StringBody(strNewletter));
+                    builder.addPart("IsDemoUser", new StringBody(strdemoUser));
+                    builder.addPart("DeviceToken", new StringBody("123467"));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                entity = builder.build();
+
+                httppost.setEntity(entity);
+
+                String request;
+
+                // Execute HTTP Post Request
+                response = httpclient.execute(httppost);
+                Log.v("Post Status","Code: "+response.getStatusLine().getStatusCode());
+                HttpEntity entity2 = response.getEntity();
+                responseText = EntityUtils.toString(entity2);
+                Log.v(" update profile "," response from service : "+responseText);
+                //Json Parsing
+                JSONObject objMain = (JSONObject) new JSONTokener(responseText).nextValue();
+                status = objMain.getString("Status");
+            }
+            catch (final Exception e)
+            {
+                progressDialog.dismiss();
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            progressDialog.dismiss();
+            if(status.equalsIgnoreCase("0"))
+            {
+                preferences.saveIsAdminScreenShow(false);
+                Intent intent = new Intent(AdminSplashActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else {
+                preferences.saveIsAdminScreenShow(false);
+                Intent intent = new Intent(AdminSplashActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(AdminSplashActivity.this,"Login","Please wait...",false,false);
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+        }
+
+    }
+    public class URLSpanNoUnderline extends URLSpan
+    {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(true);
+        }
+    }
+    public void showAdminSplashDialog(int animationSource){
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(this);
+        // Include dialog.xml file
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.custom_dialog_admin_splash);
+
+        editEmail = (EditText) dialog.findViewById(R.id.edit_email);
+        editName = (EditText) dialog.findViewById(R.id.edit_name);
+        editCompony = (EditText) dialog.findViewById(R.id.edit_compony);
+        btnSend = (Button) dialog.findViewById(R.id.btn_send);
+        toggleButtonNewsletter = (Switch) dialog.findViewById(R.id.switch_newsletter);
+        toggleButtonisDemoUser = (ToggleButton) dialog.findViewById(R.id.toggle_button2);
+        btnSend.setOnClickListener(this);
+        toggleButtonNewsletter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+
+            @Override
+            public void onCheckedChanged(CompoundButton arg0, boolean isChecked)
+            {
+                LogApp.e(" &&&&&& ", " toggle chacked change : " + isChecked);
+                if(isChecked){
+                    strNewletter="1";
+                }
+                else {
+                    strNewletter="0";
+                }
+            }
+        });
+        toggleButtonisDemoUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton arg0, boolean isChecked)
+            {
+                if(isChecked){
+                    strdemoUser="1";
+                }
+                else {
+                    strdemoUser="0";
+                }
+            }
+        });
+        txtlink= (TextView)dialog.findViewById(R.id.txt_ssoft_link);
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        SpannableString ss = new SpannableString(getString(R.string.my_smsc_link));
+        ss.setSpan(new URLSpanNoUnderline("http://www.smacsoftwares.de/"),0,33, 0);
+        ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,33, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txtlink.setText(ss);
+
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int screenWidth = (int) (metrics.widthPixels * 0.85);
+        DisplayMetrics metrics2 = getResources().getDisplayMetrics();
+        int screenHeight = (int) (metrics2.widthPixels * 0.85 );
+        //getWindow().setLayout(screenWidth, screenHeight);
+        // Set dialog title
+        dialog.setTitle("");
+        dialog.getWindow().getAttributes().windowAnimations = animationSource;
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(screenWidth, screenHeight);
+    }
+
+}

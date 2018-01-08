@@ -1,0 +1,106 @@
+package com.ssoft.aplanproject.adapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import com.ssoft.aplanproject.Model.TableDataModelClass;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.util.GlobalClass;
+
+
+public class TableAdapter extends BaseAdapter {
+    Context context;
+    LayoutInflater lInflater;
+    List<TableDataModelClass> arraylistMain;
+    public TableAdapter(Context context, List<TableDataModelClass> items) {
+        this.context = context;
+        this.arraylistMain = items;
+        lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+    private class ViewHolder
+    {
+        TextView textviewName;
+        EditText editTextwidth;
+        ToggleButton toggleButton;
+    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        View view = convertView;
+        if (view == null) {
+            view = lInflater.inflate(R.layout.item_list_table, parent, false);
+        }
+
+        TableDataModelClass tabledata = getTableData(position);
+
+        ((TextView) view.findViewById(R.id.textviewtableitem)).setText(tabledata.name);
+        EditText edittextWidth= (EditText)view.findViewById(R.id.edittexttableitem);
+        edittextWidth.setText(tabledata.width+"");
+        //((ImageView) view.findViewById(R.id.ivImage)).setImageResource(tabledata.image);
+        if(GlobalClass.isEditMode){
+            edittextWidth.setEnabled(true);
+        }
+        else {
+            edittextWidth.setEnabled(false);
+        }
+
+        Switch cbBuy = (Switch) view.findViewById(R.id.switchnumber);
+        cbBuy.setOnCheckedChangeListener(myCheckChangList);
+        cbBuy.setTag(position);
+        cbBuy.setChecked(tabledata.selected);
+        return view;
+    }
+    public TableDataModelClass getTableData(int position)
+    {
+        return ((TableDataModelClass) getItem(position));
+    }
+
+    public ArrayList<TableDataModelClass> getSelectedData()
+    {
+        ArrayList<TableDataModelClass> arraylistSelected = new ArrayList<TableDataModelClass>();
+        for (TableDataModelClass tableData : arraylistMain)
+        {
+            if (tableData.selected)
+                arraylistSelected.add(tableData);
+        }
+        return arraylistSelected;
+    }
+
+    CompoundButton.OnCheckedChangeListener myCheckChangList = new CompoundButton.OnCheckedChangeListener()
+    {
+        public void onCheckedChanged(CompoundButton buttonView,boolean isChecked)
+        {
+            getTableData((Integer) buttonView.getTag()).selected = isChecked;
+            getSelectedData();
+        }
+    };
+
+    @Override
+    public int getCount() {
+        return arraylistMain.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return arraylistMain.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return arraylistMain.indexOf(getItem(position));
+    }
+}

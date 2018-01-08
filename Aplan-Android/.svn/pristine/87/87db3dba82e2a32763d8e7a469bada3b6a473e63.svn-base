@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="1">
+
+
+    <!-- container for fragment -->
+    <!--<RelativeLayout
+        android:id="@+id/container_home"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_weight="1.01">
+
+    </RelativeLayout>-->
+
+    <com.ssoft.aplanproject.util.NonSwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.01"/>
+
+    <!-- start footer layout for tab -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ninetee_sp"
+
+        android:background="@color/calendar_active_month_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+
+            android:id="@+id/linear_dashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/ten_sp"
+                android:id="@+id/img_dashboard"
+                android:layout_width="@dimen/fourtee_sp"
+                android:layout_height="@dimen/fourtee_sp"
+                android:scaleType="centerCrop"
+                />
+
+            <TextView
+                android:id="@+id/textview_dashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dashboardimg"
+                android:layout_marginTop="3dp"
+                android:text="@string/Dashboard"
+                android:layout_marginBottom="@dimen/ten_sp"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/fifteen_sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/ten_sp"
+                android:id="@+id/img_project"
+                android:layout_width="@dimen/fourtee_sp"
+                android:layout_height="@dimen/fourtee_sp"
+                />
+
+            <TextView
+                android:layout_marginBottom="@dimen/ten_sp"
+                android:id="@+id/textview_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/project"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/fifteen_sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="@dimen/ten_sp"
+                android:id="@+id/img_filter"
+                android:layout_width="@dimen/fourtee_sp"
+                android:layout_height="@dimen/fourtee_sp"
+                />
+
+            <TextView
+                android:layout_marginBottom="@dimen/ten_sp"
+                android:id="@+id/textview_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/Filter"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/fifteen_sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="@dimen/ten_sp"
+                android:id="@+id/img_setting"
+                android:layout_width="@dimen/fourtee_sp"
+                android:layout_height="@dimen/fourtee_sp"
+                />
+
+            <TextView
+                android:layout_marginBottom="@dimen/ten_sp"
+                android:id="@+id/textview_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/Setting"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/fifteen_sp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- start footer layout for tab -->
+</LinearLayout>

@@ -1,0 +1,33 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.TutorialActivity;
+
+public class FragmentTutorial3 extends Fragment
+{
+    TextView textViewSkip;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+
+        View rootView = inflater.inflate(R.layout.fragment_tutorial3, container,false);
+
+        textViewSkip=(TextView)rootView.findViewById(R.id.textskip);
+        textViewSkip.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ((TutorialActivity) getActivity()).viewPager.setCurrentItem(7);
+            }
+        });
+        return rootView;
+    }
+}

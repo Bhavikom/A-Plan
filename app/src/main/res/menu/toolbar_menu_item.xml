@@ -1,0 +1,37 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="de.mateco.integrAMobile.HomeActivity">
+
+    <item
+        android:id="@+id/actionSupport"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:title="@string/support">
+    </item>
+    <item
+        android:id="@+id/actionDefault"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:title="@string/default_string">
+    </item>
+    <item
+        android:id="@+id/actionEdit"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:title="@string/edit">
+    </item>
+    <item
+        android:id="@+id/actionSend"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:title="@string/send">
+    </item>
+    <item
+        android:id="@+id/actionprofile"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:title="@string/profile">
+    </item>
+
+</menu>

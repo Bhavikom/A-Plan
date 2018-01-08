@@ -1,0 +1,681 @@
+package com.ssoft.aplanproject.util;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.Model.ProfileModelClass;
+import com.ssoft.aplanproject.Model.TextFilterKeyValueDataset;
+
+import java.util.ArrayList;
+
+/**
+ * Created by SSoft-13 on 09-08-2016.
+ */
+
+public class DatabaseHandler extends SQLiteOpenHelper
+{
+    private final Context applicationContext;
+    private static final int DATABASE_VERSION = 1;
+    // Database Name
+    private static final String DATABASE_NAME = "AplanDb.sqlite";
+
+    /// prifile info table name
+    private static final String TABLE_PROFILE_INFO = "table_profile_info";
+
+    private static final String P_ID = "p_id";
+    private static final String P_NAME = "p_name";
+    private static final String P_IS_SHOW = "p_is_show";
+    private static final String P_WIDTH = "p_width";
+    private static final String P_USER_ID = "p_user_id";
+    private static final String P_PROFILE_NAME = "p_profile_name";
+
+    /// table filter  info table name
+    private static final String TABLE_FILTER_INFO = "table_filter_info";
+
+    private static final String FILTER_ID = "filter_id";
+    private static final String FILTER_TYPE = "filter_type";
+    private static final String FILTER_VALUE = "filter_value";
+    private static final String FILTER_NAME = "filter_name";
+    private static final String FILTER_NAME_ID = "filter_name_id";
+    private static final String FILTER_USER_ID = "filter_user_id";
+    private static final String FILTER_PROFILE_ID = "filter_profile_id";
+
+    // USER PROFILE TABLE
+    private static final String TABLE_USER_PROFILE = "table_user_profile";
+
+    private static final String PROFILE_KEY = "profile_key";
+    private static final String PROFILE_ID = "profile_id";
+    private static final String PROFILE_NAME = "profile_name";
+    private static final String PROFILE_COL_DETAIL = "profile_col_detail";
+    private static final String PROFILE_USER_ID = "profile_user_id";
+    private static final String PROFILE_EXPANDED_ID = "profile_expanded_id";
+    private static final String PROFILE_USERID_TEMP = "profile_user_id_temp";
+    private static final String PROFILE_LANGUAGE = "language";
+    private static final String PROFILE_RESOLUTION = "resolution";
+
+    private static final String TABLE_USER_PROFILE_CURRENT = "table_user_profile";
+
+    private static final String PROFILE_KEY_CURRENT = "profile_key_current";
+    private static final String PROFILE_ID_CURRENT = "profile_id_current";
+    private static final String PROFILE_NAME_CURRENT = "profile_name_current";
+    private static final String PROFILE_COL_DETAIL_CURRENT = "profile_col_detail_current";
+    private static final String PROFILE_USER_ID_CURRENT = "profile_user_id_current";
+    private static final String PROFILE_EXPANDED_ID_CURRENT = "profile_expanded_id_current";
+    private static final String PROFILE_USERID_TEMP_CURRENT = "profile_user_id_temp_current";
+    private static final String PROFILE_LANGUAGE_CURRENT = "language_current";
+    private static final String PROFILE_RESOLUTION_CURRENT = "resolution_current";
+
+
+    // THIS TABLE IS FOR DASHBOARD FILTER POPUP DATA
+
+    private static final  String TABLE_SELECTED_ITEM="table_selected_item";
+    private static final String SELECTED_ITEM_TYPE = "selected_item_type";
+    private static final String SELECTED_ITEM_STRING = "selected_item_string";
+
+    /// table for text filter data
+    private static final String TABLE_TEXT_FILTER = "table_text_filter";
+
+    private static final String TEXT_KEY = "text_key";
+    private static final String TEXT_VALUE = "text_value";
+    private static final String TEXT_USERID = "text_user_id";
+    private static final String TEXT_PROFILEID = "text_profile_id";
+
+    /// table for text filter data
+    private static final String TABLE_DATE_FILTER = "table_date_filter";
+
+    private static final String DATE_KEY = "date_key";
+    private static final String DATE_VALUE = "date_value";
+    private static final String DATE_USERID = "date_user_id";
+    private static final String DATE_PROFILEID = "date_profile_id";
+
+
+
+    // constructor for class
+    public DatabaseHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.applicationContext = context;
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db)
+    {
+        try
+        {
+            db.execSQL("CREATE TABLE " + TABLE_DATE_FILTER + " (" + DATE_KEY + " TEXT , "
+                    + DATE_VALUE + " TEXT , "
+                    + DATE_USERID + " TEXT , "
+                    + DATE_PROFILEID + " TEXT "
+                    + ")");
+
+            db.execSQL("CREATE TABLE " + TABLE_TEXT_FILTER + " (" + TEXT_KEY + " TEXT , "
+                    + TEXT_VALUE + " TEXT , "
+                    + TEXT_USERID + " TEXT , "
+                    + TEXT_PROFILEID + " TEXT "
+                    + ")");
+
+            db.execSQL("CREATE TABLE " + TABLE_PROFILE_INFO + " (" + P_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , "
+                    + P_NAME + " TEXT , "
+                    + P_IS_SHOW + " TEXT , "
+                    + P_WIDTH + " TEXT , "
+                    + P_USER_ID + " TEXT , "
+                    + P_PROFILE_NAME + " TEXT "
+                    + ")");
+
+            db.execSQL("CREATE TABLE " + TABLE_FILTER_INFO + " (" + FILTER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , "
+                    + FILTER_TYPE + " TEXT , "
+                    + FILTER_VALUE + " TEXT , "
+                    + FILTER_NAME + " TEXT , "
+                    + FILTER_NAME_ID + " TEXT , "
+                    + FILTER_USER_ID + " TEXT , "
+                    + FILTER_PROFILE_ID + " TEXT "
+                    + ")");
+
+            db.execSQL("CREATE TABLE " + TABLE_USER_PROFILE + " (" + PROFILE_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT , "
+                    + PROFILE_ID + " TEXT , "
+                    + PROFILE_NAME + " TEXT , "
+                    + PROFILE_COL_DETAIL + " TEXT , "
+                    + PROFILE_USER_ID + " TEXT , "
+                    + PROFILE_EXPANDED_ID + " TEXT , "
+                    + PROFILE_USERID_TEMP + " TEXT , "
+                    + PROFILE_LANGUAGE + " TEXT , "
+                    + PROFILE_RESOLUTION + " TEXT "
+                    + ")");
+
+            db.execSQL("CREATE TABLE " + TABLE_USER_PROFILE_CURRENT + " (" + PROFILE_KEY_CURRENT + " INTEGER PRIMARY KEY AUTOINCREMENT , "
+                    + PROFILE_ID_CURRENT + " TEXT , "
+                    + PROFILE_NAME_CURRENT + " TEXT , "
+                    + PROFILE_COL_DETAIL_CURRENT + " TEXT , "
+                    + PROFILE_USER_ID_CURRENT + " TEXT , "
+                    + PROFILE_EXPANDED_ID_CURRENT + " TEXT , "
+                    + PROFILE_USERID_TEMP_CURRENT + " TEXT , "
+                    + PROFILE_LANGUAGE_CURRENT + " TEXT , "
+                    + PROFILE_RESOLUTION_CURRENT + " TEXT "
+                    + ")");
+
+
+            db.execSQL("CREATE TABLE " + TABLE_SELECTED_ITEM + " (" + SELECTED_ITEM_TYPE + " TEXT , "
+                    + SELECTED_ITEM_STRING + " TEXT "
+                    + ")");
+        }
+        catch (Exception e) {
+            LogApp.e(" exception while creating database : ", " in database handler : " + e.toString());
+        }
+    }
+    /* this method adding data in profileinfo table for table screen */
+    public long addGeneralFilterInfo(String filterType, String filterValue, String filterName, String filterNameId, String userId, String profileId)
+    {
+        long add = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("filter_type", filterType);
+        values.put("filter_value", filterValue);
+        values.put("filter_name", filterName);
+        values.put("filter_name_id", filterNameId);
+        values.put("filter_user_id", userId);
+        values.put("filter_profile_id", profileId);
+        add = db.insert(TABLE_FILTER_INFO, null, values);
+        LogApp.e("record added in filter info ", " in database handler : " + add);
+        return add;
+    }
+    // this method return all the project listing
+    public ArrayList<FolderDataset> getGeneralFilterData(String filterType, String userId, String userIdTemp)
+    {
+        Cursor cursor = null;
+        ArrayList<FolderDataset> arraylistFilterdata = new ArrayList<FolderDataset>();
+        String selectQuery = "SELECT  * FROM " + TABLE_FILTER_INFO + " WHERE filter_type = '" +filterType+ "' AND filter_user_id= '"+userId+"' AND filter_profile_id = '"+userIdTemp+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst())
+            {
+                do {
+                    FolderDataset folder = new FolderDataset();
+                    folder.setId(cursor.getString(cursor.getColumnIndex("filter_name_id")));
+                    folder.setName(cursor.getString(cursor.getColumnIndex("filter_value")));
+
+                    // Adding contact to list
+                    arraylistFilterdata.add(folder);
+                    LogApp.e(" gettind filter data for folder filter : ", " in database handler : " + arraylistFilterdata.size());
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        // return contact list
+        return arraylistFilterdata;
+    }
+    public int getCursorCountFilterDataForProfile(String userId, String profileID, String filterType)
+    {
+        Cursor cursor = null;
+        int count = 0;
+        String selectQuery = "SELECT  * FROM " + TABLE_FILTER_INFO + " WHERE filter_user_id= '" + userId+"' AND filter_profile_id = '"+profileID+"' AND filter_type = '"+filterType+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            cursor = db.rawQuery(selectQuery, null);
+            count = cursor.getCount();
+        }
+        catch (Exception e)
+        {
+            LogApp.e(" exception while getting cursor count for folder ", " in database handler : " +e.toString());
+        }
+        finally
+        {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
+        }
+        return count;
+    }
+    public int getCursorCountFilterForAllFilter(String userId, String profileID)
+    {
+        Cursor cursor = null;
+        int count = 0;
+        String selectQuery = "SELECT  * FROM " + TABLE_FILTER_INFO + " WHERE filter_user_id= '" + userId+"' AND filter_profile_id = '"+profileID+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            cursor = db.rawQuery(selectQuery, null);
+            count = cursor.getCount();
+        }
+        catch (Exception e)
+        {
+            LogApp.e(" exception while getting cursor count for folder ", " in database handler : " +e.toString());
+        }
+        finally
+        {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
+        }
+        return count;
+    }
+    public void deleteFilter(String userId,String userIdTemp,String filterType)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_FILTER_INFO + " WHERE filter_type = '" +filterType+ "' AND filter_user_id= '"+userId+"' AND filter_profile_id = '"+userIdTemp+"'";
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    /* this method adding only text filter for creating json string for control  */
+    public long addTextFilter(String key, String value,String userId,String profileId)
+    {
+        long add = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("text_key", key);
+        values.put("text_value", value);
+        values.put("text_user_id", userId);
+        values.put("text_profile_id", profileId);
+        add = db.insert(TABLE_TEXT_FILTER, null, values);
+        LogApp.e("record added in filter info ", " in database handler : " + add);
+        return add;
+    }
+
+    public void deleteTextFilter(String userId,String profileId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_TEXT_FILTER + " WHERE text_user_id = '" +userId+ "' AND text_profile_id= '"+profileId+"'";
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    // this method return all text filter data
+    public ArrayList<TextFilterKeyValueDataset> getTextFilterData(String userId, String profileId)
+    {
+        Cursor cursor = null;
+        ArrayList<TextFilterKeyValueDataset> arraylistFilterdata = new ArrayList<TextFilterKeyValueDataset>();
+        String selectQuery = "SELECT  * FROM " + TABLE_TEXT_FILTER + " WHERE text_user_id = '" +userId+ "' AND text_profile_id= '"+profileId+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst())
+            {
+                do {
+                    TextFilterKeyValueDataset filter = new TextFilterKeyValueDataset();
+                    filter.setKey(cursor.getString(cursor.getColumnIndex("text_key")));
+                    filter.setValue(cursor.getString(cursor.getColumnIndex("text_value")));
+
+                    // Adding contact to list
+                    arraylistFilterdata.add(filter);
+                    LogApp.e(" gettind filter data for folder filter : ", " in database handler : " + arraylistFilterdata.size());
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        // return contact list
+        return arraylistFilterdata;
+    }
+    /* this method adding only date filter for creating json string for control  */
+    public long addDateFilter(String key, String value,String userId,String profileId)
+    {
+        long add = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("date_key", key);
+        values.put("date_value", value);
+        values.put("date_user_id", userId);
+        values.put("date_profile_id", profileId);
+        add = db.insert(TABLE_DATE_FILTER, null, values);
+        LogApp.e("record added in filter info ", " in database handler : " + add);
+        return add;
+    }
+    public void deleteDateFilter(String userId,String profileId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_DATE_FILTER + " WHERE date_user_id = '" +userId+ "' AND date_profile_id= '"+profileId+"'";
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    // this method return all text filter data
+    public ArrayList<TextFilterKeyValueDataset> getDateFilterData(String userId, String profileId)
+    {
+        Cursor cursor = null;
+        ArrayList<TextFilterKeyValueDataset> arraylistFilterdata = new ArrayList<TextFilterKeyValueDataset>();
+        String selectQuery = "SELECT  * FROM " + TABLE_DATE_FILTER + " WHERE date_user_id = '" +userId+ "' AND date_profile_id= '"+profileId+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst())
+            {
+                do {
+                    TextFilterKeyValueDataset filter = new TextFilterKeyValueDataset();
+                    filter.setKey(cursor.getString(cursor.getColumnIndex("date_key")));
+                    filter.setValue(cursor.getString(cursor.getColumnIndex("date_value")));
+
+                    // Adding contact to list
+                    arraylistFilterdata.add(filter);
+                    LogApp.e(" gettind filter data for folder filter : ", " in database handler : " + arraylistFilterdata.size());
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        // return contact list
+        return arraylistFilterdata;
+    }
+    /* this method adding data in user profile while login  */
+    public long addCurrentProfile(String id, String name, String colDetail, String userID,String expandId,String userIdTemp,
+                               String language,String resolution)
+    {
+        long add = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("profile_id_current", id);
+        values.put("profile_name_current", name);
+        values.put("profile_col_detail_current", colDetail);
+        values.put("profile_user_id_current", userID);
+        values.put("profile_expanded_id_current", expandId);
+        values.put("profile_user_id_temp_current", userIdTemp);
+        values.put("language_current", language);
+        values.put("resolution_current", resolution);
+        add = db.insert(TABLE_USER_PROFILE_CURRENT, null, values);
+        LogApp.e("record added in user profile current  ", " in database handler : " + add);
+        return add;
+    }
+    public void deleteCurrentProfile()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_PROFILE_INFO;
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    /* this method adding data in user profile while login  */
+    public long addUserProfile(String id, String name, String colDetail, String userID,String expandId,String userIdTemp,
+                               String language,String resolution)
+    {
+        long add = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("profile_id", id);
+        values.put("profile_name", name);
+        values.put("profile_col_detail", colDetail);
+        values.put("profile_user_id", userID);
+        values.put("profile_expanded_id", expandId);
+        values.put("profile_user_id_temp", userIdTemp);
+        values.put("language", language);
+        values.put("resolution", resolution);
+        add = db.insert(TABLE_USER_PROFILE, null, values);
+        LogApp.e("record added in user profile  ", " in database handler : " + add);
+        return add;
+    }
+    public void updateProfile(String resolution,String profileId) {
+        SQLiteDatabase db = null;
+        try
+        {
+            db = this.getReadableDatabase();
+            String strUpdate = "UPDATE " + TABLE_USER_PROFILE + " SET resolution = '"+ resolution +"' WHERE profile_id = '"+profileId+"'";
+            db.execSQL(strUpdate);
+        }
+        catch (Exception e){
+            LogApp.e(""," exception while updating : "+e.toString());
+            db.close();
+        }
+
+    }
+    // this method delete the row from table listing where state is 000
+    public void deleteProfile(String userId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_PROFILE_INFO + " WHERE p_user_id =" + userId;
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    // this method return all the project listing
+    public ArrayList<ProfileModelClass> getSingleUserProfileForTableScreen(String userId, String profileId, String language)
+    {
+        Cursor cursor = null;
+        ArrayList<ProfileModelClass> arraylistUserProfile = new ArrayList<ProfileModelClass>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USER_PROFILE + " WHERE profile_user_id ='" +userId+ "' AND language= '"+language+"' AND profile_id= '"+profileId+"'";
+        //String selectQuery = "SELECT  * FROM " + TABLE_USER_PROFILE + " WHERE profile_user_id ='" +userId+ "' AND profile_id= '"+profileId+"' AND language = '"+language+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst())
+            {
+                do
+                {
+                    ProfileModelClass userProfile = new ProfileModelClass();
+                    userProfile.setProfileId(cursor.getString(cursor.getColumnIndex("profile_id")));
+                    userProfile.setProfileName(cursor.getString(cursor.getColumnIndex("profile_name")));
+                    userProfile.setColDeTail(cursor.getString(cursor.getColumnIndex("profile_col_detail")));
+                    userProfile.setProfileUserId(cursor.getString(cursor.getColumnIndex("profile_user_id")));
+                    userProfile.setExpandedId(cursor.getString(cursor.getColumnIndex("profile_expanded_id")));
+                    userProfile.setLanguage(cursor.getString(cursor.getColumnIndex("language")));
+                    userProfile.setResolution(cursor.getString(cursor.getColumnIndex("resolution")));
+                    // Adding contact to list
+                    arraylistUserProfile.add(userProfile);
+                    LogApp.e(" gettind profile  data for folder filter : ", " in database handler : " + arraylistUserProfile.size());
+                }
+                while (cursor.moveToNext());
+            }
+        }
+        catch (Exception e)
+        {
+            LogApp.e(" $$$$ ","exception while get profile : "+e.toString());
+        }
+        /*finally
+        {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
+        }*/
+        // return contact list
+        return arraylistUserProfile;
+    }
+    // this method return all the project listing
+    public ArrayList<ProfileModelClass> getAllUserProfile(String userId, String profileId, String language)
+    {
+        Cursor cursor = null;
+        ArrayList<ProfileModelClass> arraylistUserProfile = new ArrayList<ProfileModelClass>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USER_PROFILE + " WHERE profile_user_id ='" +userId+ "' AND language= '"+language+"'";
+        //String selectQuery = "SELECT  * FROM " + TABLE_USER_PROFILE + " WHERE profile_user_id ='" +userId+ "' AND profile_id= '"+profileId+"' AND language = '"+language+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst())
+            {
+                do
+                {
+                    ProfileModelClass userProfile = new ProfileModelClass();
+                    userProfile.setProfileId(cursor.getString(cursor.getColumnIndex("profile_id")));
+                    userProfile.setProfileName(cursor.getString(cursor.getColumnIndex("profile_name")));
+                    userProfile.setColDeTail(cursor.getString(cursor.getColumnIndex("profile_col_detail")));
+                    userProfile.setProfileUserId(cursor.getString(cursor.getColumnIndex("profile_user_id")));
+                    userProfile.setExpandedId(cursor.getString(cursor.getColumnIndex("profile_expanded_id")));
+                    userProfile.setLanguage(cursor.getString(cursor.getColumnIndex("language")));
+                    userProfile.setResolution(cursor.getString(cursor.getColumnIndex("resolution")));
+                    // Adding contact to list
+                    arraylistUserProfile.add(userProfile);
+                    LogApp.e(" gettind profile  data for folder filter : ", " in database handler : " + arraylistUserProfile.size());
+                }
+                while (cursor.moveToNext());
+            }
+        }
+        catch (Exception e)
+        {
+            LogApp.e(" $$$$ ","exception while get profile : "+e.toString());
+        }
+        finally
+        {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
+        }
+        // return contact list
+        return arraylistUserProfile;
+    }
+    public void deleteSingleUserProfile(String userId, String profileId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_USER_PROFILE + " WHERE profile_user_id_temp = '" +userId +"' AND profile_id = '"+profileId+"'";
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    public void deleteUserProfileFromUserId(String userId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_USER_PROFILE + " WHERE profile_user_id_temp = '" +userId +"'";
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+
+
+    }
+    public void deleteAlluserProfile()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_USER_PROFILE;
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+    }
+    public long addSelectedItem(String type,String value)
+    {
+        long add = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("selected_item_type", type);
+        values.put("selected_item_string", value);
+        add = db.insert(TABLE_SELECTED_ITEM, null, values);
+        LogApp.e("record added in user profile  ", " in database handler : " + add);
+        return add;
+    }
+    public void deleteSelectedITem(String filterType)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_SELECTED_ITEM + " WHERE selected_item_type =" + filterType;
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+    }
+    public void deleteAllSelectedITem()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try
+        {
+            String strDelete = "DELETE from " + TABLE_SELECTED_ITEM;
+            db.execSQL(strDelete);
+        }
+        catch (Exception e){
+            LogApp.v(" in catch while deleting from database : "," in database handler : "+e.toString());
+        }
+    }
+    // this method return all the project listing
+    public String getSelectedItems(String filterType)
+    {
+        String selectedItem="";
+        Cursor cursor = null;
+        String selectQuery = "SELECT  * FROM " + TABLE_SELECTED_ITEM + " WHERE selected_item_type = " +filterType;
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst())
+            {
+                do {
+                    selectedItem= cursor.getString(cursor.getColumnIndex("selected_item_string"));
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        // return contact list
+        return selectedItem;
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+
+    }
+
+}

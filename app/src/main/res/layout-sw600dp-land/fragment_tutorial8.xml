@@ -1,0 +1,71 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/relative__tutorial8_main"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@drawable/tutorial_first"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  tools:context="de.smacsoftwares.aplanapp.fragment.FragmentTutorial1">
+
+        <!-- TODO: Update blank fragment layout -->
+        <ImageView
+            android:layout_width="@dimen/two_hundred"
+            android:layout_height="@dimen/two_hundred"
+            android:layout_marginTop="@dimen/fiftee_sp"
+            android:src="@drawable/app_logo"/>
+        <TextView
+            android:id="@+id/lable_aplan"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/hundred_sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A-Plan"
+            android:textColor="@color/red"
+            android:textSize="@dimen/twentee_five_sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/hundred_sp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_dontshowagain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't show it again"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/twentee_sp"
+                />
+
+            <ToggleButton
+                android:layout_marginLeft="@dimen/ten_sp"
+                android:id="@+id/toggle_button"
+                android:layout_width="@dimen/sixtee_sp"
+                android:layout_height="@dimen/fiftee_sp"
+                android:background="@drawable/toogle_selector"
+                android:textOn=""
+                android:textOff=""
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/ten_sp"
+        android:text="Skip"
+        android:id="@+id/textskip"
+        android:textColor="@color/red"
+        android:textSize="@dimen/twentee_five_sp"/>
+</RelativeLayout>

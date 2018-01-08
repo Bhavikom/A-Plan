@@ -1,0 +1,20 @@
+package com.ssoft.aplanproject.ClientResponsibleModel;
+
+/**
+ * Created by SSoft-13 on 21-12-2016.
+ */
+
+public class ClientDataSetClass
+{
+    String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+}

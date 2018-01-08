@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="header_color">#F7F7F7</color>
+    <color name="button_color_blue">#24CDF4</color>
+    <color name="textview_color_blue">#1986FE</color>
+    <color name="white_color">#ffffff</color>
+    <color name="textview_color_grey">#A1A1A1</color>
+    <color name="black_color">#000000</color>
+    <color name="blue_color">#189CEC </color>
+    <color name="custom_dialog_title">#142850</color>
+    <color name="popup_view_background">#3B4249</color>
+    <color name="sky_color">#B3EFF9</color>
+    <color name="sky_blue_color">#76B3C4</color>
+
+    <color name="Dashboard_Color">#CCD1D1</color>
+    <color name="searchview_color">#98999E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="symptom_color_selected">#003366</color>
+    <color name="reaction_color_selected">#003366</color>
+    <color name="static_text_color">#003366</color>
+    <color name="journal_entry_listitem_text_color">#003366</color>
+    <color name="note_text_disabled">#333333</color>
+    <color name="blue">#0000FF</color>
+    <color name="navy">#6699FF</color>
+    <color name="sky">#0099CC</color>
+    <color name="gray">#808080</color>
+    <color name="lightgray">#e7e7e7</color>
+    <color name="lightgray02">#bfbfbf</color>
+    <color name="dark">#000015</color>
+    <color name="lightgreen">#336666</color>
+    <color name="orrange">#e33d1b</color>
+    <color name="darkorrange">#cc2303</color>
+    <color name="indigo_color">#2202FD</color>
+
+    <color name="grey_light">#EFEFF4</color>
+    <color name="grey">#707070</color>
+    <color name="ivorya3">#CCCCCC</color>
+    <color name="ivorya4"> #EAE8EB</color>
+    <color name="table_textcolor">#48BFBF</color>
+    <color name="transparent_black_color">#33000000</color>
+
+
+
+    <color name="calendar_active_month_bg">#fff5f7f9</color>
+    <color name="calendar_bg">#ffffffff</color>
+    <color name="calendar_divider">#ffbababa</color>
+    <color name="calendar_inactive_month_bg">#ffd7d9db</color>
+    <color name="calendar_selected_day_bg">#ff379bff</color>
+    <color name="calendar_highlighted_day_bg">#ccffcc</color>
+    <color name="calendar_selected_range_bg">#ff96caff</color>
+    <color name="calendar_text_inactive">#40778088</color>
+    <color name="grey_material">#9e9e9e</color>
+    <color name="calendar_text_active">#ff778088</color>
+    <color name="calendar_text_selected">#ffffffff</color>
+    <color name="calendar_text_unselectable">#7f778088</color>
+    <color name="calendar_text_highlighted">#ff778088</color>
+</resources>

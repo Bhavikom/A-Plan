@@ -1,0 +1,130 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.R;
+
+/**
+ * Created by SSOFT4 on 10/25/2016.
+ */
+
+public class FragementSelectFilter extends Fragment implements View.OnClickListener {
+    RelativeLayout relativeFolder,relativeText,relativeDate,relativeUserDefined;
+    View rootView;
+    TextView txtlink;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_select_filter, container,false);
+        initControl();
+        return rootView;
+    }
+    public void initControl()
+    {
+        getActivity();
+        relativeFolder= (RelativeLayout)rootView.findViewById(R.id.relative_folder);
+        relativeText= (RelativeLayout)rootView.findViewById(R.id.relative_text);
+        relativeDate= (RelativeLayout)rootView.findViewById(R.id.relative_date);
+        relativeUserDefined= (RelativeLayout)rootView.findViewById(R.id.relative_userdefined);
+
+        relativeFolder.setOnClickListener(this);
+        relativeText.setOnClickListener(this);
+        relativeDate.setOnClickListener(this);
+        relativeUserDefined.setOnClickListener(this);
+
+        txtlink= (TextView) rootView.findViewById(R.id.txt_ssoft_link);
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        SpannableString ss = new SpannableString(getString(R.string.my_smsc_link));
+        ss.setSpan(new URLSpanNoUnderline("http://www.smacsoftwares.de/"),0,32, 0);
+        ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,32, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txtlink.setText(ss);
+
+        txtlink.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if(v== relativeText){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentFilterText fragment = new FragmentFilterText();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
+        if(v== relativeDate){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentDateActivity fragment = new FragmentDateActivity();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
+        if(v== relativeFolder){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentFilterFolder fragment = new FragmentFilterFolder();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(v== relativeUserDefined){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragementFilterUserDefined fragment = new FragementFilterUserDefined();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+    public class URLSpanNoUnderline extends URLSpan
+    {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(true);
+        }
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        clearReferences();
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+/*        clearReferences();*/
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+    private void clearReferences()
+    {
+
+    }
+
+}

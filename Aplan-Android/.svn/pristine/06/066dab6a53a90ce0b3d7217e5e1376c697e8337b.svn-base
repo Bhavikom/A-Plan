@@ -1,0 +1,65 @@
+package com.ssoft.aplanproject.Model;
+
+/**
+ * Created by SSoft-13 on 23-08-2016.
+ */
+
+public class UserProfileModelClass
+{
+    String profileId;
+    String profileName;
+    String expandedId;
+
+    public String getExpandedId()
+    {
+        return expandedId;
+    }
+
+    public void setExpandedId(String expandedId)
+    {
+        this.expandedId = expandedId;
+    }
+
+    public String getProfileId()
+    {
+        return profileId;
+    }
+
+    public void setProfileId(String profileId)
+    {
+        this.profileId = profileId;
+    }
+
+    public String getProfileName()
+    {
+        return profileName;
+    }
+
+    public void setProfileName(String profileName)
+    {
+        this.profileName = profileName;
+    }
+
+    public String getColDeTail()
+    {
+        return colDeTail;
+    }
+
+    public void setColDeTail(String colDeTail)
+    {
+        this.colDeTail = colDeTail;
+    }
+
+    public String getProfileUserId()
+    {
+        return profileUserId;
+    }
+
+    public void setProfileUserId(String profileUserId)
+    {
+        this.profileUserId = profileUserId;
+    }
+
+    String colDeTail;
+    String profileUserId;
+}

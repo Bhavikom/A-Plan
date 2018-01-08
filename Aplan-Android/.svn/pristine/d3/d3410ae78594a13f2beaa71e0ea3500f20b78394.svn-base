@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:gravity="center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="6">
+
+    <TextView
+        android:layout_weight="1.4"
+        android:layout_margin="@dimen/five_sp"
+        android:id="@+id/textviewprojectname"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="Project Name"
+        android:textColor="@color/indigo_color"
+        android:textSize="@dimen/twentee_sp"/>
+
+    <TextView
+        android:layout_weight="1.4"
+        android:layout_margin="@dimen/five_sp"
+        android:id="@+id/textviewtaskname"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/textviewno"
+        android:text="Task Name"
+        android:textColor="@color/indigo_color"
+        android:textSize="@dimen/twentee_sp"/>
+    <LinearLayout
+        android:layout_margin="@dimen/five_sp"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:scaleType="fitCenter"
+            android:id="@+id/imgdateitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="@dimen/five_sp"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgtraficeitem"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="@dimen/five_sp"
+        android:orientation="horizontal"
+        android:id="@+id/linear_status_image"
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content">
+        <!--<ImageView
+            android:scaleType="fitCenter"
+            android:id="@+id/imgstatusitem"
+            android:layout_margin="@dimen/ten_sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />-->
+    </LinearLayout>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1.2"
+        android:layout_margin="@dimen/five_sp"
+        android:id="@+id/textviewfinishdateitem"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/textviewno"
+        android:paddingLeft="10dp"
+        android:text="finishdate"
+        android:textColor="@color/indigo_color"
+        android:textSize="@dimen/twentee_sp"/>
+
+</LinearLayout>

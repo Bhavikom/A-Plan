@@ -1,0 +1,100 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+
+import com.ssoft.aplanproject.R;
+
+import static android.R.id.message;
+import static com.ssoft.aplanproject.R.id.subject;
+
+public class FragmentSupport extends Fragment implements View.OnClickListener
+{
+    private Menu menu;
+    RelativeLayout relativeAbout, relativeHelp, relativeFaq, relativeContact;
+    Button btnsend;
+    View rootView;
+    @Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+{
+    rootView = inflater.inflate(R.layout.fragment_support, container, false);
+    getActivity().invalidateOptionsMenu();
+    setHasOptionsMenu(true);
+    initControl();
+    return rootView;
+}
+    public void initControl()
+    {
+        relativeAbout = (RelativeLayout) rootView.findViewById(R.id.relative_aboutus);
+        relativeHelp = (RelativeLayout) rootView.findViewById(R.id.relative_help);
+        relativeFaq = (RelativeLayout) rootView.findViewById(R.id.relative_faqs);
+        relativeContact = (RelativeLayout) rootView.findViewById(R.id.relative_contact);
+
+        relativeAbout.setOnClickListener(this);
+        relativeHelp.setOnClickListener(this);
+        relativeFaq.setOnClickListener(this);
+        relativeContact.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if(v==relativeAbout)
+        {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSupportAbout fragment = new FragmentSupportAbout();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack("Support");
+            transaction.commit();
+        }
+        if(v==relativeHelp){
+            /*FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSupportHelp fragment = new FragmentSupportHelp();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack("Support");
+            transaction.commit();*/
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto","appsupport@braintool.com", null));
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+            startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+        }
+        if(v==relativeContact){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSupportContact fragment = new FragmentSupportContact();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack("Support");
+            transaction.commit();
+        }
+        if(v==relativeFaq){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentSupportFAQs fragment = new FragmentSupportFAQs();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.addToBackStack("Support");
+            transaction.commit();
+        }
+
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.toolbar_menu_item, menu);
+        this.menu = menu;
+        menu.findItem(R.id.actionEdit).setVisible(false);
+        menu.findItem(R.id.actionDefault).setVisible(false);
+        menu.findItem(R.id.actionSupport).setVisible(false);
+        menu.findItem(R.id.actionSend).setVisible(false);
+        menu.findItem(R.id.actionprofile).setVisible(false);
+
+    }
+
+}

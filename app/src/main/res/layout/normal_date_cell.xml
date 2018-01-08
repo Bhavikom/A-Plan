@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.smacsoftwares.aplanapp.caldroid.CellView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendar_tv"
+    android:layout_width="@dimen/fourtee_sp"
+    android:layout_height="@dimen/fourtee_sp"
+    android:gravity="center"
+    android:textSize="@dimen/twelve_sp"
+    style="?styleCaldroidNormalCell"/>
+

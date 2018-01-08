@@ -1,0 +1,28 @@
+package de.smacsoftwares.aplanapp.Model;
+
+import android.graphics.Bitmap;
+
+/**
+ * Created by SSoft-13 on 03-08-2016.
+ */
+public class FilePathModelClass
+{
+    String path="";
+    public String getPath()
+    {
+        return path;
+    }
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
+    public Bitmap getBitmap()
+    {
+        return bitmap;
+    }
+    public void setBitmap(Bitmap bitmap)
+    {
+        this.bitmap = bitmap;
+    }
+    Bitmap bitmap;
+}

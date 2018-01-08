@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtheding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:text="@string/TrafficLights"
+            android:textSize="@dimen/twentee_five_sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgclose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/twentee_sp"
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:src="@drawable/closewindow" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fiftee_sp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linear_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:padding="@dimen/ten_sp"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/img_traffic_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/traffic_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/traffic_red" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_yellow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eightee_sp"
+                android:layout_marginRight="@dimen/eightee_sp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:padding="@dimen/ten_sp"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/img_traffic_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/traffic_yellow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/traffic_yellow" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:padding="@dimen/ten_sp"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/img_traffic_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/traffic_green" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/traffic_green" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fourtee_sp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_traffic"
+                android:layout_width="@dimen/hundred_fiftee_sp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_rectangle_white"
+                android:text="OK"
+                android:textSize="@dimen/twentee_sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

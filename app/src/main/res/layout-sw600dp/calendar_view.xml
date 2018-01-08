@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="?styleCaldroidViewLayout"
+    android:background="@color/caldroid_transparent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/calendar_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/img_date_picker"
+            android:layout_marginTop="@dimen/five_sp"
+            android:layout_marginLeft="@dimen/five_sp"
+            android:layout_width="@dimen/thirtee_sp"
+            android:layout_height="@dimen/thirtee_sp"
+            android:src="@drawable/date_picker_button"/>
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/textviewDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/five_sp"
+            android:layout_marginRight="@dimen/five_sp"
+            android:background="@drawable/load_button_background"
+            android:padding="@dimen/five_sp"
+            android:text="@string/load"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/fifteen_sp"/>
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/calendar_left_arrow"
+            style="?styleCaldroidLeftArrow" />
+
+        <TextView
+            android:textSize="@dimen/seventeen_sp"
+            android:text="abc"
+            android:layout_centerInParent="true"
+            android:textColor="@color/red"
+            android:id="@+id/calendar_month_year_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/calendar_right_arrow"
+            style="?styleCaldroidRightArrow" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/weekday_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:numColumns="7"
+        android:stretchMode="columnWidth" >
+    </GridView>
+
+    <de.smacsoftwares.aplanapp.caldroid.InfiniteViewPager
+        android:id="@+id/months_infinite_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

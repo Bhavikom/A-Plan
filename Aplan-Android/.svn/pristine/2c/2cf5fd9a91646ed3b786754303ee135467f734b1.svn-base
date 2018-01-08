@@ -1,0 +1,243 @@
+package com.ssoft.aplanproject.util;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Base64;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+
+public class PreferencesClass
+{
+	SharedPreferences sharedPreferences;
+	Editor editor;
+	private static final String PREF_NAME = "APLAN-PREFERENCES";
+	// Context
+	Context context;
+	// Shared pref mode
+	int PRIVATE_MODE = 0;
+	// Constructor
+	public PreferencesClass(Context context)
+	{
+			this.context = context;
+			sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+			editor = sharedPreferences.edit();
+	}
+	// save form where user has come from
+	public void saveUserID(String id)
+	{
+			editor.putString("id",id);
+			editor.commit();
+	}
+	public String getUserID()
+	{
+		return sharedPreferences.getString("id","");
+	}
+	public void saveEmail(String email){
+		editor.putString("email",email);
+		editor.commit();
+	}
+	public String getEmail(){
+		return sharedPreferences.getString("email","");
+	}
+	public void saveFullName(String name){
+		editor.putString("fullname",name);
+		editor.commit();
+	}
+	public String getFullName(){
+		return sharedPreferences.getString("fullname","");
+	}
+	public void saveDomain(String mobile){
+		editor.putString("domain",mobile);
+		editor.commit();
+	}
+	public String getDomain(){
+		return sharedPreferences.getString("domain","");
+	}
+	public void saveUserIdTemp(String user){
+		editor.putString("user_temp",user);
+		editor.commit();
+	}
+	public String getUserIdTemp(){
+		return sharedPreferences.getString("user_temp","");
+	}
+
+	public void saveLanguage(String lan){
+		editor.putString("language",lan);
+		editor.commit();
+	}
+	public String getLanguage(){
+		return sharedPreferences.getString("language","");
+	}
+	public void saveProfileId(String id){
+		editor.putString("profile_id",id);
+		editor.commit();
+	}
+	public String getProfileId(){
+		return sharedPreferences.getString("profile_id","");
+	}
+
+	public void saveUserName(String designation){
+		editor.putString("username",designation);
+		editor.commit();
+	}
+	public String getUserName(){
+		return sharedPreferences.getString("username","");
+	}
+
+	public void saveUserProfile(String json){
+		editor.putString("profile",json);
+		editor.commit();
+	}
+	public String getUserProfile(){
+		return sharedPreferences.getString("profile","");
+	}
+	public void clearUserProfile(){
+		sharedPreferences.edit().remove("profile").commit();
+	}
+	public void saveUserLogged(boolean flag){
+		editor.putBoolean("logged",flag);
+		editor.commit();
+	}
+	public Boolean isUserLooged()
+	{
+		return sharedPreferences.getBoolean("logged",false);
+	}
+	public void saveIsTutorialShow(boolean flag){
+		editor.putBoolean("toggle",flag);
+		editor.commit();
+
+	}
+	public Boolean isTutorialShow(){
+		return  sharedPreferences.getBoolean("toggle",true);
+	}
+
+	public void saveIsAdminScreenShow(boolean flag)
+	{
+		editor.putBoolean("is_admin_show",flag);
+		editor.commit();
+	}
+	public Boolean isAdminShow()
+	{
+		return  sharedPreferences.getBoolean("is_admin_show",true);
+	}
+
+
+	public void clearLoginData()
+	{
+		sharedPreferences.edit().remove("id").commit();
+		sharedPreferences.edit().remove("email").commit();
+		sharedPreferences.edit().remove("name").commit();
+		sharedPreferences.edit().remove("designation").commit();
+
+	}
+	public void saveIsfirstTime(boolean flag)
+	{
+		editor.putBoolean("first_time",flag);
+		editor.commit();
+	}
+	public Boolean isFirstTime(){
+		return  sharedPreferences.getBoolean("first_time",true);
+	}
+	public void saveServerUrl(String Url)
+	{
+		editor.putString("server_url",Url);
+		editor.commit();
+	}
+	public String getServerUrl()
+	{
+		return  sharedPreferences.getString("server_url","");
+	}
+
+	public void saveServerUrlUser(String Url)
+	{
+		editor.putString("server_url_user",Url);
+		editor.commit();
+	}
+	public String getServerUrlUser()
+	{
+		return  sharedPreferences.getString("server_url_user","");
+	}
+
+	public void saveServerUrlGet(String Url)
+	{
+		editor.putString("server_url_get",Url);
+		editor.commit();
+	}
+	public String getServerUrlGet()
+	{
+		return  sharedPreferences.getString("server_url_get","");
+	}
+	public void saveServerUrlTask(String Url)
+	{
+		editor.putString("server_url_task",Url);
+		editor.commit();
+	}
+	public String getActivity()
+	{
+		return sharedPreferences.getString("activity","");
+	}
+	public void saveCurrentFiredFilter(String controlType)
+	{
+		editor.putString("current_fired_filter",controlType);
+		editor.commit();
+	}
+	public String getCurrentFiredFilter(){
+		return  sharedPreferences.getString("current_fired_filter","");
+	}
+	public void saveAlreadyFiredFilter(String controlType)
+	{
+		editor.putString("already_fired_filter",controlType);
+		editor.commit();
+	}
+	public String getAlreadyFiredFilter(){
+		return  sharedPreferences.getString("already_fired_filter","");
+	}
+	public void isContolFirstTime(String str){
+		editor.putString("is_firsttime",str);
+		editor.commit();
+	}
+	public String getIsControlFirstTime(){
+		return  sharedPreferences.getString("is_firsttime","");
+	}
+	public void saveTaskPosition(int pos){
+		editor.putInt("task_position",pos);
+		editor.commit();
+	}
+	public void saveIsGeneralFilterDialogshow(String str){
+		editor.putString("is_show_dialog",str);
+		editor.commit();
+	}
+	public String getIsGeneralFilterDialogshow(){
+		return  sharedPreferences.getString("is_show_dialog","yes");
+	}
+	public int getTaskPosition(){
+		return  sharedPreferences.getInt("task_position",0);
+	}
+	public void saveAgreegatePosition(int pos){
+		editor.putInt("agreegate_position",pos);
+		editor.commit();
+	}
+	public int getAgreegatePosition(){
+		return  sharedPreferences.getInt("agreegate_position",0);
+	}
+
+	public void saveComefrom(String comefrom)
+	{
+		editor.putString("save_comefrom",comefrom);
+		editor.commit();
+	}
+	public String getComefrom(){
+		return sharedPreferences.getString("save_comefrom","");
+	}
+	public void clearComefrom(){
+		sharedPreferences.edit().remove("save_comefrom").commit();
+	}
+
+	
+}

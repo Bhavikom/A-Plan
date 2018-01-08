@@ -1,0 +1,33 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+    </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/fifteen_sp"
+        android:id="@+id/linearsection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skip"
+        android:textColor="@color/red"
+        android:textSize="@dimen/fifteen_sp"
+        android:layout_margin="@dimen/ten_sp"
+        android:layout_gravity="bottom|right"/>
+</FrameLayout>

@@ -1,0 +1,288 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ssoft.aplanproject.GetProfileModel.GetProfilePojo;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.HomeActivity;
+import com.ssoft.aplanproject.activity.LoginActivity;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.InterfaceServiceClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.OnBackPressListener;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Header;
+import retrofit.client.Response;
+
+public class FragmentProfile extends Fragment implements View.OnClickListener
+{
+    Activity activity;
+    InterfaceProfileChanged interfaceProfileChanged;
+    private Menu menu;
+    PreferencesClass preferences;
+    DatabaseHandler dbHandler;
+    TextView textviewName,textviewEmail,textviewMobile,textviewDepartment,textviewChangePass;
+    private View rootView;
+    private OnFragmentInteractionListener mListener;
+    ImageView imgEnglish,imgGermany;
+    String strLanguage="";
+    public FragmentProfile()
+    {
+        // Required empty public constructor
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        /*if(rootView == null)
+        {*/
+            rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+            getActivity().invalidateOptionsMenu();
+            setHasOptionsMenu(true);
+            //super.initializeFragment(rootView);
+            preferences = new PreferencesClass(getActivity());
+            dbHandler = new DatabaseHandler(getActivity());
+            strLanguage=preferences.getLanguage();
+            imgEnglish=(ImageView)rootView.findViewById(R.id.img_english);
+            imgGermany=(ImageView)rootView.findViewById(R.id.img_germany);
+            imgEnglish.setOnClickListener(this);
+            imgGermany.setOnClickListener(this);
+            textviewName=(TextView)rootView.findViewById(R.id.textviewname);
+            textviewEmail=(TextView)rootView.findViewById(R.id.textviewemail);
+            textviewMobile=(TextView)rootView.findViewById(R.id.textviewmobile);
+            textviewDepartment=(TextView)rootView.findViewById(R.id.textviewdepartment);
+            textviewChangePass=(TextView)rootView.findViewById(R.id.textviewchangepass);
+            textviewChangePass.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    FragmentChangePassword fragment = new FragmentChangePassword();
+                    //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    //fragment.setArguments(args);
+                    transaction.replace(R.id.content_frame, fragment);
+                    transaction.addToBackStack("Profile");
+                    transaction.commit();
+
+                    //FragmentManager fragmentManager = getFragmentManager();
+                    //fragmentManager.beginTransaction().replace(R.id.container, new FragmentChangePassword()).addToBackStack("abc").commit();
+                }
+            });
+            textviewName.setText(preferences.getFullName());
+            textviewEmail.setText(preferences.getEmail());
+            //textviewMobile.setText(preferences.getDomain());
+            //textviewDepartment.setText(preferences.getUserName());
+      /*  }
+        else
+        {
+            if(rootView.getParent() != null)
+                ((ViewGroup)rootView.getParent()).removeView(rootView);
+        }*/
+        //View content = inflater.inflate(R.layout.fragment_profile, container, false);
+        return rootView;
+    }
+    @Override
+    public void onAttach(Activity context)
+    {
+        super.onAttach(context);
+        activity = context;
+        interfaceProfileChanged =(FragmentProfile.InterfaceProfileChanged) context;
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if(v==imgEnglish){
+            if(preferences.getLanguage().equalsIgnoreCase(getString(R.string.language_english))){
+
+            }
+            else {
+                /* you want to change language to english that's why call get profile service here */
+                strLanguage=getString(R.string.language_english);
+                preferences.saveLanguage(getString(R.string.language_english));
+                callGetUserProfile();
+            }
+        }
+        if(v==imgGermany){
+            if(preferences.getLanguage().equalsIgnoreCase(getString(R.string.language_germany))){
+
+            }
+            else {
+                /* you want to change language to germany that's why call get profile service here */
+                strLanguage=getString(R.string.language_germany);
+                preferences.saveLanguage(getString(R.string.language_germany));
+                callGetUserProfile();
+            }
+        }
+    }
+    public void callGetUserProfile(){
+        try
+        {
+            //final ProgressDialog progressDialog = ProgressDialog.show(getActivity(),"Login","Please wait...",false,false);
+            String url = preferences.getDomain()+"Get";
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url).build();
+            //Creating an object of our api interface
+            InterfaceServiceClass interfaceObject = adapter.create(InterfaceServiceClass.class);
+            interfaceObject.callGetProfile(preferences.getUserIdTemp(),strLanguage,new Callback<GetProfilePojo>()
+            {
+                @Override
+                public void success(GetProfilePojo getProfilePojo, Response response)
+                {
+                    List<Header> header = null;
+                    try
+                    {
+                        header = response.getHeaders();
+                        if(response != null)
+                        {
+                            if (getProfilePojo.getStatus() == 0)
+                            {
+                                LogApp.e(" login success ", " response from service : " + getProfilePojo.getStatus());
+                                if(getProfilePojo.getPayload().size() > 0){
+                                    dbHandler.deleteAlluserProfile();
+                                    for (int i=0;i<getProfilePojo.getPayload().size();i++)
+                                    {
+                                        String ColumnsDetail = getProfilePojo.getPayload().get(i).getColsDetail();
+                                        String ProfileId = String.valueOf(getProfilePojo.getPayload().get(i).getId());
+                                        String Name = String.valueOf(getProfilePojo.getPayload().get(i).getName());
+                                        String UserId = String.valueOf(getProfilePojo.getPayload().get(i).getUserId());
+                                        String ExpandedId = String.valueOf(getProfilePojo.getPayload().get(i).getExpandedIds());
+                                        preferences.saveProfileId(ProfileId);
+                                        preferences.saveLanguage(strLanguage);
+                                        /* adding default profile to database for table screen */
+                                        dbHandler.addUserProfile(ProfileId, Name, ColumnsDetail, preferences.getUserID(), ExpandedId, preferences.getUserIdTemp(), preferences.getLanguage(), getResources().getString(R.string.weekm));
+                                        interfaceProfileChanged.profileChanged();
+                                    }
+                                }
+                                //GlobalClass.showToast(getActivity(),"Profile sucesss");
+                            }
+                        }
+                        else {
+                            LogApp.e(" no response from service :  ", " response from service : ");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        String statusCode="";
+                        String name="";
+                        for (int i=0;i<header.size();i++)
+                        {
+                            LogApp.e(" header size : "," response from service : "+header.size()+" name : "+header.get(i).getName()+" value : "+header.get(i).getValue());
+                            name=header.get(i).getName();
+                            if(!TextUtils.isEmpty(name) && name.equalsIgnoreCase("x-status")){
+                                statusCode=header.get(i).getValue();
+                            }
+                        }
+                        if(statusCode.equalsIgnoreCase("1004"))
+                        {
+                            GlobalClass.showToast(getActivity(),"Email is wrong");
+                        }
+                        else if(statusCode.equalsIgnoreCase("1005"))
+                        {
+                            GlobalClass.showToast(getActivity(),"Password is wrong");
+                        }
+                        //progressDialog.dismiss();
+                    }
+                }
+                @Override
+                public void failure(RetrofitError error)
+                {
+                    LogApp.e(" get proifle failed "," response from service : "+error.toString());
+                    //progressDialog.dismiss();
+                }
+
+            });
+        }
+        catch (Exception e){
+            LogApp.e(" while get proifle service : "," in catch : "+e.toString());
+        }
+    }
+    public interface InterfaceProfileChanged{
+        void profileChanged();
+    }
+    public interface IntefaceChangepass{
+        public void changeTitle();
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+    }
+    public interface OnFragmentInteractionListener
+    {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+    public boolean onBackPressed() {
+        // currently visible tab Fragment
+        OnBackPressListener currentFragment = (OnBackPressListener)getActivity();
+
+        if (currentFragment != null) {
+            // lets see if the currentFragment or any of its childFragment can handle onBackPressed
+            return currentFragment.onBackPressed();
+        }
+
+        // this Fragment couldn't handle the onBackPressed call
+        return false;
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.toolbar_menu_item, menu);
+        this.menu = menu;
+        menu.findItem(R.id.actionEdit).setVisible(false);
+        menu.findItem(R.id.actionDefault).setVisible(false);
+        menu.findItem(R.id.actionSupport).setVisible(false);
+        menu.findItem(R.id.actionSend).setVisible(false);
+        menu.findItem(R.id.actionprofile).setVisible(false);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId())
+        {
+            case R.id.actionEdit:
+                Toast.makeText(getActivity()," option clicked : ",Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        //return super.onOptionsItemSelected(item);
+    }
+
+
+}

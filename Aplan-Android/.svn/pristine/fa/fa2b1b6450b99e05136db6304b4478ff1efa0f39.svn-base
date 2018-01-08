@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  tools:context="com.ssoft.aplanproject.activity.SettingActivity">
+
+        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="@dimen/seventee_sp"
+                                           android:background="@color/header_color"
+                                           android:gravity="center"
+                                           android:title=""
+                                           app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="title"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/twentee_five_sp"
+                />
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- The main content view -->
+
+            <FrameLayout
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+            <!-- The navigation drawer -->
+
+            <ListView
+                android:id="@+id/left_drawer"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/header_color"
+                android:childDivider="@android:color/darker_gray"
+                android:choiceMode="singleChoice"
+                android:divider="@android:color/black"
+                android:dividerHeight="2dp"
+                android:groupIndicator="@android:color/transparent"
+                android:indicatorLeft="260dp"/>
+
+        </android.support.v4.widget.DrawerLayout>
+
+    </LinearLayout>
+    <!--start for footer-->
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#F7F7F7">
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,332 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.Model.DrawerModelClass;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.activity.LoginActivity;
+import com.ssoft.aplanproject.adapter.DrawerAdapter;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.InterfaceClick;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Stack;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+/**
+ * Created by SSOFT4 on 10/25/2016.
+ */
+
+public class FragmentSetting extends Fragment implements FragmentProfile.IntefaceChangepass, AdapterView.OnItemClickListener {
+    TextView txtfooterview;
+    DatabaseHandler dbHandler;
+    RelativeLayout relativeFooter;
+
+
+    PreferencesClass preferences;
+
+    /* all for navigation drawer */
+    DrawerAdapter adapter;
+    ListView listviewDrawerItem;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private DrawerLayout drawer;
+    Toolbar toolbar;
+    TextView textviewTitle;
+    ArrayList<DrawerModelClass> drawerItems;
+    View view;
+    ArrayList<Bitmap> arraylistBitmpap = new ArrayList<>();
+    FragmentSupportContact framgnet;
+    InterfaceClick click;
+    FragmentManager fragmentManager = getFragmentManager();
+    private Stack<Fragment> fragmentStack;
+    Activity activity;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_setting, container,false);
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+        initControl();
+        return view;
+    }
+    public void initControl()
+    {
+        preferences = new PreferencesClass(getActivity());
+        dbHandler = new DatabaseHandler(getActivity());
+        getActivity();
+        framgnet = new FragmentSupportContact();
+        fragmentStack = new Stack<Fragment>();
+
+        /* this is for toolbar */
+        toolbar = (Toolbar)view.findViewById(R.id.toolbar);
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
+        getActivity().setTitle(null);
+        //getSupportActionBar().setTitle(null);
+
+        textviewTitle = (TextView)view.findViewById(R.id.toolbar_title);
+        textviewTitle.setText("Profile");
+        /* this is for drawer layout*/
+        drawer = (DrawerLayout)view.findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.open_drawer, R.string.close_drawer);
+
+        /* this is for drawer listview and setting adapter */
+        listviewDrawerItem = (ListView)view.findViewById(R.id.left_drawer);
+        addDrawerItem();
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        drawer.setDrawerListener(actionBarDrawerToggle);
+       /* getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);*/
+        adapter = new DrawerAdapter(getActivity(), drawerItems);
+        adapter.setInflater((LayoutInflater)getActivity().getSystemService(LAYOUT_INFLATER_SERVICE), getActivity());
+        listviewDrawerItem.setAdapter(adapter);
+        listviewDrawerItem.setOnItemClickListener(this);
+        actionBarDrawerToggle.syncState();
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new FragmentProfile()).commit();
+
+        View footerView=View.inflate(getContext(),R.layout.list_footer_link,null);
+        txtfooterview = (TextView)footerView.findViewById(R.id.txt_smsc_link);
+        SpannableString ss = new SpannableString(getString(R.string.my_smsc_link));
+        ss.setSpan(new URLSpanNoUnderline("http://www.smacsoftwares.de/"),0,32, 0);
+        ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,32, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        txtfooterview.setText(ss);
+        txtfooterview.setMovementMethod(LinkMovementMethod.getInstance());
+        listviewDrawerItem.addFooterView(footerView);
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Fragment fragment;
+        String tag = "";
+        if (position == 0) {
+            textviewTitle.setText("Profile");
+            fragment = new FragmentProfile();
+            tag = "Profile";
+            drawer.closeDrawer(listviewDrawerItem);
+            getActivity().getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            //fragmentManager.beginTransaction().replace(R.id.container, fragment,tag).addToBackStack(tag).commit();
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, tag).commit();
+        }
+        if (position == 1) {
+            textviewTitle.setText("Profile:Default");
+            fragment = new FragmentTable();
+            tag = "Table";
+            drawer.closeDrawer(listviewDrawerItem);
+            getActivity().getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            //fragmentManager.beginTransaction().replace(R.id.container, fragment,tag).addToBackStack(tag).commit();
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, tag).commit();
+        }
+        if (position == 2) {
+            textviewTitle.setText("Support");
+            fragment = new FragmentSupport();
+            tag = "Support";
+            drawer.closeDrawer(listviewDrawerItem);
+            getActivity().getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            //fragmentManager.beginTransaction().replace(R.id.container, fragment,tag).addToBackStack(tag).commit();
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, tag).commit();
+        }
+        if (position == 3) {
+            singOutDialog();
+            /* sign out funcationality */
+        }
+    }
+    public void singOutDialog() {
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(getActivity());
+        alertDialog.setTitle("Sign Out");
+        alertDialog.setMessage("Are you sure you want to Sign Out?");
+        alertDialog.setIcon(R.drawable.sign_out);
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        preferences.isContolFirstTime("");
+                        preferences.saveTaskPosition(0);
+                        preferences.saveAgreegatePosition(0);
+
+                        preferences.saveUserLogged(false);
+                        preferences.clearLoginData();
+                        dbHandler.deleteSingleUserProfile(preferences.getUserIdTemp(),preferences.getProfileId());
+                        dbHandler.deleteUserProfileFromUserId(preferences.getUserIdTemp());
+                        Intent i = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(i);
+                        getActivity().finish();
+                        //new signOutService().execute();
+
+                         
+                    }
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+                    }
+                });
+
+
+        alertDialog.show();
+
+    }
+    public class signOutService extends AsyncTask<String, Void, String>
+    {
+        String status = "";
+        ProgressDialog progressDialog;
+        @SuppressWarnings("deprecation")
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            @SuppressWarnings("deprecation")
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseText = null;
+            String finalUrl=preferences.getDomain()+"/Logout";
+            HttpPost httppost = new HttpPost(finalUrl);
+            try {
+                @SuppressWarnings("deprecation")
+                HttpEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null, Charset.forName("UTF-8"));
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                try
+                {
+                    String userID = preferences.getUserIdTemp();
+                    builder.addPart("UserId", new StringBody(userID));
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                entity = builder.build();
+
+                httppost.setEntity(entity);
+                String request;
+                // Execute HTTP Post Request
+                response = httpclient.execute(httppost);
+                Log.v("Post Status","Code: "+response.getStatusLine().getStatusCode());
+                HttpEntity entity2 = response.getEntity();
+                responseText = EntityUtils.toString(entity2);
+                Log.v(" sign out service  "," response from service : "+responseText);
+                //Json Parsing
+                JSONObject objMain = (JSONObject) new JSONTokener(responseText).nextValue();
+
+                JSONArray jsonArray = objMain.getJSONArray("Payload");
+                status = objMain.getString("Status");
+            }
+            catch (final Exception e)
+            {
+
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            preferences.saveUserLogged(false);
+            preferences.clearLoginData();
+            dbHandler.deleteSingleUserProfile(preferences.getUserIdTemp(),preferences.getProfileId());
+            Intent i = new Intent(getActivity(), LoginActivity.class);
+            startActivity(i);
+            getActivity().finish();
+
+        }
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(getActivity(),"Signing Out","Please wait...",false,false);
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+        }
+    }
+    public void setTitle(String title)
+    {
+        textviewTitle.setText(title);
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    public void addDrawerItem() {
+        drawerItems = new ArrayList<>();
+        String[] arrayTitle = {"Profile", "Table", "Support", "Sign Out"};
+        int[] arrayImage = {R.drawable.drawer_profile, R.drawable.drawer_table
+                , R.drawable.drawer_support, R.drawable.sign_out};
+        for (int i = 0; i < arrayTitle.length; i++) {
+            DrawerModelClass model = new DrawerModelClass();
+            model.setDrawable(arrayImage[i]);
+            model.setTitle(arrayTitle[i]);
+            drawerItems.add(model);
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+    @Override
+    public void changeTitle() {
+    }
+    public class URLSpanNoUnderline extends URLSpan
+    {
+        public URLSpanNoUnderline(String url)
+        {
+            super(url);
+        }
+    }
+}

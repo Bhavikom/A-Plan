@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/tutorial_first">
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textskip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/fifteen_sp"
+        android:layout_marginRight="@dimen/fifteen_sp"
+        android:text="Skip"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/twentee_five_sp" />
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:weightSum="1"
+        android:layout_above="@+id/textskip"
+        android:id="@+id/imgcontrol"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        tools:context="com.ssoft.aplanproject.fragment.FragmentTutorial1">
+
+        <View
+            android:layout_weight="0.150"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"/>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="0.4"
+            android:layout_width="@dimen/seven_hundred"
+            android:layout_height="0sp">
+            <ImageView
+                android:layout_width="@dimen/five_hundred"
+                android:layout_height="match_parent"
+                android:src="@drawable/app_logo" />
+        </LinearLayout>
+        <View
+            android:layout_weight="0.1"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"/>
+
+        <LinearLayout
+            android:layout_weight="0.2"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_below="@+id/imgcontrol"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kosten"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/thirtee_sp" />
+
+            <TextView
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fifteen_sp"
+                android:layout_marginRight="@dimen/fifteen_sp"
+                android:layout_marginTop="@dimen/twentee_sp"
+                android:text="@string/Sixth_screen"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/fifteen_sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

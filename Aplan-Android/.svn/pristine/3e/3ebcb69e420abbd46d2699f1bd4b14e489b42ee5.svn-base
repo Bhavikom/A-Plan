@@ -1,0 +1,31 @@
+package com.ssoft.aplanproject.Model;
+
+/**
+ * Created by SSoft-13 on 19-07-2016.
+ */
+
+public class DrawerModelClass
+{
+    String title="";
+    int Drawable;
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+    public int getDrawable()
+    {
+        return Drawable;
+    }
+
+    public void setDrawable(int drawable)
+    {
+        Drawable = drawable;
+    }
+}

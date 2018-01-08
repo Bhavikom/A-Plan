@@ -1,0 +1,737 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.ssoft.aplanproject.Model.FolderDataset;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.adapter.DatesFilterAdapter;
+import com.ssoft.aplanproject.util.DatabaseHandler;
+import com.ssoft.aplanproject.util.GlobalClass;
+import com.ssoft.aplanproject.util.LogApp;
+import com.ssoft.aplanproject.util.PreferencesClass;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+
+/**
+ * Created by SSOFT4 on 7/18/2016.
+ */
+public class FragmentDateActivity extends Fragment implements View.OnClickListener {
+    DatabaseHandler dbHandler;
+    PreferencesClass prefrences;
+    boolean isClickableEdittext=true,isClickableEdittext2=true;
+    static Date selectedDate1=null;
+    static Date selectedDate2=null;
+    static Date selectedDate3=null;
+    static Date selectedDate4=null;
+    View rootView;
+    private static DatePickerDialog datePicker;
+    //String strDate1="",strDate2="",strDate3="",strDate4="";
+
+    TextView textviewBack,textviewDone,textviewGeneralFilter;
+    Activity activtiy;
+    RelativeLayout relativeFooter;
+    //LinearLayout linearCriteria1,linearCriteria2;
+    EditText edittextCriteria1,edittextCriteria2,edittextSelectedCriteria1,edittextSelectedCriteria2;
+    TextView textviewBetween1,textviewBetween2;
+    EditText edittextDate1, edittextDate2, edittextDate3, edittextDate4;
+    EditText edittextTimePeriod1, edittextTimePeriod2;
+    ArrayList<String> arraylistCriteria = new ArrayList<>();
+    ArrayList<String> arraylistDuration = new ArrayList<>();
+    ArrayList<String> arraylistTimePeriod = new ArrayList<>();
+    String strSelectedCriteria1="",strSelectedCriteria2="";
+    String strSelectedDuration1="",strSelectedDuration2="";
+    String strSelectedTimePeriod1="",strSelectedTimePeriod2="";
+    String strCriteria1="",strSelectedCriterial1="",strDate1="",strDate2="",strTimeUnit1="",strCriteria2="",strSelectedCriterial2="",
+    strDate3="",strDate4="",strTimeUnit2="";
+    ArrayList<FolderDataset> arraylistgetedFromDatabase = new ArrayList<>();
+    ArrayList<String> arraylistValue = new ArrayList<>();
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_filter_date, container,false);
+        initControl();
+        return rootView;
+    }
+    public void initControl()
+    {
+        prefrences = new PreferencesClass(getActivity());
+        dbHandler=new DatabaseHandler(getActivity());
+        textviewBack = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewBack.setOnClickListener(this);
+        textviewDone = (TextView)rootView.findViewById(R.id.textview_done);
+        textviewDone.setOnClickListener(this);
+
+        textviewGeneralFilter = (TextView)rootView.findViewById(R.id.textview_generalfilter);
+        textviewGeneralFilter.setOnClickListener(this);
+
+        //linearCriteria1=(LinearLayout)findViewById(R.id.linear_criteria1);
+        //linearCriteria2=(LinearLayout)findViewById(R.id.linear_criteria2);
+        edittextCriteria1=(EditText)rootView.findViewById(R.id.edittext_criteria1);
+        edittextCriteria2=(EditText)rootView.findViewById(R.id.edittext_criteria2);
+        edittextCriteria1.setText("Empty");
+        edittextCriteria2.setText("Empty");
+        edittextSelectedCriteria1=(EditText)rootView.findViewById(R.id.edittext_selected_criteria1);
+        edittextSelectedCriteria2=(EditText)rootView.findViewById(R.id.edittext_selected_criteria2);
+
+        textviewBetween1=(TextView)rootView.findViewById(R.id.textview_between1);
+        edittextDate1 =(EditText)rootView.findViewById(R.id.textview_date1);
+        edittextDate2 =(EditText)rootView.findViewById(R.id.textview_date2);
+        edittextTimePeriod1 =(EditText)rootView.findViewById(R.id.textview_day_unit1);
+        edittextTimePeriod1.setOnClickListener(this);
+
+        textviewBetween2=(TextView)rootView.findViewById(R.id.textview_between2);
+        edittextDate3 =(EditText)rootView.findViewById(R.id.textview_date3);
+        edittextDate4 =(EditText)rootView.findViewById(R.id.textview_date4);
+        edittextTimePeriod2 =(EditText)rootView.findViewById(R.id.textview_day_unit2);
+        edittextTimePeriod2.setOnClickListener(this);
+        edittextTimePeriod1.setKeyListener(null);
+        edittextTimePeriod2.setKeyListener(null);
+
+        edittextDate1.setOnClickListener(this);
+        edittextDate2.setOnClickListener(this);
+        edittextDate3.setOnClickListener(this);
+        edittextDate4.setOnClickListener(this);
+
+        editableFalse(edittextDate1,3);
+        editableFalse(edittextDate2,3);
+        editableFalse(edittextDate3,3);
+        editableFalse(edittextDate4,3);
+
+        edittextCriteria1.setOnClickListener(this);
+        edittextCriteria2.setOnClickListener(this);
+        editableFalse(edittextCriteria1,3);
+        editableFalse(edittextCriteria2,3);
+
+        edittextSelectedCriteria1.setOnClickListener(this);
+        edittextSelectedCriteria2.setOnClickListener(this);
+        edittextSelectedCriteria1.setKeyListener(null);
+        edittextSelectedCriteria2.setKeyListener(null);
+
+        fillArraylists();
+        visibleCriteria1(false);
+        visibleCriteria2(false);
+
+        if(dbHandler.getCursorCountFilterData(prefrences.getUserID()) > 0)
+        {
+            arraylistgetedFromDatabase=dbHandler.getFilterData("DateFilter",prefrences.getUserID());
+        }
+        arraylistValue = new ArrayList<>();
+        if(arraylistgetedFromDatabase.size() > 0){
+            String[] split = arraylistgetedFromDatabase.get(0).getName().split(",");
+
+            for (int i=0;i<split.length;i++)
+            {
+                String[] spliteInner = split[i].split("-");
+                arraylistValue.add(spliteInner[1]);
+            }
+
+        }
+        for (int i=0;i<arraylistValue.size();i++){
+            LogApp.e(" ###### "," get value from db splited : "+arraylistValue.get(i));
+        }
+        if(arraylistValue.size() > 0)
+        {
+            if(arraylistValue.get(1).equalsIgnoreCase("Time range")){
+                showUiforRange(1);
+            }
+            else if(arraylistValue.get(1).equalsIgnoreCase("Between")){
+                showUiforBetween(1);
+            }
+
+            else if(arraylistValue.get(1).equalsIgnoreCase("On") || arraylistValue.get(1).equalsIgnoreCase("After") ||
+                    arraylistValue.get(1).equalsIgnoreCase("Before")){
+                showUiforOthers(1);
+            }
+
+            if(arraylistValue.get(6).equalsIgnoreCase("Time range")){
+                showUiforRange(2);
+            }
+            else if(arraylistValue.get(6).equalsIgnoreCase("Between")){
+                showUiforBetween(2);
+            }
+
+            else if(arraylistValue.get(6).equalsIgnoreCase("On") || arraylistValue.get(6).equalsIgnoreCase("After") ||
+                    arraylistValue.get(6).equalsIgnoreCase("Before")){
+                showUiforOthers(2);
+            }
+
+            edittextCriteria1.setText(setTextinEdittext(arraylistValue.get(0),edittextCriteria1));
+            edittextSelectedCriteria1.setText(setTextinEdittext(arraylistValue.get(1),edittextSelectedCriteria1));
+            edittextDate1.setText(setTextinEdittext(arraylistValue.get(2),edittextDate1));
+            edittextDate2.setText(setTextinEdittext(arraylistValue.get(3),edittextDate2));
+            edittextTimePeriod1.setText(setTextinEdittext(arraylistValue.get(4),edittextTimePeriod1));
+            edittextCriteria2.setText(setTextinEdittext(arraylistValue.get(5),edittextCriteria2));
+            edittextSelectedCriteria2.setText(setTextinEdittext(arraylistValue.get(6),edittextSelectedCriteria2));
+            edittextDate3.setText(setTextinEdittext(arraylistValue.get(7),edittextDate3));
+            edittextDate4.setText(setTextinEdittext(arraylistValue.get(8),edittextDate4));
+            edittextTimePeriod2.setText(setTextinEdittext(arraylistValue.get(9),edittextTimePeriod2));
+
+
+        }
+    }
+    @Override
+    public void onClick(View v)
+    {
+        if(v==textviewBack){
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragementSelectFilter fragment = new FragementSelectFilter();
+           // transaction.replace(R.id.container_home, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(v==textviewDone)
+        {
+            strCriteria1="criteria1-"+getEdittextValue(edittextCriteria1);
+            strSelectedCriterial1="selected_criteria1-"+getEdittextValue(edittextSelectedCriteria1);
+            strDate1="date1-"+getEdittextValue(edittextDate1);
+            strDate2="date2-"+getEdittextValue(edittextDate2);
+            strTimeUnit1="timeperiod1-"+getEdittextValue(edittextTimePeriod1);
+            strCriteria2="criteria2-"+getEdittextValue(edittextCriteria2);
+            strSelectedCriterial2="selected_criteria2-"+getEdittextValue(edittextSelectedCriteria2);
+            strDate3="date3-"+getEdittextValue(edittextDate3);
+            strDate4="date4-"+getEdittextValue(edittextDate4);
+            strTimeUnit2="timeperiod2-"+getEdittextValue(edittextTimePeriod2);
+
+
+            String finalCommaseperated = strCriteria1+","+strSelectedCriterial1+","+strDate1+","+strDate2+","+strTimeUnit1+","+
+                    strCriteria2+","+strSelectedCriterial2+","+strDate3+","+strDate4+","+strTimeUnit2;
+            dbHandler.deleteFilter(prefrences.getUserID(),"DateFilter");
+            dbHandler.addFilterInfo("DateFilter",finalCommaseperated,"","",prefrences.getUserID());
+        }
+
+        if(v==edittextCriteria1){
+            showDialogToselectCriteria("criteria1");
+        }
+        if(v==edittextCriteria2){
+            showDialogToselectCriteria("criteria2");
+        }
+        if(v==edittextSelectedCriteria1){
+            showDialogDuration("criteria1");
+        }
+        if(v==edittextSelectedCriteria2){
+            showDialogDuration("criteria2");
+        }
+        if(v==edittextDate1){
+            if(isClickableEdittext){
+                showDatePickerDialog(1);
+            }
+
+        }
+        if(v==edittextDate2){
+            if(isClickableEdittext){
+                showDatePickerDialog(2);
+            }
+
+        }
+        if(v==edittextDate3){
+            if(isClickableEdittext2){
+                showDatePickerDialog(3);
+            }
+
+        }
+        if(v==edittextDate4){
+            if(isClickableEdittext2){
+                showDatePickerDialog(4);
+            }
+
+        }
+        if(v== edittextTimePeriod1){
+            showDialogTimePeriod("criteria1");
+        }
+        if(v== edittextTimePeriod2){
+            showDialogTimePeriod("criteria2");
+        }
+        if(v== textviewGeneralFilter)
+        {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragementSelectFilter fragment = new FragementSelectFilter();
+            transaction.replace(R.id.select_filter_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+
+    }
+
+   /* @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        Intent i=new Intent(activtiy,FragementSelectFilter.class);
+        startActivity(i);
+        finish();
+    }*/
+    public void visibleCriteria1(boolean flag)
+    {
+        if(flag){
+            textviewBetween1.setVisibility(View.VISIBLE);
+            edittextDate1.setVisibility(View.VISIBLE);
+            edittextDate2.setVisibility(View.VISIBLE);
+            edittextTimePeriod1.setVisibility(View.VISIBLE);
+            edittextSelectedCriteria1.setVisibility(View.VISIBLE);
+        }
+        else {
+            textviewBetween1.setVisibility(View.GONE);
+            edittextDate1.setVisibility(View.GONE);
+            edittextDate2.setVisibility(View.GONE);
+            edittextTimePeriod1.setVisibility(View.GONE);
+            edittextSelectedCriteria1.setVisibility(View.GONE);
+        }
+    }
+    public void visibleCriteria2(boolean flag)
+    {
+        if(flag){
+            textviewBetween2.setVisibility(View.VISIBLE);
+            edittextDate3.setVisibility(View.VISIBLE);
+            edittextDate4.setVisibility(View.VISIBLE);
+            edittextTimePeriod2.setVisibility(View.VISIBLE);
+            edittextSelectedCriteria2.setVisibility(View.VISIBLE);
+        }
+        else {
+            textviewBetween2.setVisibility(View.GONE);
+            edittextDate3.setVisibility(View.GONE);
+            edittextDate4.setVisibility(View.GONE);
+            edittextTimePeriod2.setVisibility(View.GONE);
+            edittextSelectedCriteria2.setVisibility(View.GONE);
+        }
+    }
+    public void clearCriteria1()
+    {
+        edittextDate1.setText("");
+        edittextDate2.setText("");
+        edittextTimePeriod1.setText("");
+        textviewBetween1.setText("");
+        edittextSelectedCriteria1.setText("");
+
+        edittextDate1.setVisibility(View.GONE);
+        edittextDate2.setVisibility(View.GONE);
+        edittextTimePeriod1.setVisibility(View.GONE);
+        textviewBetween1.setVisibility(View.GONE);
+
+    }
+    public void clearCriteria2()
+    {
+        edittextDate3.setText("");
+        edittextDate4.setText("");
+        edittextTimePeriod2.setText("");
+        textviewBetween2.setText("");
+        edittextSelectedCriteria2.setText("");
+
+        edittextDate3.setVisibility(View.GONE);
+        edittextDate4.setVisibility(View.GONE);
+        edittextTimePeriod2.setVisibility(View.GONE);
+        textviewBetween2.setVisibility(View.GONE);
+
+    }
+
+    public void showDialogToselectCriteria(final String criteria){
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(getActivity());
+        // Include dialog.xml file
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.custom_dialog_select_criteria);
+
+        // Set dialog title
+        dialog.setTitle("");
+        dialog.show();
+
+        final ListView listviewCriteria=(ListView)dialog.findViewById(R.id.listviewcriteria);
+        listviewCriteria.setSelector(R.drawable.list_selector);
+
+        DatesFilterAdapter adapter = new DatesFilterAdapter(getActivity(),arraylistCriteria);
+        listviewCriteria.setAdapter(adapter);
+
+        listviewCriteria.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            {
+
+                if(criteria.equalsIgnoreCase("criteria1")){
+                    strSelectedCriteria1=arraylistCriteria.get(position);
+
+                    if(!TextUtils.isEmpty(strSelectedCriteria1)){
+                        if(!strSelectedCriteria1.equalsIgnoreCase("Empty")){
+                            edittextSelectedCriteria1.setVisibility(View.VISIBLE);
+                            edittextCriteria1.setText(strSelectedCriteria1);
+
+                            clearCriteria1();
+                        }
+                        else {
+                            edittextSelectedCriteria1.setVisibility(View.GONE);
+                            clearCriteria1();
+                        }
+                    }
+                }
+                else if(criteria.equalsIgnoreCase("criteria2"))
+                {
+                    strSelectedCriteria2=arraylistCriteria.get(position);
+                    if(!TextUtils.isEmpty(strSelectedCriteria2)){
+                        if(!strSelectedCriteria2.equalsIgnoreCase("Empty")){
+                            edittextCriteria2.setText(strSelectedCriteria2);
+                            edittextSelectedCriteria2.setVisibility(View.VISIBLE);
+                            clearCriteria2();
+                        }
+                        else {
+                            edittextSelectedCriteria2.setVisibility(View.GONE);
+                            clearCriteria2();
+                        }
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+
+    }
+    public void showDialogDuration(final String criteria){
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(getActivity());
+        // Include dialog.xml file
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.custom_dialog_select_criteria);
+
+        // Set dialog title
+        dialog.setTitle("");
+        dialog.show();
+
+        final ListView listviewDuration=(ListView)dialog.findViewById(R.id.listviewcriteria);
+        listviewDuration.setSelector(R.drawable.list_selector);
+
+        DatesFilterAdapter adapter = new DatesFilterAdapter(getActivity(),arraylistDuration);
+        listviewDuration.setAdapter(adapter);
+
+        listviewDuration.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            {
+
+                if(criteria.equalsIgnoreCase("criteria1")){
+                    strSelectedDuration1=arraylistDuration.get(position);
+
+                    if(!TextUtils.isEmpty(strSelectedDuration1)){
+                        edittextSelectedCriteria1.setText(strSelectedDuration1);
+                        edittextDate1.setText("");
+                        edittextDate2.setText("");
+                        edittextTimePeriod1.setText("");
+                        textviewBetween1.setText("");
+                        if(strSelectedDuration1.equalsIgnoreCase("Time range")){
+                            showUiforRange(1);
+                        }
+                        else if(strSelectedDuration1.equalsIgnoreCase("Between")){
+                            showUiforBetween(1);
+                        }
+                        else if(strSelectedDuration1.equalsIgnoreCase("On") || strSelectedDuration1.equalsIgnoreCase("After") ||
+                                strSelectedDuration1.equalsIgnoreCase("Before")){
+                           showUiforOthers(1);
+                        }
+
+
+
+                    }
+                }
+                else if(criteria.equalsIgnoreCase("criteria2"))
+                {
+                    strSelectedDuration2=arraylistDuration.get(position);
+                    if(!TextUtils.isEmpty(strSelectedDuration2)){
+                        edittextSelectedCriteria2.setText(strSelectedDuration2);
+
+                        edittextDate3.setText("");
+                        edittextDate4.setText("");
+                        edittextTimePeriod2.setText("");
+                        textviewBetween2.setText("");
+
+                        if(strSelectedDuration2.equalsIgnoreCase("Time range")){
+                            showUiforRange(2);
+                        }
+                        else if(strSelectedDuration2.equalsIgnoreCase("Between")){
+                            showUiforBetween(2);
+                        }
+
+                        else if(strSelectedDuration2.equalsIgnoreCase("On") || strSelectedDuration2.equalsIgnoreCase("After") ||
+                                strSelectedDuration2.equalsIgnoreCase("Before")){
+                            showUiforOthers(2);
+                        }
+
+
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+
+    }
+    public void showDialogTimePeriod(final String criteria)
+    {
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(getActivity());
+        // Include dialog.xml file
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.custom_dialog_select_criteria);
+
+        // Set dialog title
+        dialog.setTitle("");
+        dialog.show();
+
+        final ListView listviewTimePeriod=(ListView)dialog.findViewById(R.id.listviewcriteria);
+        listviewTimePeriod.setSelector(R.drawable.list_selector);
+
+        DatesFilterAdapter adapter = new DatesFilterAdapter(getActivity(),arraylistTimePeriod);
+        listviewTimePeriod.setAdapter(adapter);
+
+        listviewTimePeriod.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            {
+
+                if(criteria.equalsIgnoreCase("criteria1")){
+                    strSelectedTimePeriod1=arraylistTimePeriod.get(position);
+
+                    if(!TextUtils.isEmpty(strSelectedTimePeriod1)){
+                        edittextTimePeriod1.setText(strSelectedTimePeriod1);
+
+                    }
+                }
+                else if(criteria.equalsIgnoreCase("criteria2"))
+                {
+                    strSelectedTimePeriod2=arraylistTimePeriod.get(position);
+                    if(!TextUtils.isEmpty(strSelectedTimePeriod2)){
+                        edittextTimePeriod2.setText(strSelectedTimePeriod2);
+
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+
+    }
+    public void showDatePickerDialog(final int pos)
+    {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                new DatePickerDialog.OnDateSetListener()
+                {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        String selectedDate = GlobalClass.pad(dayOfMonth)+"."+GlobalClass.pad((monthOfYear+1))+"."+year;
+                        try
+                        {
+                            if(pos==1){
+                                selectedDate1=GlobalClass.dateFormater.parse(selectedDate);
+                                strDate1=selectedDate;
+                                edittextDate1.setText(strDate1);
+                            }
+                            if(pos==2){
+                                selectedDate2=GlobalClass.dateFormater.parse(selectedDate);
+                                strDate2=selectedDate;
+                                edittextDate2.setText(strDate2);
+                            }
+                            if(pos==3){
+                                selectedDate3=GlobalClass.dateFormater.parse(selectedDate);
+                                strDate3=selectedDate;
+                                edittextDate3.setText(strDate3);
+                            }
+
+                            if(pos==4){
+                                selectedDate4=GlobalClass.dateFormater.parse(selectedDate);
+                                strDate4=selectedDate;
+                                edittextDate4.setText(strDate4);
+                            }
+
+                        }
+                        catch (ParseException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+    public void fillArraylists(){
+        arraylistCriteria.add("Empty");
+        arraylistCriteria.add("Planned time to be spent on task");
+        arraylistCriteria.add("Begin PI’d");
+        arraylistCriteria.add("End PI’d");
+        arraylistCriteria.add("Actual time to be spent on task");
+        arraylistCriteria.add("Begin Act");
+        arraylistCriteria.add("End Act");
+        arraylistCriteria.add("End Progn");
+        arraylistCriteria.add("Entry Date");
+        arraylistCriteria.add("Reshow Date");
+        arraylistCriteria.add("Complete on");
+        arraylistCriteria.add("Last change");
+
+        arraylistDuration.add("Before");
+        arraylistDuration.add("On");
+        arraylistDuration.add("After");
+        arraylistDuration.add("Between");
+        arraylistDuration.add("Time range");
+
+        arraylistTimePeriod.add("Days");
+        arraylistTimePeriod.add("Weeks");
+        arraylistTimePeriod.add("Months");
+        arraylistTimePeriod.add("Years");
+    }
+    public void editableFalse(EditText edittext,int pos)
+    {
+        edittext.setFocusable(false);
+        edittext.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
+        edittext.setClickable(false);
+        if(pos==1){
+            isClickableEdittext=true;
+        }
+        else if(pos==2){
+            isClickableEdittext2=true;
+        }
+    }
+    public void editableTrue(EditText edittext,int pos){
+        edittext.setFocusable(true);
+        edittext.setFocusableInTouchMode(true); // user touches widget on phone with touch screen
+        edittext.setClickable(true);
+        if(pos==1){
+            isClickableEdittext=false;
+        }
+        else if(pos==2){
+            isClickableEdittext2=false;
+        }
+    }
+    public void showUiforRange(int pos){
+        if(pos==1){
+            edittextTimePeriod1.setVisibility(View.VISIBLE);
+            textviewBetween1.setVisibility(View.VISIBLE);
+            textviewBetween1.setText("To");
+            edittextDate1.setVisibility(View.VISIBLE);
+            edittextDate2.setVisibility(View.VISIBLE);
+            editableTrue(edittextDate1,pos);
+            editableTrue(edittextDate2,pos);
+            edittextDate1.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            edittextDate2.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            edittextDate1.setText("");
+            edittextDate2.setText("");
+        }
+        else {
+            edittextTimePeriod2.setVisibility(View.VISIBLE);
+            textviewBetween2.setVisibility(View.VISIBLE);
+            textviewBetween2.setText("To");
+            edittextDate4.setVisibility(View.VISIBLE);
+            edittextDate3.setVisibility(View.VISIBLE);
+            editableTrue(edittextDate3,pos);
+            editableTrue(edittextDate4,pos);
+            edittextDate4.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            edittextDate3.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            edittextDate3.setText("");
+            edittextDate4.setText("");
+        }
+
+    }
+    public void showUiforBetween(int pos){
+        if(pos==1){
+            textviewBetween1.setVisibility(View.VISIBLE);
+            textviewBetween1.setText("And");
+            edittextDate1.setVisibility(View.VISIBLE);
+            edittextDate2.setVisibility(View.VISIBLE);
+            edittextTimePeriod1.setVisibility(View.GONE);
+            editableFalse(edittextDate1,pos);
+            editableFalse(edittextDate2,pos);
+            edittextDate1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.calendar, 0);
+            edittextDate2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.calendar, 0);
+            edittextDate1.setText("");
+            edittextDate2.setText("");
+        }
+        else {
+            textviewBetween2.setVisibility(View.VISIBLE);
+            textviewBetween2.setText("And");
+            edittextDate4.setVisibility(View.VISIBLE);
+            edittextDate3.setVisibility(View.VISIBLE);
+            edittextTimePeriod2.setVisibility(View.GONE);
+            editableFalse(edittextDate3,pos);
+            editableFalse(edittextDate4,pos);
+            edittextDate3.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.calendar, 0);
+            edittextDate4.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.calendar, 0);
+            edittextDate3.setText("");
+            edittextDate4.setText("");
+        }
+
+    }
+    public void showUiforOthers(int pos){
+        if(pos==1){
+            edittextTimePeriod1.setVisibility(View.GONE);
+            textviewBetween1.setVisibility(View.GONE);
+            edittextDate1.setVisibility(View.VISIBLE);
+            edittextDate2.setVisibility(View.GONE);
+            editableFalse(edittextDate1,pos);
+            editableFalse(edittextDate2,pos);
+            edittextDate1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.calendar, 0);
+            edittextDate1.setText("");
+
+
+        }
+        else {
+            edittextTimePeriod2.setVisibility(View.GONE);
+            textviewBetween2.setVisibility(View.GONE);
+            edittextDate4.setVisibility(View.GONE);
+            edittextDate3.setVisibility(View.VISIBLE);
+            editableFalse(edittextDate3,pos);
+            editableFalse(edittextDate4,pos);
+            edittextDate3.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.calendar, 0);
+            edittextDate3.setText("");
+
+        }
+
+    }
+    public String getEdittextValue(EditText edittext)
+    {
+        String value="";
+        if(edittext.getText().toString().equalsIgnoreCase("")){
+            value="null";
+        }
+        else {
+            value=edittext.getText().toString();
+        }
+        return value;
+    }
+    public String setTextinEdittext(String text,EditText edittext)
+    {
+        String value="";
+        if(text.equalsIgnoreCase("null"))
+        {
+            value="";
+            edittext.setVisibility(View.GONE);
+        }
+        else
+        {
+            value=text;
+            edittext.setVisibility(View.VISIBLE);
+        }
+        return  value;
+    }
+
+}

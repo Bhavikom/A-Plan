@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/tutorial_first">
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textskip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/fifteen_sp"
+        android:layout_marginRight="@dimen/fifteen_sp"
+        android:text="Skip"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/twentee_five_sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context="com.ssoft.aplanproject.fragment.FragmentTutorial1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <!-- TODO: Update blank fragment layout -->
+        <ImageView
+            android:layout_width="@dimen/five_hundred"
+            android:layout_height="@dimen/three_hundred_eightee"
+            android:layout_marginTop="@dimen/twentee_sp"
+            android:src="@drawable/app_logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fiftee_sp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kosten"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/thirtee_sp" />
+
+            <TextView
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fifteen_sp"
+                android:layout_marginRight="@dimen/fifteen_sp"
+                android:layout_marginTop="@dimen/twentee_sp"
+                android:text="@string/Sixth_screen"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/fifteen_sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

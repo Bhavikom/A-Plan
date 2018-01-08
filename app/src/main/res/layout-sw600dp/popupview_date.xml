@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/custom_dialog_date_icon_background">
+<RelativeLayout
+    android:layout_marginTop="@dimen/ten_sp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/twentee_sp"
+    android:layout_marginRight="@dimen/twentee_sp">
+
+    <TextView
+        android:paddingLeft="@dimen/twentee_sp"
+        android:paddingRight="@dimen/twentee_sp"
+        android:paddingBottom="@dimen/five_sp"
+        android:paddingTop="@dimen/five_sp"
+        android:background="@drawable/load_button_background"
+        android:id="@+id/txtdone"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:textSize="@dimen/twentee_sp"
+        android:textColor="@color/white_color"/>
+
+</RelativeLayout>
+    <View
+        android:layout_marginTop="@dimen/ten_sp"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="@color/white_color"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/twentee_sp"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:id="@+id/listviewdatefilter">
+
+    </ListView>
+</LinearLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linear_terms_dialog_main"
+    android:background="@drawable/popup_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/header_terms_condition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:padding="@dimen/ten_sp"
+            android:textColor="@color/red"
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/terms_and_condition"
+            android:textSize="@dimen/twentee_five_sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_above="@+id/footer"
+        android:layout_below="@id/header_terms_condition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listviewTerms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#828282"
+            android:dividerHeight="0.5dp">
+
+        </ListView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:padding="@dimen/ten_sp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textview_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/Cancel"
+            android:layout_marginLeft="@dimen/twentee_sp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/header_textsize" />
+        <TextView
+            android:layout_alignParentRight="true"
+            android:id="@+id/textview_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/agree"
+            android:layout_marginRight="@dimen/twentee_sp"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/header_textsize" />
+    </RelativeLayout>
+</RelativeLayout>
+
+
+
+

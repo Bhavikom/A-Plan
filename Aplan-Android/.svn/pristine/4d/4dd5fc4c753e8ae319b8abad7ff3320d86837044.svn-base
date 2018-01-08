@@ -1,0 +1,346 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+
+import com.ssoft.aplanproject.Model.FaqQuestionAnsModel;
+import com.ssoft.aplanproject.R;
+import com.ssoft.aplanproject.TreeViewControl.AndroidTreeView;
+import com.ssoft.aplanproject.TreeViewControl.ArrowExpandSelectableHeaderHolder;
+import com.ssoft.aplanproject.TreeViewControl.ChildHeaderView;
+import com.ssoft.aplanproject.TreeViewControl.IconTreeItemHolder;
+import com.ssoft.aplanproject.TreeViewControl.TreeNode;
+import com.ssoft.aplanproject.adapter.ExpandableListAdapter;
+import com.ssoft.aplanproject.util.LogApp;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+public class FragmentSupportFAQs extends Fragment implements TreeNode.TreeNodeClickListener{
+
+    ExpandableListAdapter listAdapter;
+    private Menu menu;
+    FragmentSetting activity;
+    ExpandableListView expandableList;
+    View rootView;
+    List<String> listDataHeader;
+    HashMap<String, List<FaqQuestionAnsModel>> listDataChild;
+    private AndroidTreeView tView;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+      /*  activity = (SettingActivity) getActivity();*/
+        rootView = inflater.inflate(R.layout.fragment_support_faqs, container, false);
+        ViewGroup containerView = (ViewGroup) rootView.findViewById(R.id.container);
+        //expandableList.setAdapter(listAdapter);
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+        getActivity().setTitle(getResources().getString(R.string.faqs ));
+
+        prepareListData();
+
+        TreeNode root = TreeNode.root();
+
+        for (int i=0;i<listDataHeader.size();i++)
+        {
+            TreeNode s1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, listDataHeader.get(i))).setViewHolder(
+                    new ArrowExpandSelectableHeaderHolder(getActivity()));
+
+            fillFolder(s1,i);
+            root.addChildren(s1);
+        }
+        tView = new AndroidTreeView(getActivity(), root);
+        tView.setDefaultAnimation(true);
+        tView.setUse2dScroll(true);
+        tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
+        tView.setDefaultNodeClickListener(FragmentSupportFAQs.this);
+        tView.setDefaultViewHolder(ArrowExpandSelectableHeaderHolder.class);
+        containerView.addView(tView.getView());
+        tView.setUseAutoToggle(false);
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+        tView.expandAll();
+
+        return rootView;
+
+    }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.toolbar_menu_item, menu);
+        this.menu = menu;
+
+        menu.findItem(R.id.actionEdit).setVisible(false);
+        menu.findItem(R.id.actionDefault).setVisible(false);
+        menu.findItem(R.id.actionSend).setVisible(false);
+        menu.findItem(R.id.actionSupport).setVisible(true);
+        menu.findItem(R.id.actionprofile).setVisible(false);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionSupport:
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.popBackStack();
+        }
+        return true;
+    }
+    private void fillFolder(TreeNode folder, int pos)
+    {
+        TreeNode currentNode = folder;
+        TreeNode child;
+        LogApp.e(" @@@@@@@ "," listDataChild size : "+listDataChild.get(listDataHeader.get(pos)).size());
+        for (int i = 0; i < listDataChild.get(listDataHeader.get(pos)).size(); i++)
+        {
+            TreeNode file = new TreeNode(new IconTreeItemHolder.IconTreeItem(0," Question : " + listDataChild.get(listDataHeader.get(pos)).get(i).getQuestion())).setViewHolder(new ChildHeaderView(getActivity()));
+            currentNode.addChild(file);
+
+            child = file;
+            TreeNode childNode = new TreeNode(new IconTreeItemHolder.IconTreeItem(0,listDataChild.get(listDataHeader.get(pos)).get(i).getAns())).setViewHolder(new ChildHeaderView(getActivity()));
+            child.addChild(childNode);
+            //currentNode = file;
+        }
+    }
+
+    private void prepareListData()
+    {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<FaqQuestionAnsModel>>();
+        String jsonString="{\n" +
+                "\t\"Payload\": {\n" +
+                "\t\t\"FAQs\": [{\n" +
+                "\t\t\t\"FAQs\": \"Profile\",\n" +
+                "\t\t\t\"Id\": 1,\n" +
+                "\t\t\t\"Questions\": [{\n" +
+                "\t\t\t\t\"Id\": 1,\n" +
+                "\t\t\t\t\"Question\": \"How to add new profile?\",\n" +
+                "\t\t\t\t\"Ans\": \"Go on Project tab Tap on Default Profile and select add profile option\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 2,\n" +
+                "\t\t\t\t\"Question\": \"How to remove profile?\",\n" +
+                "\t\t\t\t\"Ans\": \"Answer 2\"\n" +
+                "\t\t\t}]\n" +
+                "\t\t}, {\n" +
+                "\t\t\t\"FAQs\": \"Control\",\n" +
+                "\t\t\t\"Id\": 2,\n" +
+                "\t\t\t\"Questions\": [{\n" +
+                "\t\t\t\t\"Id\": 3,\n" +
+                "\t\t\t\t\"Question\": \"why I can't add new projects?\",\n" +
+                "\t\t\t\t\"Ans\": \"This version only supports to view your projects and tasks, you can't edit any projects or tasks.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 4,\n" +
+                "\t\t\t\t\"Question\": \"How can i extend projects tree size?\",\n" +
+                "\t\t\t\t\"Ans\": \"Tap on divider line and slide it\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 5,\n" +
+                "\t\t\t\t\"Question\": \"How can I modify my projects and task?\",\n" +
+                "\t\t\t\t\"Ans\": \"This version only supports to view your projects and tasks, you can't modify any projects or tasks.\"\n" +
+                "\t\t\t}]\n" +
+                "\t\t}, {\n" +
+                "\t\t\t\"FAQs\": \"Filters\",\n" +
+                "\t\t\t\"Id\": 1,\n" +
+                "\t\t\t\"Questions\": [{\n" +
+                "\t\t\t\t\"Id\": 6,\n" +
+                "\t\t\t\t\"Question\": \"How to fire the Date filter?\",\n" +
+                "\t\t\t\t\"Ans\": \"Just go on 'Projects' tab and click on Date filter button and select icons which you want to fire.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 7,\n" +
+                "\t\t\t\t\"Question\": \"How to fire the Status filter?\",\n" +
+                "\t\t\t\t\"Ans\": \"Just go on 'Projects' tab and click on Status filter button and select icons which you want to fire.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 8,\n" +
+                "\t\t\t\t\"Question\": \"How to fire the Traffic Light filter?\",\n" +
+                "\t\t\t\t\"Ans\": \"Just go on 'Projects' tab and click on Traffic Light filter button and select icons which you want to fire.\"\n" +
+                "\t\t\t}]\n" +
+                "\t\t}, {\n" +
+                "\t\t\t\"FAQs\": \"Dashboard\",\n" +
+                "\t\t\t\"Id\": 1,\n" +
+                "\t\t\t\"Questions\": [{\n" +
+                "\t\t\t\t\"Id\": 9,\n" +
+                "\t\t\t\t\"Question\": \"How to select single date?\",\n" +
+                "\t\t\t\t\"Ans\": \"Only click on the individual date and click Done button.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 10,\n" +
+                "\t\t\t\t\"Question\": \"How to select multiple date?\",\n" +
+                "\t\t\t\t\"Ans\": \"just select start date and end date your selection is automatically selected\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 11,\n" +
+                "\t\t\t\t\"Question\": \"How to reduce date selection?\",\n" +
+                "\t\t\t\t\"Ans\": \"Just tap between selected date and there will be your latest end date, selection automatically reduced.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 12,\n" +
+                "\t\t\t\t\"Question\": \"How to change year?\",\n" +
+                "\t\t\t\t\"Ans\": \"Click on Month and year title and you get list of years, So select year from there.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 13,\n" +
+                "\t\t\t\t\"Question\": \"How to change month?\",\n" +
+                "\t\t\t\t\"Ans\": \"Swipe calendar right side for increase month and left side for decrease month\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 14,\n" +
+                "\t\t\t\t\"Question\": \"How to remove date selection?\",\n" +
+                "\t\t\t\t\"Ans\": \"double tap on your start date.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 15,\n" +
+                "\t\t\t\t\"Question\": \"Task Pending list?\",\n" +
+                "\t\t\t\t\"Ans\": \"your selected date range return you latest pending task count, So tap on it and redirect on Gantt chart to see your total pending tasks of selected dates.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 16,\n" +
+                "\t\t\t\t\"Question\": \"Task Complete list?\",\n" +
+                "\t\t\t\t\"Ans\": \"your selected date range return you latest Complete task count, So tap on it and redirect on Gantt chart to see your total Complete tasks of selected dates.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 17,\n" +
+                "\t\t\t\t\"Question\": \"Task Assigned list?\",\n" +
+                "\t\t\t\t\"Ans\": \"your selected date range return you latest Complete task count, So tap on it and redirect on Gantt chart to see your total Complete tasks of selected dates.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 18,\n" +
+                "\t\t\t\t\"Question\": \"Task Complete Today List?\",\n" +
+                "\t\t\t\t\"Ans\": \"your selected date range return you task count that complete today, So tap on it and redirect on Gantt chart to see your today Complete tasks of selected dates.\"\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"Id\": 19,\n" +
+                "\t\t\t\t\"Question\": \"Task complete next 5 days?\",\n" +
+                "\t\t\t\t\"Ans\": \"your selected date range return you task count that complete in next 5 days, So tap on it and redirect on Gantt chart to see your task list that will be complete in next 5 days.\"\n" +
+                "\t\t\t}]\n" +
+                "\t\t}]\n" +
+                "\t}\n" +
+                "}";
+
+        try
+        {
+            JSONObject obj = (JSONObject) new JSONTokener(jsonString).nextValue();
+            JSONObject obj1 = obj.getJSONObject("Payload");
+            JSONArray jsonArrayFaqs = obj1.getJSONArray("FAQs");
+
+            if(jsonArrayFaqs.length() > 0){
+                for (int i=0;i<jsonArrayFaqs.length();i++)
+                {
+                    JSONObject objInner = jsonArrayFaqs.getJSONObject(i);
+
+                    String faqHeader=objInner.getString("FAQs");
+                    String faqId=objInner.getString("Id");
+                    listDataHeader.add(faqHeader);
+                    List<FaqQuestionAnsModel> arraylistQuestions = new ArrayList<FaqQuestionAnsModel>();
+
+                    JSONArray jsonArrayQuestions = objInner.getJSONArray("Questions");
+                    if(jsonArrayQuestions.length() > 0){
+                        for (int j =0;j<jsonArrayQuestions.length();j++)
+                        {
+                            JSONObject objQuestions = jsonArrayQuestions.getJSONObject(j);
+                            String faqQuestions = objQuestions.getString("Question");
+                            String faqAns = objQuestions.getString("Ans");
+
+                            FaqQuestionAnsModel modelQuestionAns = new FaqQuestionAnsModel();
+                            modelQuestionAns.setQuestion(faqQuestions);
+                            modelQuestionAns.setAns(faqAns);
+
+
+
+                            arraylistQuestions.add(modelQuestionAns);
+
+                            listDataChild.put(faqHeader,arraylistQuestions);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
+
+
+
+
+
+        // Adding header data
+       /* listDataHeader.add("Profile");
+        listDataHeader.add("Control");
+        listDataHeader.add("Filteres");
+        listDataHeader.add("Dashboard");*/
+
+        // Adding child data
+       /* List<FaqQuestionAnsModel> Profile = new ArrayList<FaqQuestionAnsModel>();
+
+        FaqQuestionAnsModel modelProfile = new FaqQuestionAnsModel();
+        modelProfile.setQuestion("How to add new profile?");
+        modelProfile.setAns("Ans 1 ");
+        Profile.add(modelProfile);
+
+        FaqQuestionAnsModel modelProfile2 = new FaqQuestionAnsModel();
+        modelProfile2.setQuestion("How to remove new profile?");
+        modelProfile2.setAns("Ans 2 ");
+        Profile.add(modelProfile2);
+
+
+
+
+
+        List<FaqQuestionAnsModel> Control = new ArrayList<FaqQuestionAnsModel>();
+
+        FaqQuestionAnsModel modelControl = new FaqQuestionAnsModel();
+        modelControl.setQuestion("why I can't add new projects?");
+        modelControl.setAns("Ans 3 ");
+        Control.add(modelControl);
+
+        FaqQuestionAnsModel modelControl2 = new FaqQuestionAnsModel();
+        modelControl2.setQuestion("How can I extend project tree size?");
+        modelControl2.setAns("Ans 4 ");
+        Control.add(modelControl2);
+
+        FaqQuestionAnsModel modelControl3 = new FaqQuestionAnsModel();
+        modelControl3.setQuestion("How can I Modify my projects and task?");
+        modelControl3.setAns("Ans 5 ");
+        Control.add(modelControl3);
+
+        List<FaqQuestionAnsModel> Filter = new ArrayList<FaqQuestionAnsModel>();
+
+        FaqQuestionAnsModel modelFilter = new FaqQuestionAnsModel();
+        modelFilter.setQuestion("Why I can't add new Project?");
+        modelFilter.setAns("Ans 6 ");
+        Filter.add(modelFilter);
+
+        FaqQuestionAnsModel modelFilter2 = new FaqQuestionAnsModel();
+        modelFilter2.setQuestion("How can I extend project tree size?");
+        modelFilter2.setAns("Ans 7 ");
+        Filter.add(modelFilter2);
+
+        List<FaqQuestionAnsModel> Dashboard = new ArrayList<FaqQuestionAnsModel>();
+
+        FaqQuestionAnsModel modelDashboard = new FaqQuestionAnsModel();
+        modelDashboard.setQuestion("Why I can't add new Project?");
+        modelDashboard.setAns("Ans 8 ");
+        Dashboard.add(modelDashboard);
+
+        FaqQuestionAnsModel modelDashboard2 = new FaqQuestionAnsModel();
+        modelDashboard2.setQuestion("How can I extend project tree size?");
+        modelDashboard2.setAns("Ans 9 ");
+        Dashboard.add(modelDashboard2);
+
+
+
+        listDataChild.put(listDataHeader.get(0), Profile); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), Control);
+        listDataChild.put(listDataHeader.get(2), Filter);
+        listDataChild.put(listDataHeader.get(3), Dashboard);*/
+    }
+
+    @Override
+    public void onClick(TreeNode node, Object value)
+    {
+
+    }
+}

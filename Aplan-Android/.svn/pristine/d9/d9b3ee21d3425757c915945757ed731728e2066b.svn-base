@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2012 Square, Inc. -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item app:tsquare_state_range_middle="true"
+        android:drawable="@drawable/circle_blue">
+    <!--<color android:color="@color/calendar_selected_range_bg"/>-->
+  </item>
+  <item android:state_selected="true"
+        android:drawable="@drawable/circle_blue">
+    <!--<color android:color="@color/calendar_selected_day_bg"/>-->
+  </item>
+  <item android:state_pressed="true"
+        android:drawable="@drawable/circle_blue">
+    <!--<color android:color="@color/calendar_selected_day_bg"/>-->
+  </item>
+  <item app:tsquare_state_current_month="false">
+    <color android:color="@color/calendar_inactive_month_bg"/>
+  </item>
+  <item app:tsquare_state_highlighted="true">
+    <color android:color="@android:color/transparent"/>
+  </item>
+  <item app:tsquare_state_today="true"
+      android:drawable="@drawable/circle_red">
+
+
+  </item>
+  <item>
+    <color android:color="@android:color/transparent"/>
+  </item>
+</selector>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="resources/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <!-- Prism --><!--<link href="js/lib/prism.css" rel="stylesheet" type="text/css" />--><!--Ext and ux styles -->
+    <img id="custom-loading" src="resources/images/04-spinner.gif" style="width: 100px; z-index: 99999;left: 46%; position: absolute;top: 42%;"/>
+    <link href="resources/css/theme-triton-1.css" rel="stylesheet" type="text/css"/><link href="resources/css/theme-triton-2.css" rel="stylesheet" type="text/css"/><link href="resources/font-awesome-4.6.3/css/font-awesome.css" rel="stylesheet" type="text/css"/><!-- Gantt styles --><link href="resources/css/sch-gantt-triton-all.css?ver=" rel="stylesheet" type="text/css" /><!-- Application styles --><link href="resources/css/examples.css" rel="stylesheet" type="text/css" /><link href="resources/advanced/resources/app.css" rel="stylesheet" type="text/css" /><link href="resources/css/custom.css" rel="stylesheet" type="text/css"/><!--Ext lib --><script src="js/custom/jquery-2.0.3.min.js" crossorigin="anonymous" type="text/javascript"></script>
+    <script src="js/ext-all.js" crossorigin="anonymous" type="text/javascript"></script>
+    <script>
+        /*To enable right click*/
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        var DashBoardTaskData = null, SelectedNode = 0;
+        function LoadDashBoradDataOnControl(Nodedata, ClickedTaskId) {
+            DashBoardTaskData = Nodedata;
+            SelectedNode = ClickedTaskId;
+        }
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1), vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) { var pair = vars[i].split("="); if (pair[0] == variable) { return pair[1]; } }
+            return "";
+        }
+        function AddSelectionToNode(SelectedNode) {
+            var grid = Ext.ComponentQuery.query("#gv")[0];
+            grid.getSelectionModel().select(grid.taskStore.getNodeById(SelectedNode));
+            grid.getSchedulingView().scrollEventIntoView(grid.taskStore.getNodeById(SelectedNode), false, true);
+        }
+        function addScript(fileLocation) {
+            var head = document.getElementsByTagName('head')[0];
+            var js = document.createElement("script");
+            js.type = "text/javascript";
+            js.src = fileLocation;
+            head.appendChild(js);
+        }
+        /*if(getQueryVariable('HOST_URL') != "") {
+            addScript("js/theme-triton.js");
+            addScript("js/gnt-all.js?ver=1");
+            addScript("js/custom/lang.js");
+            addScript("js/custom/Config.js");
+            addScript("js/custom/functions.js");
+            addScript("js/customColumns.js");
+            addScript("js/custom/localStorageCls.js");
+            addScript("js/LoginForm.js");
+            addScript("js/ribbonHeader.js");
+            addScript("js/customContextMenu.js");
+            addScript("js/custom/generalFilterWindow.js");
+            addScript("js/custom/manageProfile.js");
+            addScript("js/custom/myProfile.js");
+            addScript("js/custom/HttpInterceptor.js");
+        }*/
+    </script>
+    <!-- Application -->
+    <script src="js/theme-triton.js" type="text/javascript"></script>
+    <script src="js/gnt-all.js?ver=" type="text/javascript"></script>
+    <script src="js/custom/lang.js" type="text/javascript"></script>
+    <script src="js/custom/Config.js" type="text/javascript"></script>
+    <script src="js/custom/functions.js" type="text/javascript"></script>
+    <script src="js/customColumns.js" type="text/javascript"></script>
+    <script src="js/custom/localStorageCls.js" type="text/javascript"></script>
+    <script src="js/LoginForm.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/ribbonHeader.js" type="text/javascript"></script>
+    <script src="js/customContextMenu.js" type="text/javascript"></script>
+    <script src="js/custom/generalFilterWindow.js" type="text/javascript"></script>
+    <script src="js/custom/manageProfile.js" type="text/javascript"></script>
+    <script src="js/custom/myProfile.js" type="text/javascript"></script>
+    <script src="js/custom/HttpInterceptor.js" type="text/javascript"></script>
+    <script>
+        Ext.onReady(function() {
+            Ext.get("custom-loading").hide();
+            if (getQueryVariable('HOST_URL') != "") {
+                Ext.MessageBox.show({
+                    msg: __("WE_ARE_SETTING_UP_PROFILE", " ") +  __("PLEASE_WAIT"),
+                    progressText: __("LOADING"),
+                    width: 300,
+                    wait: true,
+                    waitConfig: { interval: 100 }
+                });
+            }
+        });
+        Ext.override(Ext.data.proxy.Ajax, { timeout: 30000000 });
+        Ext.override(Ext.form.action.Action, { timeout: 100 });
+        Ext.Ajax.on({
+            requestexception: function(conn, response, options) {
+                var url = getQueryVariable("HOST_URL") + response.request.url;
+                var SingleError = { "Id": GUID(), "ErrorCode":
+                "Service Error:" + response.status, "Message": response.statusText, "URL": url, "Date": new Date() };
+                InsertLog(SingleError);
+                alert('Error' + response.statusText + ", Service Error!, Please help to improve this product and submit the error log to admin by clicking on 'Submit Button' on help page.");
+            },
+            beforerequest: function() {
+                Ext.Ajax.setDefaultHeaders({
+                    'Authorization': eval(function(p, a, c, k, e, d) { e = function(c) { return c }; if (!''.replace(/^/, String)) { while (c--) { d[c] = k[c] || c } k = [function(e) { return d[e] } ]; e = function() { return '\\w+' }; c = 1 }; while (c--) { if (k[c]) { p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]) } } return p } ('2("1")+0.3(4 6().5()/7)', 8, 8, 'Math|token|getQueryVariable|round|new|getTime|Date|1000'.split('|'), 0, {}))
+                });
+            },
+            scope: this
+        });
+        /*This function will handle window or device resize event and accordingly change the width*/
+        window.onresize = ResizeHandller;
+        function ResizeHandller() {
+            var grid = Ext.ComponentQuery.query("#gv")[0];
+            if (typeof (grid) !== "undefined") {
+                grid.setWidth($(window).width());
+                grid.setHeight($(window).height());
+            }
+        }
+    </script>
+    <title>A-Plan Webviewer</title>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/done_button_background1"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:id="@+id/textview_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/twentee_sp"
+        android:gravity="left|center_vertical"
+        android:text="@string/set_profile"
+        android:textColor="@color/red"
+        android:textSize="@dimen/twentee_sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listview_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/twentee_sp"
+        android:divider="@drawable/listview_divider">
+
+    </ListView>
+
+    <View
+        android:layout_width="@dimen/two_hundred"
+        android:layout_height="1sp"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:background="@drawable/listview_divider" />
+
+    <LinearLayout
+        android:id="@+id/linear_add_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ten_sp"
+        android:layout_marginLeft="@dimen/twentee_sp"
+        android:layout_marginRight="@dimen/twentee_sp"
+        android:layout_marginTop="@dimen/ten_sp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/imageview_add"
+            android:layout_width="@dimen/fourtee_sp"
+            android:layout_height="@dimen/fourtee_sp"
+            android:scaleType="fitXY"
+            android:src="@drawable/add_profile" />
+
+        <TextView
+            android:id="@+id/text_addprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:padding="@dimen/five_sp"
+            android:text="Add Profile"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/twentee_sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

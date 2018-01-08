@@ -1,0 +1,1 @@
+Ext.define("APlan.model.Dependency", {idProperty: "Id", extend: "Gnt.model.Dependency", fields: ["Id"]});

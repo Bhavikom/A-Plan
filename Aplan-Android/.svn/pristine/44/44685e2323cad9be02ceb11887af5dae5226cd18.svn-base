@@ -1,0 +1,48 @@
+package com.ssoft.aplanproject.fragment;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+
+import com.ssoft.aplanproject.R;
+
+public class FragmentSupportAbout extends Fragment
+{
+    FragmentProject activity;
+    private Menu menu;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View rootView = inflater.inflate(R.layout.fragment_support_about, container,false);
+        getActivity().invalidateOptionsMenu();
+        setHasOptionsMenu(true);
+        return rootView;
+    }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.toolbar_menu_item, menu);
+        this.menu = menu;
+
+        menu.findItem(R.id.actionEdit).setVisible(false);
+        menu.findItem(R.id.actionDefault).setVisible(false);
+        menu.findItem(R.id.actionSend).setVisible(false);
+        menu.findItem(R.id.actionSupport).setVisible(true);
+        menu.findItem(R.id.actionprofile).setVisible(false);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionSupport:
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+        }
+        return true;
+    }
+}
